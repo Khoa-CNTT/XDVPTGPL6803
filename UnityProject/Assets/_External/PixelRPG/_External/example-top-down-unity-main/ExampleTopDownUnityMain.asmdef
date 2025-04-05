@@ -1,0 +1,21 @@
+{
+    "name": "ExampleTopDownUnityMain",
+    "rootNamespace": "",
+    "references": [
+        "GUID:343deaaf83e0cee4ca978e7df0b80d21",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:df380645f10b7bc4b97d4f5eb6303d95",
+        "GUID:214c0945bb158c940aada223f3223ee8",
+        "GUID:085cb502223da8f46931abfa47535112",
+        "GUID:516a5277b8c3b4f4c8cc86b77b1591ff"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,3 @@
+1/ Tạo một gameobject chứa script GameManagerPlayerStats.Lưu ý là chỉ gắn script này cho một gameobject hoặc một scene duy nhất(tốt nhất là scene select character hoặc scene gameplay đầu tiên), script này sẽ giữ gameobject tồn tại suốt trò chơi, ko bị biến mất khi chuyển scene. Script này tác dụng là sẽ lưu stat hiện tại của player để mỗi khi chuyển scene không bị mất
+2/ Tạo gameobject chứa script PlayerStats. Có thể gắn script này vào gameobject player hoặc tùy.
+Script này sẽ lấy dữ liệu từ GameManagerPlayerStats để cho player trong đó sử dụng.

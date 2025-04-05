@@ -1,0 +1,24 @@
+﻿<engine:UXML xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements">
+	<engine:VisualElement class="row">
+		<engine:VisualElement>
+			<engine:Label text="Character sprite:" class="min_header"/>
+			<engine:VisualElement name="Char_Img" class="char_img">
+				<editor:ObjectField name="Icon_Selection" class="char_selector" allow-scene-objects="false"/>
+			</engine:VisualElement>
+			<engine:Label text="Background sprite:" class="min_header"/>
+			<engine:VisualElement name="Back_Img" class="back_img">
+				<editor:ObjectField name="Back_Selector" class="char_selector" allow-scene-objects="false"/>
+			</engine:VisualElement>
+		</engine:VisualElement>
+		<engine:VisualElement>
+			<engine:Label text="Character Name" class="min_header"/>
+			<engine:TextField name="Char_Name" class="char_name"/>
+			<engine:Label text="Dialogue" class="min_header"/>
+			<engine:TextField name="Dialogue_Field" class="dialogue_field"/>
+			<engine:Label text="Sound Effect" class="min_header"/>
+			<editor:ObjectField name="Sound_Field" class="sound_selector"/>
+			<engine:Label text="Background Music" class="min_header"/>
+			<editor:ObjectField name="Music_Field" class="music_selector"/>
+		</engine:VisualElement>
+	</engine:VisualElement>
+</engine:UXML>

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 44eb899c2a0b4ae4d9e9f2b6f3695f3c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195708
+  packageName: VNCreator
+  packageVersion: 1.1
+  assetPath: Assets/VNCreator/Behaviors/VNCreator_EndScreen.cs
+  uploadId: 497199

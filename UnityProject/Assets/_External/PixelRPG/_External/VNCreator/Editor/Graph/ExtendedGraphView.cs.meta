@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c20d9ada8bc944e48856a144a78ba2a9
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195708
+  packageName: VNCreator
+  packageVersion: 1.1
+  assetPath: Assets/VNCreator/Editor/Graph/ExtendedGraphView.cs
+  uploadId: 497199

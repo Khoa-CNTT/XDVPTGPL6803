@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 6896723f889aea34798728f83be3985b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195708
+  packageName: VNCreator
+  packageVersion: 1.1
+  assetPath: Assets/VNCreator/Behaviors/VNCreator_MusicSource.cs
+  uploadId: 497199

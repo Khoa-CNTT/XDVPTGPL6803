@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: dba4a91e827c61d4fbe12cb551b2ebf1
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195708
+  packageName: VNCreator
+  packageVersion: 1.1
+  assetPath: Assets/VNCreator/VNCreator.asmdef
+  uploadId: 497199

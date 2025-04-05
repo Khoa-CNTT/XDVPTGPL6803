@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d478adefefce2c542a2482518d853419
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195708
+  packageName: VNCreator
+  packageVersion: 1.1
+  assetPath: Assets/VNCreator/Data/GameSaveManager.cs
+  uploadId: 497199

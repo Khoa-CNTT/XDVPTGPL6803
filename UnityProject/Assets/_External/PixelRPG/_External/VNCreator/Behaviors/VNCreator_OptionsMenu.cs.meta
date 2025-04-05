@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c5f1fef67a1555349bfb7af04c51f7a9
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195708
+  packageName: VNCreator
+  packageVersion: 1.1
+  assetPath: Assets/VNCreator/Behaviors/VNCreator_OptionsMenu.cs
+  uploadId: 497199

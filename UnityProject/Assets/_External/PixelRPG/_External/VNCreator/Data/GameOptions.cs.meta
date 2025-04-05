@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 7e0a983c61bb42f4c91346f2d57b00d2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195708
+  packageName: VNCreator
+  packageVersion: 1.1
+  assetPath: Assets/VNCreator/Data/GameOptions.cs
+  uploadId: 497199

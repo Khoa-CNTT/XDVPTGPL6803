@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f89a207568a68344481ab15ca705153a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195708
+  packageName: VNCreator
+  packageVersion: 1.1
+  assetPath: Assets/VNCreator/_Demo/DemoStory.asset
+  uploadId: 497199

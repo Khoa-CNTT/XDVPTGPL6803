@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a8ec3118b7b536b48ba4e2e3bc029a47
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195708
+  packageName: VNCreator
+  packageVersion: 1.1
+  assetPath: Assets/VNCreator/Data/SaveUtility.cs
+  uploadId: 497199

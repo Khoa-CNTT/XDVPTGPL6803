@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4872bf3a97c26e44387f165d165f957a, type: 3}
+  m_Name: DialogContentTest_1
+  m_EditorClassIdentifier: 
+  dialogLines:
+  - actorStats: {fileID: 11400000, guid: 2093580bad58f7044840dbb1f8b9e9d2, type: 2}
+    dialogText: "\u01A0 hay, ch\u1ED3n kia, sao l\u1EA1i leo l\xEAn l\u01B0ng ta?
+      Ta \u0111ang ra \u0111\u1ED3ng c\xE0y ru\u1ED9ng, \u0111\u1EEBng c\xF3 l\xE0m
+      phi\u1EC1n"
+    isEndDialog: 0
+    dialogOptions: []
+  - actorStats: {fileID: 11400000, guid: cfbce7358ac02ef44ad57cde109cf370, type: 2}
+    dialogText: "C\xE0y ru\u1ED9ng \xE1? Ch\xE1n ch\u1EBFt \u0111i \u0111\u01B0\u1EE3c.
+      Sao kh\xF4ng \u0111i ch\u01A1i v\u1EDBi ta cho vui?"
+    isEndDialog: 0
+    dialogOptions: []
+  - actorStats: {fileID: 11400000, guid: 2093580bad58f7044840dbb1f8b9e9d2, type: 2}
+    dialogText: "Ta ph\u1EA3i l\xE0m vi\u1EC7c m\u1EDBi c\xF3 c\xE1i \u0103n ch\u1EE9.
+      Ng\u01B0\u01A1i kh\xF4ng l\xE0m g\xEC m\xE0 c\u0169ng c\xF3 \u0103n sao?"
+    isEndDialog: 0
+    dialogOptions: []
+  - actorStats: {fileID: 11400000, guid: cfbce7358ac02ef44ad57cde109cf370, type: 2}
+    dialogText: "Ta c\xF3 c\xE1ch c\u1EE7a ta. M\xE0 n\xE0y, ta nghe n\xF3i \u1EDF
+      c\xE1nh \u0111\u1ED3ng b\xEAn kia c\xF3 m\u1ED9t v\u01B0\u1EDDn d\u01B0a h\u1EA5u
+      ch\xEDn m\u1ECDng, ng\u01B0\u01A1i c\xF3 mu\u1ED1n \u0111i xem kh\xF4ng?"
+    isEndDialog: 0
+    dialogOptions: []
+  - actorStats: {fileID: 11400000, guid: 2093580bad58f7044840dbb1f8b9e9d2, type: 2}
+    dialogText: Ta ....... hahah
+    isEndDialog: 0
+    dialogOptions:
+    - optionText: Fight
+      dialogContent: {fileID: 11400000, guid: 250cd5e4a7ef40e47b5fdec0df20a2a3, type: 2}
+    - optionText: Hello
+      dialogContent: {fileID: 11400000, guid: 061c481c9da8a254892e64e98730d1e8, type: 2}
+  - actorStats: {fileID: 11400000, guid: cfbce7358ac02ef44ad57cde109cf370, type: 2}
+    dialogText: "Th\xF4i m\xE0, \u0111i m\u1ED9t l\xE1t th\xF4i. Ta h\u1EE9a s\u1EBD
+      kh\xF4ng l\xE0m m\u1EA5t th\u1EDDi gian c\u1EE7a ng\u01B0\u01A1i \u0111\xE2u."
+    isEndDialog: 0
+    dialogOptions: []
+  - actorStats: {fileID: 11400000, guid: cfbce7358ac02ef44ad57cde109cf370, type: 2}
+    dialogText: "Th\xF4i m\xE0, \u0111i m\u1ED9t l\xE1t th\xF4i. Ta h\u1EE9a s\u1EBD
+      kh\xF4ng l\xE0m m\u1EA5t th\u1EDDi gian c\u1EE7a ng\u01B0\u01A1i \u0111\xE2u."
+    isEndDialog: 0
+    dialogOptions:
+    - optionText: A
+      dialogContent: {fileID: 11400000, guid: 250cd5e4a7ef40e47b5fdec0df20a2a3, type: 2}
+    - optionText: B
+      dialogContent: {fileID: 11400000, guid: 250cd5e4a7ef40e47b5fdec0df20a2a3, type: 2}
+    - optionText: C
+      dialogContent: {fileID: 11400000, guid: 061c481c9da8a254892e64e98730d1e8, type: 2}
+  - actorStats: {fileID: 11400000, guid: 2093580bad58f7044840dbb1f8b9e9d2, type: 2}
+    dialogText: "Th\xF4i m\xE0, \u0111i m\u1ED9t l\xE1t th\xF4i. Ta h\u1EE9a s\u1EBD
+      kh\xF4ng l\xE0m m\u1EA5t th\u1EDDi gian c\u1EE7a ng\u01B0\u01A1i \u0111\xE2u."
+    isEndDialog: 0
+    dialogOptions: []
+  - actorStats: {fileID: 11400000, guid: cfbce7358ac02ef44ad57cde109cf370, type: 2}
+    dialogText: "Th\xF4i m\xE0, \u0111i m\u1ED9t l\xE1t th\xF4i. Ta h\u1EE9a s\u1EBD
+      kh\xF4ng l\xE0m m\u1EA5t th\u1EDDi gian c\u1EE7a ng\u01B0\u01A1i \u0111\xE2u."
+    isEndDialog: 0
+    dialogOptions: []
