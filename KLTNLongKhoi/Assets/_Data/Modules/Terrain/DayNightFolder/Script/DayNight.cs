@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DayNight : MonoBehaviour
 {
@@ -15,6 +16,12 @@ public class DayNight : MonoBehaviour
             return _targetDayLength;
         }
     }
+    [SerializeField]
+    private float elapsedTime;
+    [SerializeField]
+    private bool use24h = true;
+    [SerializeField]
+    private Text clock;
     [SerializeField]
     [Range(0f, 1f)]
     private float _timeOfDay;
@@ -92,6 +99,7 @@ public class DayNight : MonoBehaviour
         {
             UpdateTimeScale();
             UpdateTime();
+            UpdateClock();
         }
         AdjustSunRotation();
         SunIntensity();
@@ -102,7 +110,7 @@ public class DayNight : MonoBehaviour
     private void UpdateTimeScale()
     {
         _timeScale = 24 / (_targetDayLength / 60);
-        _timeScale *= timeCurve.Evaluate(_timeOfDay);
+        _timeScale *= timeCurve.Evaluate(elapsedTime / (targetDayLength * 60));
         _timeScale /= timeCurveNormalization;
     }
 
@@ -122,8 +130,10 @@ public class DayNight : MonoBehaviour
     private void UpdateTime()
     {
         _timeOfDay += Time.deltaTime * _timeScale / 86400;
+        elapsedTime += Time.deltaTime;
         if (_timeOfDay > 1)
         {
+            elapsedTime = 0;
             _dayNumber++;
             _timeOfDay -= 1;
             if (_dayNumber > _yearLength)
@@ -133,6 +143,38 @@ public class DayNight : MonoBehaviour
             }
         }
     }
+
+    private void UpdateClock()
+    {
+        float time = elapsedTime / (targetDayLength * 60);
+        float hour = Mathf.FloorToInt(time * 24);
+        float minute = Mathf.FloorToInt(((time * 24) - hour) * 60);
+
+        string hourString;
+        string minuteString;
+
+        if (!use24h && hour > 12)
+            hour -= 12;
+
+        if (hour < 10)
+            hourString = "0" + hour.ToString();
+        else
+            hourString = hour.ToString();
+
+        if (minute < 10)
+            minuteString = "0" + minute.ToString();
+        else
+            minuteString = minute.ToString();
+                 
+
+        if(use24h)
+            clock.text = hourString + " : " + minuteString;
+        else if(time > 0.5f)
+            clock.text = hourString + " : " + minuteString + " pm";
+        else
+            clock.text = hourString + " : " + minuteString + " am";
+    }
+
     private void AdjustSunRotation()
     {
         float sunAngel = timeOfDay * 360f;
