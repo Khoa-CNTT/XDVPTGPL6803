@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 9976d2616fb9f214e8200359e6b7c686
+timeCreated: 1452193736
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47967
+  packageName: Free Footsteps System
+  packageVersion: 1.1
+  assetPath: Assets/FREE Footsteps System/scripts/CharacterFootsteps.cs
+  uploadId: 106830

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: dcecfa4dfd12b4f4ead16037aee46354
+timeCreated: 1451870559
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47967
+  packageName: Free Footsteps System
+  packageVersion: 1.1
+  assetPath: Assets/FREE Footsteps System/controllers/first_person_controller.prefab
+  uploadId: 106830

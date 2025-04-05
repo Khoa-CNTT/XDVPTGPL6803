@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cdeabd8880ead504f983c614a7d875a3
+timeCreated: 1452309345
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47967
+  packageName: Free Footsteps System
+  packageVersion: 1.1
+  assetPath: Assets/FREE Footsteps System/Resources/footsteps_database.prefab
+  uploadId: 106830

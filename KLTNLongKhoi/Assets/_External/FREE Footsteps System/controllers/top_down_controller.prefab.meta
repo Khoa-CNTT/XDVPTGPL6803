@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1e8d3e8cfd7fcf144af62362c32fe45d
+timeCreated: 1451867114
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47967
+  packageName: Free Footsteps System
+  packageVersion: 1.1
+  assetPath: Assets/FREE Footsteps System/controllers/top_down_controller.prefab
+  uploadId: 106830
