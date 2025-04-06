@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0cbad708e27162448ba8f4c9463327b9
+timeCreated: 1452219746
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47967
+  packageName: Free Footsteps System
+  packageVersion: 1.1
+  assetPath: Assets/FREE Footsteps System/misc/TopDownCharacter.controller
+  uploadId: 106830

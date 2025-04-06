@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: ecd17adb9ffbacb4eb809557a7bba80e
+timeCreated: 1452218873
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47967
+  packageName: Free Footsteps System
+  packageVersion: 1.1
+  assetPath: Assets/FREE Footsteps System/scripts/TopDownController.cs
+  uploadId: 106830

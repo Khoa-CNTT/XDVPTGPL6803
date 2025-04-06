@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 1b44e4185b4e2454fb9d0512d8d34318
+timeCreated: 1452222021
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 47967
+  packageName: Free Footsteps System
+  packageVersion: 1.1
+  assetPath: Assets/FREE Footsteps System/scripts/CameraFollow.cs
+  uploadId: 106830
