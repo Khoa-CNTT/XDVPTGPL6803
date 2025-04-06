@@ -1,4 +1,4 @@
-﻿ using UnityEngine;
+﻿using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
@@ -97,6 +97,18 @@ namespace StarterAssets
         private int _animIDJump;
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
+        private int _animIDAttack; // Thêm ID cho animation đánh
+        private int _animIDHurt; // Thêm ID cho animation bị đánh
+
+        private bool _isAttacking;
+        public float _attackCooldown = 1.5f; // Thời gian giữa các đòn đánh
+        private float _attackTimer = 1f;
+
+        private bool _canMove = true; // Biến kiểm tra có thể di chuyển
+
+        private bool _isHurt;
+        public float _hurtDuration = 1f; // Thời gian animation bị đánh
+        private float _hurtTimer;
 
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
@@ -122,6 +134,10 @@ namespace StarterAssets
             }
         }
 
+        [Header("Ragdoll")]
+        private bool _isDead = false;
+
+        private PlayerStatus _playerStatus;
 
         private void Awake()
         {
@@ -130,12 +146,15 @@ namespace StarterAssets
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             }
+
+            // Add to existing Awake or create one if it doesn't exist
+            _playerStatus = GetComponent<PlayerStatus>();
         }
 
         private void Start()
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-            
+
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
@@ -154,11 +173,16 @@ namespace StarterAssets
 
         private void Update()
         {
+            // Không xử lý movement và các logic khác nếu đã chết
+            if (_isDead) return;
+
             _hasAnimator = TryGetComponent(out _animator);
 
             JumpAndGravity();
             GroundedCheck();
             Move();
+            HandleAttack();
+            HandleHurt();
         }
 
         private void LateUpdate()
@@ -173,6 +197,8 @@ namespace StarterAssets
             _animIDJump = Animator.StringToHash("Jump");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+            _animIDAttack = Animator.StringToHash("Attack"); // Thêm ID cho animation đánh
+            _animIDHurt = Animator.StringToHash("Hurt"); // Thêm ID cho animation bị đánh
         }
 
         private void GroundedCheck()
@@ -213,6 +239,18 @@ namespace StarterAssets
 
         private void Move()
         {
+            // Nếu đang không thể di chuyển thì return
+            if (!_canMove)
+            {
+                // Reset animation speed khi không di chuyển
+                if (_hasAnimator)
+                {
+                    _animator.SetFloat(_animIDSpeed, 0);
+                    _animator.SetFloat(_animIDMotionSpeed, 0);
+                }
+                return;
+            }
+
             // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
@@ -388,5 +426,106 @@ namespace StarterAssets
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
             }
         }
+
+        private void HandleAttack()
+        {
+            if (_attackTimer > 0)
+            {
+                _attackTimer -= Time.deltaTime;
+
+                if (_attackTimer <= 0)
+                {
+                    _isAttacking = false;
+                    _canMove = true;
+                    _input.attack = false;
+                }
+            }
+
+            // Chỉ cho phép đánh khi:
+            // 1. Đang ở trên mặt đất (Grounded)
+            // 2. Không trong thời gian cooldown (_attackTimer <= 0)
+            // 3. Nhấn chuột trái
+            if (_input.attack && _attackTimer <= 0 && Grounded)
+            {
+                _isAttacking = true;
+                _attackTimer = _attackCooldown;
+                _canMove = false;
+
+                if (_hasAnimator)
+                {
+                    _animator.SetTrigger(_animIDAttack);
+                }
+            }
+        }
+
+        // Thêm method này để handle animation event
+        public void OnAttackComplete()
+        {
+            _isAttacking = false;
+            _canMove = true;
+        }
+
+        // Method public để các object khác có thể gọi khi đánh trúng người chơi
+        public void TakeHit(Vector3 hitDirection, float damage)
+        {
+            if (_isDead) return;
+
+            // Handle hurt animation
+            _isHurt = true;
+            _hurtTimer = _hurtDuration;
+            _canMove = false;
+
+            if (_hasAnimator)
+            {
+                _animator.SetTrigger(_animIDHurt);
+            }
+        }
+
+        private void HandleHurt()
+        {
+            if (_isHurt)
+            {
+                if (_hurtTimer > 0)
+                {
+                    _hurtTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    _isHurt = false;
+                    _canMove = true; // Cho phép di chuyển lại sau khi hết animation bị đánh
+                }
+            }
+        }
+
+        // Thêm method để xử lý khi chết
+        public void Die(Vector3 hitDirection)
+        {
+            if (_isDead) return;
+
+            if (_hasAnimator)
+            {
+                _animator.enabled = false;
+            }
+
+            if (_controller != null)
+            {
+                _controller.enabled = false;
+            }
+        }
+
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
