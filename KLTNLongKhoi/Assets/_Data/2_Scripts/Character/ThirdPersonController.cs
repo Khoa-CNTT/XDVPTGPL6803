@@ -179,6 +179,8 @@ namespace StarterAssets
 
             _hasAnimator = TryGetComponent(out _animator);
 
+            if (_controller.enabled == false) return;
+
             JumpAndGravity();
             GroundedCheck();
             Move();

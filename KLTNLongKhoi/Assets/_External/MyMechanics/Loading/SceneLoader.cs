@@ -13,18 +13,23 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] TransEffect transEffect;
 
     private AsyncOperation m_async;
-    
+
     public void LoadNextLevel()
+    {
+        LoadSceneName(sceneNext);
+    }
+
+    public void LoadSceneName(string nextSceneName)
     {
         m_async = SceneManager.LoadSceneAsync(GameScene.DataHolder.ToString(), LoadSceneMode.Additive);
 
         if (transEffect)
         {
-            transEffect.LoadNextLevel(sceneNext);
+            transEffect.LoadNextLevel(nextSceneName);
         }
         else if (m_async.isDone)
         {
-            SceneManager.LoadScene(sceneNext);
+            SceneManager.LoadScene(nextSceneName);
         }
     }
 }

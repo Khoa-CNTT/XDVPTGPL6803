@@ -1,28 +1,31 @@
 using UnityEngine;
 
-public class Item : Entity
+namespace HieuDev
 {
-    [Header("Item")]
-    [SerializeField] ItemData itemData;
-
-    public ItemData ItemData
+    public class Item : Entity
     {
-        get
+        [Header("Item")]
+        [SerializeField] ItemData itemData;
+
+        public ItemData ItemData
         {
-            itemData.EntityData = EntityData;
-            return itemData;
+            get
+            {
+                itemData.EntityData = EntityData;
+                return itemData;
+            }
+            set => itemData = value;
         }
-        set => itemData = value;
+
+        public override void DestroyEntity()
+        {
+            base.DestroyEntity();
+        }
+
+        public override void ResetEntity()
+        {
+            base.ResetEntity();
+        }
     }
 
-    public override void DestroyEntity()
-    {
-        base.DestroyEntity();
-    }
-
-    public override void ResetEntity()
-    {
-        base.ResetEntity();
-    }
 }
-

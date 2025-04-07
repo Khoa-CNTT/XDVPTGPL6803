@@ -1,10 +1,13 @@
 using System;
 using UnityEngine;
 
-[Serializable]
-public class ItemData
+namespace HieuDev
 {
-    private EntityData entityData;
+    [Serializable]
+    public class ItemData
+    {
+        private EntityData entityData;
 
-    public EntityData EntityData { get => entityData; set => entityData = value; }
+        public EntityData EntityData { get => entityData; set => entityData = value; }
+    }
 }

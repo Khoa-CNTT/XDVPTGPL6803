@@ -1,6 +1,8 @@
 using UnityEngine;
 using Microlight.MicroBar;
 using StarterAssets;
+using System.Collections;
+using System.Linq;
 
 namespace KLTNLongKhoi
 {
@@ -20,10 +22,16 @@ namespace KLTNLongKhoi
         private int baseCharm;
         private int baseIntelligence;
 
+        [Header("Respawn Settings")]
+        [SerializeField] private float respawnDelay = 3f;
+        private Vector3 lastCheckpoint;
+
         private ThirdPersonController playerController;
         private RagdollAnimator ragdollAnimator;
         private CCBePushedBack ccBePushedBack;
         private bool isDead = false;
+        private GameManager gameManager;
+        private PauseManager pauseManager;
 
         private void Awake()
         {
@@ -31,14 +39,16 @@ namespace KLTNLongKhoi
             ragdollAnimator = GetComponent<RagdollAnimator>();
             ccBePushedBack = GetComponent<CCBePushedBack>();
             currentHealth = maxHealth;
+            gameManager = FindFirstObjectByType<GameManager>();
+            pauseManager = FindFirstObjectByType<PauseManager>();
         }
 
         private void Start()
         {
             healthBar.Initialize(maxHealth);
-
-            // Load stats from GameManager
             LoadStatsFromGameManager();
+            // Set initial checkpoint as spawn position
+            lastCheckpoint = transform.position;
         }
 
         private void LoadStatsFromGameManager()
@@ -111,11 +121,42 @@ namespace KLTNLongKhoi
             if (isDead) return;
             isDead = true;
 
-            // Trigger death animation and ragdoll through ThirdPersonController
+            // Trigger death animation and ragdoll
             playerController?.Die(hitDirection);
             ragdollAnimator?.EnableRagdoll();
 
-            // You might want to trigger game over screen or respawn logic here
+            // Notify GameManager
+            gameManager.GameOver();
+
+            // Start respawn sequence
+            StartCoroutine(RespawnSequence());
+        }
+
+        private IEnumerator RespawnSequence()
+        {
+            // Wait for delay
+            yield return new WaitForSeconds(respawnDelay);
+
+            // Reset position to last checkpoint
+            transform.position = lastCheckpoint;
+            
+            // Reset health and state
+            isDead = false;
+            currentHealth = maxHealth;
+            healthBar?.UpdateBar(currentHealth);
+            
+            // Re-enable components
+            if (playerController != null)
+            {
+                var controller = playerController.GetComponent<CharacterController>();
+                if (controller != null) controller.enabled = true;
+            }
+
+            // Resume game if paused
+            gameManager?.RestartGame();
+            
+            // Disable ragdoll
+            ragdollAnimator?.DisableRagdoll();
         }
 
         // Public getters for stats
@@ -135,6 +176,12 @@ namespace KLTNLongKhoi
             {
                 GameManagerPlayerStats.Instance.Money = baseMoney;
             }
+        }
+
+        // Call this when player reaches a checkpoint
+        public void SetCheckpoint(Vector3 position)
+        {
+            lastCheckpoint = position;
         }
     }
 }

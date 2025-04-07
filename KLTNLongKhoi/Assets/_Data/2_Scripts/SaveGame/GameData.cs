@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SaveSystem
+namespace KLTNLongKhoi
 {
     [Serializable]
     public class GameData
     {
         public PlayerData player = new PlayerData();
         public WorldState worldState = new WorldState();
-        public GameSettings gameSettings = new GameSettings();
+        public GameSettingsData gameSettings = new GameSettingsData();
         public WorldItemsData worldItems = new WorldItemsData();
         public List<MonsterData> monsters = new List<MonsterData>();
     }
@@ -78,10 +78,12 @@ namespace SaveSystem
     {
         public string dayTime;
         public string weather;
+        public int currentSceneIndex;
+        public string sceneName;
     }
 
     [Serializable]
-    public class GameSettings
+    public class GameSettingsData
     {
         public float volume;
         public string graphics;
@@ -98,4 +100,7 @@ namespace SaveSystem
         public Vector3 position;
         public string state; // IDLE, PATROL, PURSUE, ATTACK, SLEEP
     }
+
+
+
 }

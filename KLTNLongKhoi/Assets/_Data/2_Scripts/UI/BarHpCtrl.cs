@@ -11,6 +11,7 @@ namespace KLTNLongKhoi
 
         private void Update()
         {
+            
             hideTimer -= Time.deltaTime;
             if (hideTimer <= 0)
             {

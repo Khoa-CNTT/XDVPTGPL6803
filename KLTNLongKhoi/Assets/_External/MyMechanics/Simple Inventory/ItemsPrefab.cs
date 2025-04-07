@@ -1,23 +1,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary> Chứa các prefab với item data được tạo sẵn </summary>
-public class ItemsPrefab : MonoBehaviour
+namespace HieuDev
 {
-	public List<Item> items = new List<Item>();
+	/// <summary> Chứa các prefab với item data được tạo sẵn </summary>
+	public class ItemsPrefab : MonoBehaviour
+	{
+		public List<Item> items = new List<Item>();
 
-    public Item GetItemByEntityLabel(EntityLabel entityLabel)
-	{  
-		foreach (Item item in items)
+		public Item GetItemByEntityLabel(EntityLabel entityLabel)
 		{
-			if (item.EntityData.EntityLabel == entityLabel)
+			foreach (Item item in items)
 			{
-				return item;
+				if (item.EntityData.EntityLabel == entityLabel)
+				{
+					return item;
+				}
 			}
-		} 
-		return null;
+			return null;
+		}
+
+
 	}
 
 
 }
-

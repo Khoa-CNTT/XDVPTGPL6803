@@ -1,5 +1,4 @@
 using UnityEngine;
-using FIMSpace.FProceduralAnimation;
 using System.Linq;
 
 public class RagdollAnimator : MonoBehaviour
@@ -27,7 +26,7 @@ public class RagdollAnimator : MonoBehaviour
         hitRigidbody.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
     }
 
-    private void DisableRagdoll()
+    public void DisableRagdoll()
     {
         foreach (var rigidbody in _ragdollRigidbodies)
         {

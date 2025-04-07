@@ -23,10 +23,14 @@ namespace StarterAssets
 		public bool cursorLocked = true; // ẩn con trỏ chuột
 		public bool cursorInputForLook = true; // không cho phép xoay cam theo trỏ chuột
 
+		PauseManager pauseManager;
+
 		void Start()
 		{
-			PauseManager.Instance.onGamePaused.AddListener(OnPauseGame);
+			pauseManager = FindFirstObjectByType<PauseManager>();
+			pauseManager.onGamePaused.AddListener(OnPauseGame);
 
+			SetCursorState(cursorLocked);
 		}
 
 #if ENABLE_INPUT_SYSTEM

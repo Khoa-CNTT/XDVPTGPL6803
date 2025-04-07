@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace HieuDev
+namespace KLTNLongKhoi
 {
     public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
@@ -33,5 +33,4 @@ namespace HieuDev
             }
         }
     }
-
 }
