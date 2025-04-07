@@ -14,7 +14,7 @@ namespace StarterAssets
 		public bool jump;
 		public bool sprint;
 		public bool attack; // Thêm biến attack
-		[SerializeField] bool escape;
+		public bool escape;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -23,17 +23,10 @@ namespace StarterAssets
 		public bool cursorLocked = true; // ẩn con trỏ chuột
 		public bool cursorInputForLook = true; // không cho phép xoay cam theo trỏ chuột
 
-		public UnityEvent<bool> onEscape;
-
-		public bool Escape
+		void Start()
 		{
-			get => escape;
-			set
-			{
-				escape = value;
-				onEscape?.Invoke(value);
-				OnPauseGame(value);
-			}
+			PauseManager.Instance.onGamePaused.AddListener(OnPauseGame);
+
 		}
 
 #if ENABLE_INPUT_SYSTEM
@@ -61,7 +54,7 @@ namespace StarterAssets
 		}
 
 		public void OnAttack(InputValue value)
-		{ 
+		{
 			if (escape == false)
 			{
 				AttackInput(value.isPressed);
@@ -70,10 +63,9 @@ namespace StarterAssets
 
 		public void OnEscape(InputValue value)
 		{
-			Escape = !Escape;
+			escape = !escape;
 		}
 #endif
-
 
 		public void MoveInput(Vector2 newMoveDirection)
 		{
@@ -100,11 +92,6 @@ namespace StarterAssets
 			attack = newAttackState;
 		}
 
-		public void EscapeInput(bool newEscapeState)
-		{
-			Escape = newEscapeState;
-		}
-
 		private void OnApplicationFocus(bool hasFocus)
 		{
 			SetCursorState(cursorLocked);
@@ -122,7 +109,7 @@ namespace StarterAssets
 			cursorLocked = activeMouse;
 			cursorInputForLook = activeMouse;
 			SetCursorState(cursorLocked);
-			look = Vector2.zero;
+			look = Vector2.zero; 
 		}
 	}
 }

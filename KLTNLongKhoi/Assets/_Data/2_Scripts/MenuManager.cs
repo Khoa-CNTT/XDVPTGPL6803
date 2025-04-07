@@ -10,16 +10,10 @@ public class MenuManager : MonoBehaviour
     {
         pauseManager = FindFirstObjectByType<PauseManager>();
         pauseManager.onGamePaused.AddListener(OpenPopupPanelSetting);
-        pauseManager.onGameResumed.AddListener(ClosePopupPanelSetting);
     }
 
-    public void OpenPopupPanelSetting()
+    public void OpenPopupPanelSetting(bool value)
     {
-        btnOpenPopupPanelSetting.OpenPopupPanel(true);
-    }
-
-    public void ClosePopupPanelSetting()
-    {
-        btnOpenPopupPanelSetting.OpenPopupPanel(false);
+        btnOpenPopupPanelSetting.OpenPopupPanel(value);
     }
 }

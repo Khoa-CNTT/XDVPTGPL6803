@@ -8,8 +8,7 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private bool isPaused = false;
 
     [Header("Events")]
-    public UnityEvent onGamePaused;
-    public UnityEvent onGameResumed;
+    public UnityEvent<bool> onGamePaused;
 
     public bool IsPaused => isPaused;
 
@@ -27,13 +26,18 @@ public class PauseManager : MonoBehaviour
         }
 
         inputs = FindFirstObjectByType<StarterAssetsInputs>();
+    }
 
-        inputs.onEscape.AddListener(TogglePause);
+    void Update()
+    {
+        if (inputs.escape != isPaused)
+        {
+            TogglePause(inputs.escape);
+        }
     }
 
     public void TogglePause(bool value)
     {
-        Debug.Log($"TogglePause: {value}");
         isPaused = value;
         if (value)
         {
@@ -47,15 +51,17 @@ public class PauseManager : MonoBehaviour
 
     public void PauseGame()
     {
+        inputs.escape = true;
         isPaused = true;
-        // Time.timeScale = 0f;
-        onGamePaused?.Invoke();
+
+        onGamePaused?.Invoke(true);
     }
 
     public void ResumeGame()
     {
+        inputs.escape = false;
         isPaused = false;
-        // Time.timeScale = 1f;
-        onGameResumed?.Invoke();
+
+        onGamePaused?.Invoke(false);
     }
 }
