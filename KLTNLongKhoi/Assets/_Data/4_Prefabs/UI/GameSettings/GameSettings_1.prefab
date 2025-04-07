@@ -890,13 +890,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4895449263178797257}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65a935c16791eaa4994d52fe1941643d, type: 3}
+  m_Script: {fileID: 11500000, guid: 0bdbffb95d36ff64ab215c85c8708e54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
-  usePopupScale: 1
-  ListPanelTrigger:
-  - {fileID: 7441609089364399175}
+  isOpenPanel: 0
+  popupScale: {fileID: 5526961582813073393}
 --- !u!1 &5500544112919804965
 GameObject:
   m_ObjectHideFlags: 0
@@ -1335,7 +1333,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2581837419266743710}
   - component: {fileID: 7780289735325472094}
-  - component: {fileID: 8232088778896118704}
+  - component: {fileID: 5526961582813073393}
   m_Layer: 5
   m_Name: GameSettings_1
   m_TagString: Untagged
@@ -1371,7 +1369,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7441609089364399175}
   m_CullTransparentMesh: 1
---- !u!114 &8232088778896118704
+--- !u!114 &5526961582813073393
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1380,7 +1378,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7441609089364399175}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38f91b31fab04d34fa3ac90d2c4f3575, type: 3}
+  m_Script: {fileID: 11500000, guid: e24588954674f094e84e046d5bfeb6fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7583916968084058631

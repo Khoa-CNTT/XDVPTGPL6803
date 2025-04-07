@@ -7,7 +7,7 @@ public class CCBePushedBack : MonoBehaviour
     [SerializeField] private float damageForceMultiplier = 0.5f;
     [SerializeField] private float recoveryTime = 0.5f;
     [SerializeField] private float gravity = -9.81f; // Thêm gravity
-    
+
     private CharacterController controller;
     private bool isPushed = false;
     private float pushTimer = 0f;
@@ -54,12 +54,12 @@ public class CCBePushedBack : MonoBehaviour
                 // Tính toán movement với decay effect
                 float pushProgress = 1 - (pushTimer / recoveryTime);
                 Vector3 movement = pushVelocity * pushProgress;
-                
+
                 // Kết hợp movement ngang với movement dọc
                 movement.y = verticalVelocity;
-                
+
                 // Apply movement
-                controller.Move(movement * Time.deltaTime);
+                if (controller.enabled == true) controller.Move(movement * Time.deltaTime);
             }
         }
     }

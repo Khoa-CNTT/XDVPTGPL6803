@@ -7,27 +7,20 @@ public class LookToCam : MonoBehaviour
 
     private void Start()
     {
-        targetCamera = FindObjectOfType<Camera>();
+        targetCamera = FindFirstObjectByType<Camera>();
     }
 
     private void FixedUpdate()
     {
-        if (targetCamera)
-        {
-            transform.LookAt(transform.position - targetCamera.transform.position);
-        }
-
-        // Kiểm tra xem camera có nhìn trúng đối tượng không
-        // if (IsObjectVisible(targetCamera, gameObject))
-        // {
-        //     Debug.Log("Camera đang nhìn trúng đối tượng!");
-        // }
+        LookToCamera();
     }
 
-    private bool IsObjectVisible(Camera cam, GameObject obj)
+    private void LookToCamera()
     {
-        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(cam);
-        return GeometryUtility.TestPlanesAABB(planes, obj.GetComponent<Renderer>().bounds);
+        if (targetCamera)
+        {
+            transform.LookAt(targetCamera.transform.position);
+        }
     }
 }
 
