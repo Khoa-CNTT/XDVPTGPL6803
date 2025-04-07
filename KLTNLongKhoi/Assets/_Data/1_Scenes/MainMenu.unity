@@ -355,6 +355,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 3687144114178261069, guid: d5e8bdbdd2b777248a8d3b2be38ff8f8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -83
+      objectReference: {fileID: 0}
     - target: {fileID: 6662308585491223067, guid: d5e8bdbdd2b777248a8d3b2be38ff8f8, type: 3}
       propertyPath: popupScale
       value: 
@@ -444,7 +448,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3238577359370663446, guid: d5e8bdbdd2b777248a8d3b2be38ff8f8, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5e8bdbdd2b777248a8d3b2be38ff8f8, type: 3}

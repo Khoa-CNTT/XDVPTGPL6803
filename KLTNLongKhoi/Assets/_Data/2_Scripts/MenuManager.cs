@@ -1,31 +1,36 @@
 using StarterAssets;
 using UnityEngine;
 
-public class MenuManager : MonoBehaviour
+namespace KLTNLongKhoi
 {
-    [SerializeField] btnOpenPopupPanel btnOpenPopupPanelSetting;
-    PauseManager pauseManager;
-    StarterAssetsInputs inputs;
-    bool isShowSettingPanel;
-
-    private void Start()
+    public class MenuManager : MonoBehaviour
     {
-        pauseManager = FindFirstObjectByType<PauseManager>(); 
-        inputs = FindFirstObjectByType<StarterAssetsInputs>();
-    }
+        [SerializeField] btnOpenPopupPanel btnOpenPopupPanelSetting;
+        PauseManager pauseManager;
+        GameManager gameManager;
+        StarterAssetsInputs inputs;
+        bool isShowSettingPanel;
 
-    public void OpenPopupPanelSetting(bool value)
-    {
-        btnOpenPopupPanelSetting.OpenPopupPanel(value);
-    }
-
-    void Update()
-    {
-        if (inputs.escape != isShowSettingPanel)
+        private void Start()
         {
-            isShowSettingPanel = inputs.escape;
-            pauseManager.TogglePause(isShowSettingPanel);
-            OpenPopupPanelSetting(isShowSettingPanel);
+            pauseManager = FindFirstObjectByType<PauseManager>();
+            gameManager = FindFirstObjectByType<GameManager>();
+            inputs = FindFirstObjectByType<StarterAssetsInputs>();
+        }
+
+        public void OpenPopupPanelSetting(bool value)
+        {
+            btnOpenPopupPanelSetting.OpenPopupPanel(value);
+        }
+
+        void Update()
+        {
+            if (inputs.escape != isShowSettingPanel && !gameManager.IsGameOver)
+            {
+                isShowSettingPanel = inputs.escape;
+                pauseManager.TogglePause(isShowSettingPanel);
+                OpenPopupPanelSetting(isShowSettingPanel);
+            }
         }
     }
 }
