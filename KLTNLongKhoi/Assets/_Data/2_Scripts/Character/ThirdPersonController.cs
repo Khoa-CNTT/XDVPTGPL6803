@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
+using KLTNLongKhoi;
 #endif
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
@@ -100,12 +101,12 @@ namespace StarterAssets
         private int _animIDAttack; // Thêm ID cho animation đánh
         private int _animIDHurt; // Thêm ID cho animation bị đánh
 
-        private bool _isAttacking;
         public float _attackCooldown = 1.5f; // Thời gian giữa các đòn đánh
         private float _attackTimer = 1f;
 
         private bool _canMove = true; // Biến kiểm tra có thể di chuyển
 
+        private ActorHitbox _actorHitbox;
         private bool _isHurt;
         public float _hurtDuration = 1f; // Thời gian animation bị đánh
         private float _hurtTimer;
@@ -134,9 +135,7 @@ namespace StarterAssets
             }
         }
 
-        [Header("Ragdoll")]
         private bool _isDead = false;
-
         private PlayerStatus _playerStatus;
 
         private void Awake()
@@ -158,6 +157,8 @@ namespace StarterAssets
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
+            _actorHitbox = GetComponentInChildren<ActorHitbox>();
+
 #if ENABLE_INPUT_SYSTEM 
             _playerInput = GetComponent<PlayerInput>();
 #else
@@ -419,6 +420,25 @@ namespace StarterAssets
             }
         }
 
+        private void OnSendDamage(AnimationEvent animationEvent)
+        {
+            if (_actorHitbox != null)
+            {
+                _actorHitbox.IsAttacking = true;
+            }
+        }
+
+        // Thêm method này để handle animation event
+        private void OnAttackComplete(AnimationEvent animationEvent)
+        {
+            _canMove = true;
+            if (_actorHitbox != null)
+            {
+                _actorHitbox.IsAttacking = false;
+            }
+        }
+
+
         private void OnLand(AnimationEvent animationEvent)
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
@@ -435,7 +455,6 @@ namespace StarterAssets
 
                 if (_attackTimer <= 0)
                 {
-                    _isAttacking = false;
                     _canMove = true;
                     _input.attack = false;
                 }
@@ -447,7 +466,6 @@ namespace StarterAssets
             // 3. Nhấn chuột trái
             if (_input.attack && _attackTimer <= 0 && Grounded)
             {
-                _isAttacking = true;
                 _attackTimer = _attackCooldown;
                 _canMove = false;
 
@@ -456,13 +474,6 @@ namespace StarterAssets
                     _animator.SetTrigger(_animIDAttack);
                 }
             }
-        }
-
-        // Thêm method này để handle animation event
-        public void OnAttackComplete()
-        {
-            _isAttacking = false;
-            _canMove = true;
         }
 
         // Method public để các object khác có thể gọi khi đánh trúng người chơi

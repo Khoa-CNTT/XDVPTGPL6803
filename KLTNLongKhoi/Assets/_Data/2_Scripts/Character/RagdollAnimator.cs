@@ -1,106 +1,54 @@
 using UnityEngine;
 using FIMSpace.FProceduralAnimation;
+using System.Linq;
 
 public class RagdollAnimator : MonoBehaviour
 {
-    [Header("Ragdoll Settings")]
-    [SerializeField] private float _ragdollForce = 10f;
-    [SerializeField] private float _muscleRegainSpeed = 0.4f;
-    [SerializeField] private float _getUpDelay = 2f;
-
-    private Animator _animator;
     private CharacterController _characterController;
-    private bool _isRagdolled = false;
-    private float _targetMuscleMultiplier = 1f;
-    private float _currentMuscleMultiplier = 1f;
+    private Animator _animator;
+    private Rigidbody[] _ragdollRigidbodies;
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
-        _characterController = GetComponent<CharacterController>();
+        _animator = GetComponentInChildren<Animator>();
+        _ragdollRigidbodies = GetComponentsInChildren<Rigidbody>();
+        _characterController = GetComponentInChildren<CharacterController>();
+
+        DisableRagdoll();
     }
 
-    // Enable free ragdoll
-    public void User_EnableFreeRagdoll()
+
+    public void TriggerRagdoll(Vector3 force, Vector3 hitPoint)
     {
-        if (_isRagdolled) return;
+        EnableRagdoll();
 
-        _isRagdolled = true;
+        Rigidbody hitRigidbody = _ragdollRigidbodies.OrderBy(rigidbody => Vector3.Distance(rigidbody.position, hitPoint)).First();
 
-        // Disable CharacterController to not affect physics
-        if (_characterController != null)
-            _characterController.enabled = false;
+        hitRigidbody.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
+    }
 
-        // Enable ragdoll physics
-        if (_animator != null)
+    private void DisableRagdoll()
+    {
+        foreach (var rigidbody in _ragdollRigidbodies)
         {
-            _animator.enabled = false;  // Disable animator when ragdoll is active
-            _targetMuscleMultiplier = 0f;  // Relax all muscles
-            _currentMuscleMultiplier = 0f;
+            rigidbody.isKinematic = true;
         }
 
-        // Apply initial force to make the ragdoll fall
-        Rigidbody[] rigidbodies = GetComponentsInChildren<Rigidbody>();
-        foreach (Rigidbody rb in rigidbodies)
+        _animator.enabled = true;
+        _characterController.enabled = true;
+    }
+
+    public void EnableRagdoll()
+    {
+        foreach (var rigidbody in _ragdollRigidbodies)
         {
-            rb.isKinematic = false;
-            rb.useGravity = true;
-            rb.linearVelocity = Vector3.zero;
-            rb.AddForce(Random.insideUnitSphere * _ragdollForce, ForceMode.Impulse);
+            rigidbody.isKinematic = false;
         }
 
-        // Schedule getting up after delay
-        Invoke("DisableRagdoll", _getUpDelay);
+        _animator.enabled = false;
+        _characterController.enabled = false;
     }
 
-    private void EnableAnimator()
-    {
-        if (_animator != null)
-            _animator.enabled = true;
-    }
 
-    // Apply force to all ragdoll parts
-    public void User_SetPhysicalImpactAll(Vector3 impactForce, float duration)
-    {
 
-    }
-
-    private void RegainMuscles()
-    {
-        _targetMuscleMultiplier = 1f;
-    }
-
-    private void Update()
-    {
-
-    }
-
-    // Disable ragdoll and return to normal state
-    public void DisableRagdoll()
-    {
-        if (!_isRagdolled) return;
-
-        _isRagdolled = false;
-
-        // Enable CharacterController
-        if (_characterController != null)
-            _characterController.enabled = true;
-
-        // Disable ragdoll physics
-        if (_animator != null)
-        {
-            _animator.enabled = true;  // Enable animator when ragdoll is disabled
-            _targetMuscleMultiplier = 1f;  // Reset muscle multiplier
-            _currentMuscleMultiplier = 1f;
-        }
-
-        // Reset rigidbodies to kinematic
-        Rigidbody[] rigidbodies = GetComponentsInChildren<Rigidbody>();
-        foreach (Rigidbody rb in rigidbodies)
-        {
-            rb.isKinematic = true;
-            rb.useGravity = false;
-            rb.linearVelocity = Vector3.zero;
-        }
-    }
 }
