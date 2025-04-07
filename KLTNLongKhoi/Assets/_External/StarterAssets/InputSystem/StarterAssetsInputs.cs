@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -13,13 +14,27 @@ namespace StarterAssets
 		public bool jump;
 		public bool sprint;
 		public bool attack; // Thêm biến attack
+		[SerializeField] bool escape;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
 
 		[Header("Mouse Cursor Settings")]
-		public bool cursorLocked = true;
-		public bool cursorInputForLook = true;
+		public bool cursorLocked = true; // ẩn con trỏ chuột
+		public bool cursorInputForLook = true; // không cho phép xoay cam theo trỏ chuột
+
+		public UnityEvent<bool> onEscape;
+
+		public bool Escape
+		{
+			get => escape;
+			set
+			{
+				escape = value;
+				onEscape?.Invoke(value);
+				OnPauseGame(value);
+			}
+		}
 
 #if ENABLE_INPUT_SYSTEM
 		public void OnMove(InputValue value)
@@ -29,7 +44,7 @@ namespace StarterAssets
 
 		public void OnLook(InputValue value)
 		{
-			if(cursorInputForLook)
+			if (cursorInputForLook)
 			{
 				LookInput(value.Get<Vector2>());
 			}
@@ -46,8 +61,16 @@ namespace StarterAssets
 		}
 
 		public void OnAttack(InputValue value)
+		{ 
+			if (escape == false)
+			{
+				AttackInput(value.isPressed);
+			}
+		}
+
+		public void OnEscape(InputValue value)
 		{
-			AttackInput(value.isPressed);
+			Escape = !Escape;
 		}
 #endif
 
@@ -55,7 +78,7 @@ namespace StarterAssets
 		public void MoveInput(Vector2 newMoveDirection)
 		{
 			move = newMoveDirection;
-		} 
+		}
 
 		public void LookInput(Vector2 newLookDirection)
 		{
@@ -77,6 +100,11 @@ namespace StarterAssets
 			attack = newAttackState;
 		}
 
+		public void EscapeInput(bool newEscapeState)
+		{
+			Escape = newEscapeState;
+		}
+
 		private void OnApplicationFocus(bool hasFocus)
 		{
 			SetCursorState(cursorLocked);
@@ -86,6 +114,15 @@ namespace StarterAssets
 		{
 			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 		}
+
+		private void OnPauseGame(bool value)
+		{
+			bool activeMouse = !value;
+
+			cursorLocked = activeMouse;
+			cursorInputForLook = activeMouse;
+			SetCursorState(cursorLocked);
+			look = Vector2.zero;
+		}
 	}
-	
 }
