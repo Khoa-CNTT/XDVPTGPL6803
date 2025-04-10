@@ -21,10 +21,15 @@ namespace KLTNLongKhoi
         public int level;
         public int experience;
         public int health;
-        public int mana;
+        // Xóa mana vì nó được tính dựa trên Intelligence
         public Vector3 position = Vector3.zero;
         public int currency;
         public InventoryData inventory = new InventoryData();
+        // Thêm các chỉ số base mới
+        public int baseStrength;
+        public int baseCritical;  // Đổi từ baseCharm
+        public int baseIntelligence;
+        public int baseStamina;
     }
 
     [Serializable]

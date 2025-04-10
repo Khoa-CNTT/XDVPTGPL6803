@@ -10,7 +10,7 @@ namespace KLTNLongKhoi
         [SerializeField] private TextMeshProUGUI healthText;
         [SerializeField] private TextMeshProUGUI moneyText;
         [SerializeField] private TextMeshProUGUI strengthText;
-        [SerializeField] private TextMeshProUGUI charmText;
+        [SerializeField] private TextMeshProUGUI criticalText; // Đổi từ charmText
         [SerializeField] private TextMeshProUGUI intelligenceText;
 
         [Header("References")]
@@ -39,8 +39,8 @@ namespace KLTNLongKhoi
             if (strengthText != null)
                 strengthText.text = $"Strength: {GameManagerPlayerStats.Instance.Strength}";
             
-            if (charmText != null)
-                charmText.text = $"Charm: {GameManagerPlayerStats.Instance.Charm}";
+            if (criticalText != null)
+                criticalText.text = $"Critical: {GameManagerPlayerStats.Instance.Critical}%";
             
             if (intelligenceText != null)
                 intelligenceText.text = $"Intelligence: {GameManagerPlayerStats.Instance.Intelligence}";

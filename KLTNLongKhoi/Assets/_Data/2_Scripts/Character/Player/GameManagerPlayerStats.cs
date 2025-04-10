@@ -7,11 +7,10 @@ namespace KLTNLongKhoi
         public static GameManagerPlayerStats Instance { get; private set; }
 
         public int HP;
-        public int mana;
         public int stamina;
         public int Money;
         public int Strength;
-        public int Charm;
+        public int Critical; // Đổi từ Charm thành Critical
         public int Intelligence;
 
         private UIPlayerStats uiStats; // Lưu tham chiếu UI
@@ -24,9 +23,10 @@ namespace KLTNLongKhoi
         public void RerollStats()
         {
             HP = Random.Range(1, 10);
+            stamina = Random.Range(1, 10);
             Money = Random.Range(1, 10);
             Strength = Random.Range(1, 10);
-            Charm = Random.Range(1, 10);
+            Critical = Random.Range(1, 10); // Đổi từ Charm thành Critical
             Intelligence = Random.Range(1, 10);
             uiStats?.UpdateStatsUIGameManagerPlayerStats(); // Cập nhật UI
         }
