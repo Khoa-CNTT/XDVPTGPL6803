@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e93285a3a00834ea5928744f83c0cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  listEntity: []
+  itemsPrefab: {fileID: 0}
 --- !u!1001 &8564385267987799303
 PrefabInstance:
   m_ObjectHideFlags: 0
