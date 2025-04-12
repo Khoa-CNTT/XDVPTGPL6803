@@ -5,24 +5,27 @@ namespace KLTNLongKhoi
     public class PlayerStatsManager : MonoBehaviour, ISaveData
     {
         [Header("Base Stats")]
-        private int baseHP;
-        private int baseStamina;
-        private int baseMoney;
-        private int baseStrength;
-        private int baseCritical; // Đổi từ baseCharm thành baseCritical
-        private int baseIntelligence;
-        private int level = 1;
-        private int experience = 0;
+        [SerializeField] private int baseHP = 5;
+        [SerializeField] private int baseStamina = 5;
+        [SerializeField] private float baseMana = 5;
+        [SerializeField] private int baseMoney = 0;
+        [SerializeField] private int baseStrength = 5;
+        [SerializeField] private int baseCritical = 5;
+        [SerializeField] private int baseIntelligence = 5;
 
         [Header("Current Stats")]
         private float currentHealth;
+        private float currentStamina;
         private float currentMana;
-        private float manaRegenRate = 2f; // Mana regen per second
+        private float manaRegenRate = 2f;
+        private int level = 1;
+        private int experience = 0;
+        private Vector3 lastCheckpoint;
 
         [Header("Derived Stats")]
         public float MaxHealth => baseHP * 10f;
         public float MaxStamina => baseStamina * 10f;
-        public float MaxMana => baseIntelligence * 10f;
+        public float MaxMana => baseMana * 10f;
         public float DamageReduction => baseStrength * 0.05f;
         public float AttackPower => baseStrength * 0.1f;
         public float CriticalChance => baseCritical * 0.01f;
@@ -32,9 +35,10 @@ namespace KLTNLongKhoi
         private int[] experienceRequirements = { 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500, 5500 };
 
         // Public Properties
+        public Vector3 LastCheckpoint => lastCheckpoint;
         public int Level => level;
         public int Experience => experience;
-        public float CurrentHealth 
+        public float CurrentHealth
         {
             get => currentHealth;
             set
@@ -63,18 +67,26 @@ namespace KLTNLongKhoi
         }
         public int BaseHP => baseHP;
         public int BaseStamina => baseStamina;
+        public float BaseMana => baseMana;
         public int BaseMoney => baseMoney;
         public int BaseStrength => baseStrength;
-        public int BaseCritical => baseCritical; // Đổi từ BaseCharm thành BaseCritical
+        public int BaseCritical => baseCritical;
         public int BaseIntelligence => baseIntelligence;
 
-        private float currentStamina;
+        private void Awake()
+        {
+            InitializeStats();
+        }
+
+        private void InitializeStats()
+        {
+            currentHealth = MaxHealth;
+            currentMana = MaxMana;
+            currentStamina = MaxStamina;
+        }
 
         private void Start()
         {
-            LoadStatsFromGameManager();
-            currentHealth = MaxHealth;
-            currentMana = MaxMana;
             StartManaRegeneration();
         }
 
@@ -83,12 +95,25 @@ namespace KLTNLongKhoi
             RegenerateMana();
         }
 
+        public void RerollStats()
+        {
+            baseHP = Random.Range(1, 10);
+            baseStamina = Random.Range(1, 10);
+            baseMoney = Random.Range(1, 10);
+            baseStrength = Random.Range(1, 10);
+            baseCritical = Random.Range(1, 10);
+            baseIntelligence = Random.Range(1, 10);
+
+            InitializeStats();
+            OnStatsUpdated();
+        }
+
         #region Save/Load Data
         public T SaveData<T>()
         {
             PlayerData data = new PlayerData
             {
-                name = "Player", // Có thể thêm system đặt tên sau
+                name = "Player",
                 level = this.level,
                 experience = this.experience,
                 health = this.baseHP,
@@ -98,9 +123,9 @@ namespace KLTNLongKhoi
                 baseCritical = this.baseCritical,
                 baseIntelligence = this.baseIntelligence,
                 baseStamina = this.baseStamina,
-                inventory = new InventoryData() // Inventory system sẽ xử lý riêng
+                inventory = new InventoryData()
             };
-            
+
             return (T)(object)data;
         }
 
@@ -116,53 +141,32 @@ namespace KLTNLongKhoi
                 baseCritical = playerData.baseCritical;
                 baseIntelligence = playerData.baseIntelligence;
                 baseStamina = playerData.baseStamina;
-                
-                // Cập nhật các chỉ số derived
-                currentHealth = MaxHealth;
-                currentMana = MaxMana;
-                currentStamina = MaxStamina;
-                
-                // Cập nhật position nếu cần
+
+                InitializeStats();
+
                 if (transform != null)
                 {
                     transform.position = playerData.position;
                 }
 
-                // Cập nhật GameManagerPlayerStats
-                if (GameManagerPlayerStats.Instance != null)
-                {
-                    GameManagerPlayerStats.Instance.HP = baseHP;
-                    GameManagerPlayerStats.Instance.Money = baseMoney;
-                    GameManagerPlayerStats.Instance.Strength = baseStrength;
-                    GameManagerPlayerStats.Instance.Critical = baseCritical;
-                    GameManagerPlayerStats.Instance.Intelligence = baseIntelligence;
-                }
-
-                StatsUpdatedEvent?.Invoke();
+                OnStatsUpdated();
             }
         }
         #endregion
 
-        public void LoadStatsFromGameManager()
+        #region Stat Modification Methods
+        public void SetCheckpoint(Vector3 position)
         {
-            if (GameManagerPlayerStats.Instance == null) return;
-
-            baseHP = GameManagerPlayerStats.Instance.HP;
-            baseMoney = GameManagerPlayerStats.Instance.Money;
-            baseStrength = GameManagerPlayerStats.Instance.Strength;
-            baseCritical = GameManagerPlayerStats.Instance.Critical; // Đã đổi từ Charm sang Critical
-            baseIntelligence = GameManagerPlayerStats.Instance.Intelligence;
-            baseStamina = GameManagerPlayerStats.Instance.stamina; // Lấy từ GameManager thay vì hardcode
-
-            // Cập nhật các chỉ số hiện tại
-            currentHealth = MaxHealth;
-            currentMana = MaxMana;
-            currentStamina = MaxStamina;
-
-            StatsUpdatedEvent?.Invoke();
+            lastCheckpoint = position;
         }
 
-        #region Stat Modification Methods
+        public void ResetStats()
+        {
+            CurrentHealth = MaxHealth;
+            CurrentMana = MaxMana;
+            CurrentStamina = MaxStamina;
+        }
+
         public void ModifyHealth(float amount)
         {
             CurrentHealth += amount;
@@ -173,14 +177,15 @@ namespace KLTNLongKhoi
             CurrentMana += amount;
         }
 
+        public void ModifyStamina(float amount)
+        {
+            CurrentStamina += amount;
+        }
+
         public void ModifyMoney(int amount)
         {
             baseMoney += amount;
-            if (GameManagerPlayerStats.Instance != null)
-            {
-                GameManagerPlayerStats.Instance.Money = baseMoney;
-            }
-            StatsUpdatedEvent?.Invoke();
+            OnStatsUpdated();
         }
 
         public bool HasEnoughMana(float manaCost)
@@ -208,7 +213,7 @@ namespace KLTNLongKhoi
             float damage = baseDamage * (1 + SpellPower);
             if (Random.value <= CriticalChance)
             {
-                damage *= 2f; // Critical hit multiplier
+                damage *= 2f;
             }
             return damage;
         }
@@ -224,7 +229,7 @@ namespace KLTNLongKhoi
 
         private void CheckLevelUp()
         {
-            while (level - 1 < experienceRequirements.Length && 
+            while (level - 1 < experienceRequirements.Length &&
                    experience >= experienceRequirements[level - 1])
             {
                 LevelUp();
@@ -234,17 +239,13 @@ namespace KLTNLongKhoi
         private void LevelUp()
         {
             level++;
-            // Increase base stats
             baseHP += 5;
             baseStamina += 5;
             baseStrength += 2;
-            baseCritical += 1; // Đổi từ baseCharm thành baseCritical
+            baseCritical += 1;
             baseIntelligence += 2;
 
-            // Heal to full on level up
-            CurrentHealth = MaxHealth;
-            CurrentStamina = MaxStamina;
-
+            InitializeStats();
             OnLevelUp?.Invoke(level);
             OnStatsUpdated();
         }
@@ -270,6 +271,8 @@ namespace KLTNLongKhoi
         {
             StatsUpdatedEvent?.Invoke();
         }
+
+
 
         public delegate void StatsUpdateHandler();
         public event StatsUpdateHandler StatsUpdatedEvent;

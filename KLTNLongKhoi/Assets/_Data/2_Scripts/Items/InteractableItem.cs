@@ -6,11 +6,11 @@ namespace KLTNLongKhoi
     {
         [SerializeField] private string interactionText = "Press E to pickup";
         [SerializeField] private bool isInteractable = true;
-        private PlayerInventoryTest playerInventoryTest;
+        private PlayerInventory playerInventoryTest;
 
         void Start()
         {
-            playerInventoryTest = FindFirstObjectByType<PlayerInventoryTest>();
+            playerInventoryTest = FindFirstObjectByType<PlayerInventory>();
         }
 
         public string GetInteractionText()

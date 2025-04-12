@@ -8,15 +8,18 @@ namespace KLTNLongKhoi
         [SerializeField] private AudioClip activateSound; // Âm thanh khi kích hoạt
         private bool hasBeenActivated = false;
 
+        PlayerStatsManager playerStatsManager;
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
             {
                 PlayerStatus playerStatus = other.GetComponent<PlayerStatus>();
+                playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
                 if (playerStatus != null && !hasBeenActivated)
                 {
                     // Lưu vị trí checkpoint
-                    playerStatus.SetCheckpoint(transform.position);
+                    playerStatsManager.SetCheckpoint(transform.position);
 
                     // Phát hiệu ứng
                     if (activateEffect != null)

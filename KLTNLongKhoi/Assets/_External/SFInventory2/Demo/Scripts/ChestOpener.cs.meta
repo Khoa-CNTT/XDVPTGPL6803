@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e819b4f879242984cb907642f33c95e2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 285665
+  packageName: SFInventory 2
+  packageVersion: 1.0
+  assetPath: Assets/SFInventory2/Demo/Scripts/ChestOpener.cs
+  uploadId: 665894

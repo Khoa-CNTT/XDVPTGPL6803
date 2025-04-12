@@ -6,23 +6,11 @@ namespace KLTNLongKhoi
 {
     public class QuestManager : MonoBehaviour
     {
-        public static QuestManager Instance { get; private set; }
-
         [SerializeField] private List<QuestData> availableQuests;
         private Dictionary<string, QuestStatus> questStatuses = new Dictionary<string, QuestStatus>();
 
         private void Awake()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-
             InitializeQuests();
         }
 

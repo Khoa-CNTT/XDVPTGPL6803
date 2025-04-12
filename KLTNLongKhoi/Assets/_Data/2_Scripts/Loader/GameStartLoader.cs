@@ -13,7 +13,6 @@ namespace KLTNLongKhoi
         {
             loadingUI = FindFirstObjectByType<LoadingUI>();
             loadingProgress = FindFirstObjectByType<LoadingProgress>();
-            // panelPressToStart = FindFirstObjectByType<PanelPressToStart>();
         }
 
         private void FixedUpdate()

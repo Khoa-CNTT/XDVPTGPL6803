@@ -44,7 +44,6 @@ namespace KLTNLongKhoi
 
         private void ApplySettings()
         {
-            // Apply all current settings
             SetQualityLevel(_qualityLevel);
             SetResolution(_currentResolutionIndex);
             SetTargetFrameRate(_targetFrameRate);
@@ -129,21 +128,39 @@ namespace KLTNLongKhoi
         #region SaveData
         public void LoadData<T>(T data)
         {
-            if (data is GameSettingsData gsData)
+            if (data is GameSettingsData settings)
             {
-                SetMasterVolume(gsData.volume);
-                // Add more settings as needed
+                _masterVolume = settings.masterVolume;
+                _musicVolume = settings.musicVolume;
+                _sfxVolume = settings.sfxVolume;
+                _qualityLevel = settings.qualityLevel;
+                _currentResolutionIndex = settings.resolutionIndex;
+                _targetFrameRate = settings.targetFrameRate;
+                _brightness = settings.brightness;
+                _rayTracingEnabled = settings.rayTracingEnabled;
+                _vSyncEnabled = settings.vSyncEnabled;
+
+                ApplySettings();
             }
         }
 
         public T SaveData<T>()
         {
-            GameSettingsData data = new GameSettingsData
+            GameSettingsData settings = new GameSettingsData
             {
-                volume = _masterVolume,
+                masterVolume = _masterVolume,
+                musicVolume = _musicVolume,
+                sfxVolume = _sfxVolume,
+                qualityLevel = _qualityLevel,
+                resolutionIndex = _currentResolutionIndex,
+                targetFrameRate = _targetFrameRate,
+                brightness = _brightness,
+                rayTracingEnabled = _rayTracingEnabled,
+                vSyncEnabled = _vSyncEnabled,
                 graphics = QualitySettings.names[_qualityLevel]
             };
-            return (T)(object)(data);
+
+            return (T)(object)settings;
         }
         #endregion
 
@@ -158,5 +175,14 @@ namespace KLTNLongKhoi
         public float GetBrightness() => _brightness;
         public bool IsRayTracingEnabled() => _rayTracingEnabled;
         public bool IsVSyncEnabled() => _vSyncEnabled;
+
+        // Khi cần lưu settings
+        public void SaveSettings()
+        {
+            if (DataManager.Instance != null)
+            {
+                DataManager.Instance.SaveGameData();
+            }
+        }
     }
 }

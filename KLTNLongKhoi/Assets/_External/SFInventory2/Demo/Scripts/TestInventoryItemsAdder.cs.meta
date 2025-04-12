@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 21b76a0a16d5aec4db33a4fece1cc55e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 285665
+  packageName: SFInventory 2
+  packageVersion: 1.0
+  assetPath: Assets/SFInventory2/Demo/Scripts/TestInventoryItemsAdder.cs
+  uploadId: 665894

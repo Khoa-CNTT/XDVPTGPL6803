@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1699679964207355566}
   - component: {fileID: 611453963266016947}
+  - component: {fileID: 470529827188232901}
   m_Layer: 0
   m_Name: DataManager
   m_TagString: Untagged
@@ -55,17 +56,47 @@ MonoBehaviour:
       level: 0
       experience: 0
       health: 0
-      mana: 0
       position: {x: 0, y: 0, z: 0}
       currency: 0
       inventory:
         items: []
+      baseStrength: 0
+      baseCritical: 0
+      baseIntelligence: 0
+      baseStamina: 0
     worldState:
       dayTime: 
       weather: 
+      currentSceneIndex: 0
+      sceneName: 
     gameSettings:
-      volume: 0
+      masterVolume: 1
+      musicVolume: 1
+      sfxVolume: 1
       graphics: 
+      qualityLevel: 3
+      resolutionIndex: 0
+      targetFrameRate: 60
+      brightness: 1
+      rayTracingEnabled: 0
+      vSyncEnabled: 1
+      mouseSensitivity: 1
+      invertYAxis: 0
+      language: English
     worldItems:
       items: []
     monsters: []
+--- !u!114 &470529827188232901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2569063402760520899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3eb25f24edd184a830ea8dea126a8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveLoadPanel: {fileID: 0}
+  dataManager: {fileID: 0}

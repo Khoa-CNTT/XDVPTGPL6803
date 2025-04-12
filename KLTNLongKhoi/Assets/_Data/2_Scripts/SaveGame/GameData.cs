@@ -90,8 +90,24 @@ namespace KLTNLongKhoi
     [Serializable]
     public class GameSettingsData
     {
-        public float volume;
-        public string graphics;
+        // Audio Settings
+        public float masterVolume = 1f;
+        public float musicVolume = 1f;
+        public float sfxVolume = 1f;
+
+        // Graphics Settings
+        public string graphics = "High";
+        public int qualityLevel = 3;
+        public int resolutionIndex = 0;
+        public int targetFrameRate = 60;
+        public float brightness = 1f;
+        public bool rayTracingEnabled = false;
+        public bool vSyncEnabled = true;
+
+        // Gameplay Settings
+        public float mouseSensitivity = 1f;
+        public bool invertYAxis = false;
+        public string language = "English";
     }
 
     [Serializable]

@@ -16,21 +16,20 @@ namespace KLTNLongKhoi
             pauseManager = FindFirstObjectByType<PauseManager>();
             gameManager = FindFirstObjectByType<GameManager>();
             inputs = FindFirstObjectByType<StarterAssetsInputs>();
+
+            inputs.Escape.AddListener(() => OpenPopupPanelSetting(true));
         }
 
         public void OpenPopupPanelSetting(bool value)
         {
             btnOpenPopupPanelSetting.OpenPopupPanel(value);
-        }
 
-        void Update()
-        {
-            if (inputs.escape != isShowSettingPanel && !gameManager.IsGameOver)
+            if (isShowSettingPanel && !gameManager.IsGameOver)
             {
-                isShowSettingPanel = inputs.escape;
                 pauseManager.TogglePause(isShowSettingPanel);
-                OpenPopupPanelSetting(isShowSettingPanel);
             }
         }
+
+    
     }
 }

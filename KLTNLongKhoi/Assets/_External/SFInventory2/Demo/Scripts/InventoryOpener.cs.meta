@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 2533198e310d87f439a0c03cc4ea47f3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 285665
+  packageName: SFInventory 2
+  packageVersion: 1.0
+  assetPath: Assets/SFInventory2/Demo/Scripts/InventoryOpener.cs
+  uploadId: 665894

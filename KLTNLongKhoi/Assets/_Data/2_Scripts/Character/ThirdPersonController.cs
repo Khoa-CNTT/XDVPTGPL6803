@@ -511,7 +511,7 @@ namespace StarterAssets
         }
 
         // Thêm method để xử lý khi chết
-        public void Die(Vector3 hitDirection)
+        public void Die()
         {
             if (_isDead) return;
 
@@ -525,8 +525,6 @@ namespace StarterAssets
                 _controller.enabled = false;
             }
         }
-
-
     }
 }
 

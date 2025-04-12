@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Microlight.MicroBar;
 
 namespace KLTNLongKhoi
 {
@@ -8,58 +9,66 @@ namespace KLTNLongKhoi
     {
         [Header("Text Components")]
         [SerializeField] private TextMeshProUGUI healthText;
+        [SerializeField] private TextMeshProUGUI staminaText;
+        [SerializeField] private TextMeshProUGUI manaText;
         [SerializeField] private TextMeshProUGUI moneyText;
         [SerializeField] private TextMeshProUGUI strengthText;
-        [SerializeField] private TextMeshProUGUI criticalText; // Đổi từ charmText
+        [SerializeField] private TextMeshProUGUI criticalText;
         [SerializeField] private TextMeshProUGUI intelligenceText;
+        [SerializeField] private TextMeshProUGUI levelText;
+        [SerializeField] private TextMeshProUGUI experienceText;
 
-        [Header("References")]
-        [SerializeField] private PlayerStatus playerStatus;
+        [SerializeField] private MicroBar healthBar;
+        [SerializeField] private MicroBar manaBar;
+        [SerializeField] private MicroBar staminaBar;
+
+        PlayerStatsManager playerStatsManager;
+
+        void Awake()
+        {
+            playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
+            playerStatsManager.StatsUpdatedEvent += UpdateAllStats;
+        }
 
         private void Start()
         {
-            if (GameManagerPlayerStats.Instance != null)
-            {
-                UpdateStatsUIGameManagerPlayerStats();
-            }
-
-            if (playerStatus != null)
-            {
-                UpdateHealthUI();
-            }
+            healthBar.Initialize(playerStatsManager.MaxHealth);
+            staminaBar.Initialize(playerStatsManager.MaxStamina);
+            manaBar.Initialize(playerStatsManager.MaxMana);
         }
 
-        public void UpdateStatsUIGameManagerPlayerStats()
-        {
-            if (GameManagerPlayerStats.Instance == null) return;
+        public void UpdateAllStats()
+        {  
+            if (staminaText != null)
+                staminaText.text = $"Stamina: {playerStatsManager.CurrentStamina:F0}/{playerStatsManager.MaxStamina:F0}";
+
+            if (manaText != null)
+                manaText.text = $"Mana: {playerStatsManager.CurrentMana:F0}/{playerStatsManager.MaxMana:F0}";
 
             if (moneyText != null)
-                moneyText.text = $"Money: {GameManagerPlayerStats.Instance.Money}";
-            
+                moneyText.text = $"Money: {playerStatsManager.BaseMoney}";
+
             if (strengthText != null)
-                strengthText.text = $"Strength: {GameManagerPlayerStats.Instance.Strength}";
-            
+                strengthText.text = $"Strength: {playerStatsManager.BaseStrength}";
+
             if (criticalText != null)
-                criticalText.text = $"Critical: {GameManagerPlayerStats.Instance.Critical}%";
-            
+                criticalText.text = $"Critical: {playerStatsManager.BaseCritical}%";
+
             if (intelligenceText != null)
-                intelligenceText.text = $"Intelligence: {GameManagerPlayerStats.Instance.Intelligence}";
-        }
+                intelligenceText.text = $"Intelligence: {playerStatsManager.BaseIntelligence}";
 
-        public void UpdateHealthUI()
-        {
-            if (playerStatus == null || healthText == null) return;
+            if (healthText != null)
+                healthText.text = $"HP: {playerStatsManager.CurrentHealth:F0}/{playerStatsManager.MaxHealth:F0}";
 
-            float currentHealth = playerStatus.GetCurrentHealth();
-            float maxHealth = playerStatus.GetMaxHealth();
-            healthText.text = $"HP: {currentHealth:F0}/{maxHealth:F0}";
-        }
+            if (levelText != null)
+                levelText.text = $"Level: {playerStatsManager.Level}";
 
-        // Call this method when player stats change
-        public void UpdateAllStats()
-        {
-            UpdateStatsUIGameManagerPlayerStats();
-            UpdateHealthUI();
+            if (experienceText != null)
+                experienceText.text = $"Exp: {playerStatsManager.Experience}";
+
+            healthBar.UpdateBar(playerStatsManager.CurrentHealth);
+            staminaBar.UpdateBar(playerStatsManager.CurrentStamina);
+            manaBar.UpdateBar(playerStatsManager.CurrentMana);
         }
     }
 }
