@@ -20,16 +20,14 @@ namespace KLTNLongKhoi
         public Action<InventoryCell, PointerEventData> onDrop => callbacksController.onDrop;
         public Action<InventoryCell, PointerEventData> onClick => callbacksController.onClick;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             callbacksController = FindFirstObjectByType<CellsCallbacksController>();
         }
 
-        void Start()
+        protected virtual void Start()
         {
             inventoryCells = new List<InventoryCell>(cellsContainer.GetComponentsInChildren<InventoryCell>());
-
-
             // nghĩa là nó sẽ tự động tạo ra các ô trong inventory
             for (int i = 0; i < inventoryCells.Count; i++)
             {

@@ -11,29 +11,33 @@ namespace KLTNLongKhoi
         [Header("StorageController")]
         [SerializeField] private RectTransform _storage;
         [SerializeField] private TextMeshProUGUI _storageName;
-        public Chest CurrentChest
-        {
-            get
-            {
-                return _currentChest;
-            }
-        }
-        private Chest _currentChest;
+        private InventoryOpener inventoryOpener;
+        private Chest currentChest;
+        public Chest CurrentChest => currentChest;
 
-        private void Start()
+        protected override void Awake()
         {
+            base.Awake();
+            inventoryOpener = FindFirstObjectByType<InventoryOpener>();
+        }
+
+        protected override void Start()
+        {
+            base.Start();
             _storage.gameObject.SetActive(false);
         }
 
         public void OpenStorage(Chest chest)
         {
+            inventoryOpener.OpenInventory(true);
+
             SaveToChest();
 
-            _currentChest = chest;
+            currentChest = chest;
 
-            _storageName.text = _currentChest.ChestName;
+            _storageName.text = currentChest.ChestName;
 
-            var cells = _currentChest.GetCells();
+            var cells = currentChest.GetCells();
 
             if (cells != null)
             {
@@ -61,18 +65,26 @@ namespace KLTNLongKhoi
 
         public void CloseStorage()
         {
+            inventoryOpener.OpenInventory(false);
+
             SaveToChest();
-            _currentChest = null;
+            currentChest = null;
+
+            Invoke(nameof(DisableStorageUI), 0.6f);
+        }
+
+        private void DisableStorageUI()
+        {
             _storage.gameObject.SetActive(false);
         }
 
         public void SaveToChest()
         {
-            if (_currentChest != null)
+            if (currentChest != null)
             {
                 if (inventoryCells.Count > 0)
                 {
-                    _currentChest.SaveItems(inventoryCells.Select(s => new StorageItem
+                    currentChest.SaveItems(inventoryCells.Select(s => new StorageItem
                     {
                         item = s.Item,
                         itemsCount = s.ItemsCount
@@ -80,7 +92,7 @@ namespace KLTNLongKhoi
                 }
                 else
                 {
-                    _currentChest.SaveItems(new List<StorageItem>());
+                    currentChest.SaveItems(new List<StorageItem>());
                 }
             }
         }

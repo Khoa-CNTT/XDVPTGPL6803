@@ -15,7 +15,7 @@ namespace KLTNLongKhoi
         InventoryDragNDrop inventoryDragNDrop;
         PauseManager pauseManager;
 
-        void Start()
+        private void Start()
         {
             inputs = FindFirstObjectByType<StarterAssetsInputs>();
             inputs.openInventory.AddListener(OpenInventory);
@@ -28,7 +28,7 @@ namespace KLTNLongKhoi
             }
         }
 
-        void OpenInventory()
+        private void OpenInventory()
         {
             if (pauseManager.IsPaused && isOpen == false)
             {
@@ -47,6 +47,22 @@ namespace KLTNLongKhoi
                 inventoryUI.ScaleDown();
             }
 
+            pauseManager.TogglePause(isOpen);
+        }
+
+        public void OpenInventory(bool isOpen)
+        {
+            this.isOpen = isOpen;
+            inventoryDragNDrop.StopDragging();
+            
+            if (isOpen)
+            {
+                inventoryUI.ScaleUp();
+            }
+            else
+            {
+                inventoryUI.ScaleDown();
+            }
             pauseManager.TogglePause(isOpen);
         }
     }

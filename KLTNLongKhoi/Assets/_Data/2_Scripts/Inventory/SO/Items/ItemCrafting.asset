@@ -15,4 +15,4 @@ MonoBehaviour:
   icon: {fileID: -1451655610120414649, guid: 978cd364d419eb34b97d7cedeb591d3f, type: 3}
   itemName: Item Craft
   itemDescription: Item Craft
-  maxItemsCount: 1
+  maxItemsCount: 3

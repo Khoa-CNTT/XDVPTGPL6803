@@ -6,45 +6,51 @@ namespace KLTNLongKhoi
     //it's a chest for storing items
     public class Chest : MonoBehaviour, IInteractable
     {
-        public string ChestName
-        {
-            get
-            {
-                return chestName;
-            }
-        }
+        [SerializeField] private string interactionText = "Press E to open/close";
         [SerializeField] private string chestName;
-        private List<StorageItem> _storageItems = new List<StorageItem>();
+        private List<StorageItem> storageItems = new List<StorageItem>();
+        private bool isInteractable = true;
 
-        public void ProceedStorage(StorageController storageController)
+        StorageController storageController;
+
+        public string ChestName => chestName;
+
+        void Awake()
         {
-            storageController.OpenStorage(this);
+            storageController = FindFirstObjectByType<StorageController>();
         }
 
         public void SaveItems(List<StorageItem> storageItems)
         {
-            _storageItems = storageItems;
+            this.storageItems = storageItems;
             //here you can save the items to a file
         }
 
         internal List<StorageItem> GetCells()
         {
-            return _storageItems;
+            return storageItems;
         }
 
         public string GetInteractionText()
         {
-            throw new System.NotImplementedException();
+            return interactionText;
         }
 
         public void Interact()
         {
-            throw new System.NotImplementedException();
+            if (storageController.CurrentChest == this)
+            {
+                storageController.CloseStorage();
+            }
+            else
+            {
+                storageController.OpenStorage(this);
+            }
         }
 
         public bool CanInteract()
         {
-            throw new System.NotImplementedException();
+            return isInteractable;
         }
     }
 }
