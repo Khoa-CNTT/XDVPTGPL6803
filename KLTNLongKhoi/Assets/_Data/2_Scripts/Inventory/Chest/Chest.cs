@@ -4,7 +4,7 @@ using UnityEngine;
 namespace KLTNLongKhoi
 {
     //it's a chest for storing items
-    public class Chest : MonoBehaviour
+    public class Chest : MonoBehaviour, IInteractable
     {
         public string ChestName
         {
@@ -30,6 +30,21 @@ namespace KLTNLongKhoi
         internal List<StorageItem> GetCells()
         {
             return _storageItems;
+        }
+
+        public string GetInteractionText()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Interact()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool CanInteract()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
