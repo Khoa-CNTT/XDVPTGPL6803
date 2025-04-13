@@ -1,27 +1,43 @@
+using System.Collections;
 using StarterAssets;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace KLTNLongKhoi
 {
     public class InventoryOpener : MonoBehaviour
-    { 
-        public PopupScale inventoryUI; // Reference to the inventory UI GameObject
-
+    {
+        [SerializeField] PopupScale inventoryUI;
+        [SerializeField] private bool openAtStart;
         private bool isOpen = false;
-        
+
         StarterAssetsInputs inputs;
+        InventoryDragNDrop inventoryDragNDrop;
+        PauseManager pauseManager;
 
         void Start()
         {
             inputs = FindFirstObjectByType<StarterAssetsInputs>();
-
             inputs.openInventory.AddListener(OpenInventory);
+            inventoryDragNDrop = FindFirstObjectByType<InventoryDragNDrop>();
+            pauseManager = FindFirstObjectByType<PauseManager>();
+
+            if (openAtStart == false)
+            {
+                inventoryUI.ScaleDown();
+            }
         }
 
         void OpenInventory()
         {
-            isOpen = !isOpen;
+            if (pauseManager.IsPaused && isOpen == false)
+            {
+                return;
+            }
             
+            isOpen = !isOpen;
+            inventoryDragNDrop.StopDragging();
+
             if (isOpen)
             {
                 inventoryUI.ScaleUp();
@@ -30,6 +46,8 @@ namespace KLTNLongKhoi
             {
                 inventoryUI.ScaleDown();
             }
+
+            pauseManager.TogglePause(isOpen);
         }
-    } 
+    }
 }

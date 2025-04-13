@@ -5,7 +5,7 @@ namespace KLTNLongKhoi
 {
     public class MenuManager : MonoBehaviour
     {
-        [SerializeField] btnOpenPopupPanel btnOpenPopupPanelSetting;
+        [SerializeField] PopupScale panelSetting;
         PauseManager pauseManager;
         GameManager gameManager;
         StarterAssetsInputs inputs;
@@ -17,19 +17,30 @@ namespace KLTNLongKhoi
             gameManager = FindFirstObjectByType<GameManager>();
             inputs = FindFirstObjectByType<StarterAssetsInputs>();
 
-            inputs.Escape.AddListener(() => OpenPopupPanelSetting(true));
+            inputs.Escape.AddListener(OpenPopupPanelSetting);
         }
 
-        public void OpenPopupPanelSetting(bool value)
+        public void OpenPopupPanelSetting()
         {
-            btnOpenPopupPanelSetting.OpenPopupPanel(value);
+            if (pauseManager.IsPaused && isShowSettingPanel == false)
+            {
+                return;
+            }
+            isShowSettingPanel = !isShowSettingPanel;
 
-            if (isShowSettingPanel && !gameManager.IsGameOver)
+            if (isShowSettingPanel)
+            {
+                panelSetting.ScaleUp();
+            }
+            else
+            {
+                panelSetting.ScaleDown();
+            }
+
+            if (gameManager.IsGameOver == false)
             {
                 pauseManager.TogglePause(isShowSettingPanel);
             }
         }
-
-    
     }
 }

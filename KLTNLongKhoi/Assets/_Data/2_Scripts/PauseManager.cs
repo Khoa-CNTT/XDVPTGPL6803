@@ -4,9 +4,8 @@ using UnityEngine.Events;
 
 public class PauseManager : MonoBehaviour
 {
-    [SerializeField] private bool isPaused = false;
+    private bool isPaused = false;
 
-    [Header("Events")]
     public UnityEvent<bool> onGamePaused;
 
     public bool IsPaused => isPaused;
