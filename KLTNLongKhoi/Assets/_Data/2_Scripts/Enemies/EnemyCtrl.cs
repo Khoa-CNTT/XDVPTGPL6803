@@ -1,90 +1,147 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 namespace KLTNLongKhoi
 {
-    [RequireComponent(typeof(CharacterStatus))]
-    [RequireComponent(typeof(NavMeshAgent))]
-    [RequireComponent(typeof(Animator))]
     public class EnemyCtrl : MonoBehaviour
     {
-        [Header("References")]
-        [SerializeField] private Transform playerTransform;
+        [SerializeField] List<Transform> waypoints;
+        [SerializeField] float hitRange;
         private CharacterStatus characterStatus;
+        private CharacterVision characterVision;
         private NavMeshAgent agent;
         private Animator animator;
-        private State currentState;
+        private bool isSeePlayer = false;
 
-        [Header("Enemy Settings")]
-        [SerializeField] private float detectionRange = 10f;
-        [SerializeField] private float attackRange = 2f;
         [SerializeField] private float movementSpeed = 3f;
-        [SerializeField] private float attackDamage = 10f;
+        [SerializeField] private float idleTimeAtWaypoint = 2f; // Time to wait at each waypoint
+        private float idleTimer = 0f;
+        private bool isWaitingAtWaypoint = false;
+
+        [SerializeField] private float pathCheckTimeout = 1f; // Thời gian chờ trước khi skip waypoint không đến được
+        private float pathCheckTimer = 0f;
 
         private void Awake()
         {
             // Get required components
             characterStatus = GetComponent<CharacterStatus>();
+            characterVision = GetComponentInChildren<CharacterVision>();
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
-
-            // Configure NavMeshAgent
-            agent.speed = movementSpeed;
-            agent.stoppingDistance = attackRange;
         }
 
         private void Start()
         {
-            // Find player if not assigned
-            if (playerTransform == null)
+            // Initialize NavMeshAgent settings
+            agent.speed = movementSpeed;
+            agent.stoppingDistance = 1f; // Stop before reaching the target
+            agent.updateRotation = true; // Rotate towards the target
+            agent.updatePosition = true; // Move towards the target
+
+            // Set initial destination to the first waypoint
+            if (waypoints.Count > 0)
             {
-                var player = GameObject.FindGameObjectWithTag("Player");
-                if (player != null)
-                    playerTransform = player.transform;
+                agent.SetDestination(waypoints[0].position);
             }
-
-            // Initialize with Idle state
-            currentState = new Idle(gameObject, agent, animator, playerTransform);
         }
-
-        private void Update()
+        
+        private void FixedUpdate()
         {
             if (characterStatus.IsDead()) return;
 
-            // Update current state
-            currentState = currentState.Process();
-        }
+            isSeePlayer = characterVision.CanSeePlayer();
 
-        // Called by animation events or other systems
-        public void PerformAttack()
-        {
-            if (playerTransform == null) return;
-
-            float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-            if (distanceToPlayer <= attackRange)
+            // Check if the enemy is within hit range of the player
+            if (isSeePlayer && Vector3.Distance(transform.position, characterVision.GetPlayerPosition()) <= hitRange)
             {
-                Vector3 direction = (playerTransform.position - transform.position).normalized;
-                var playerStatus = playerTransform.GetComponent<CharacterStatus>();
-                if (playerStatus != null)
-                {
-                    playerStatus.TakeDamage(attackDamage, direction);
-                }
+                animator.SetTrigger("isAttack");
+                agent.isStopped = true;
+                Debug.Log("Attack");
+                return;
+            }
+
+            // If the enemy sees the player, move towards them
+            if (isSeePlayer)
+            {
+                agent.isStopped = false;
+                agent.SetDestination(characterVision.GetPlayerPosition());
+                animator.SetBool("isMoving", true);
+            }
+            else
+            {
+                Patrol();
             }
         }
 
-        // Public getters for state conditions
-        public float GetDetectionRange() => detectionRange;
-        public float GetAttackRange() => attackRange;
-        public Transform GetPlayerTransform() => playerTransform;
-
-        // Optional: Visualization of ranges in editor
-        private void OnDrawGizmosSelected()
+        private void Patrol()
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, detectionRange);
+            // If waiting at waypoint, count down the timer
+            if (isWaitingAtWaypoint)
+            {
+                idleTimer += Time.deltaTime;
+                animator.SetBool("isMoving", false);
+                
+                if (idleTimer >= idleTimeAtWaypoint)
+                {
+                    isWaitingAtWaypoint = false;
+                    idleTimer = 0f;
+                }
+                return;
+            }
+
+            // Kiểm tra nếu đang có path nhưng không di chuyển được
+            if (agent.hasPath && !agent.pathStatus.Equals(NavMeshPathStatus.PathComplete))
+            {
+                pathCheckTimer += Time.deltaTime;
+                if (pathCheckTimer >= pathCheckTimeout)
+                {
+                    // Skip to next waypoint
+                    MoveToNextWaypoint();
+                    pathCheckTimer = 0f;
+                }
+                return;
+            }
+
+            // If the enemy is not moving, start patrolling
+            if (!agent.hasPath)
+            {
+                MoveToNextWaypoint();
+            }
+        }
+
+        private void MoveToNextWaypoint()
+        {
+            if (waypoints.Count == 0) return;
+
+            int currentIndex = waypoints.FindIndex(w => Vector3.Distance(w.position, agent.destination) < 0.1f);
+            int nextWaypointIndex = (currentIndex + 1) % waypoints.Count;
             
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, attackRange);
+            // Thử tìm waypoint tiếp theo có thể đi được
+            int attempts = 0;
+            while (attempts < waypoints.Count)
+            {
+                NavMeshPath path = new NavMeshPath();
+                if (NavMesh.CalculatePath(transform.position, waypoints[nextWaypointIndex].position, NavMesh.AllAreas, path))
+                {
+                    if (path.status == NavMeshPathStatus.PathComplete)
+                    {
+                        agent.SetDestination(waypoints[nextWaypointIndex].position);
+                        animator.SetBool("isMoving", true);
+                        isWaitingAtWaypoint = true;
+                        return;
+                    }
+                }
+                
+                // Nếu không tìm được path, thử waypoint tiếp theo
+                nextWaypointIndex = (nextWaypointIndex + 1) % waypoints.Count;
+                attempts++;
+            }
+
+            // Nếu không tìm được waypoint nào có thể đi được
+            Debug.LogWarning("No reachable waypoints found!");
+            animator.SetBool("isMoving", false);
         }
     }
 }

@@ -34,7 +34,7 @@ public class RagdollAnimator : MonoBehaviour
         }
 
         _animator.enabled = true;
-        _characterController.enabled = true;
+        if (_characterController != null) _characterController.enabled = true;
     }
 
     public void EnableRagdoll()
@@ -45,9 +45,6 @@ public class RagdollAnimator : MonoBehaviour
         }
 
         _animator.enabled = false;
-        _characterController.enabled = false;
+        if (_characterController != null) _characterController.enabled = false;
     }
-
-
-
 }

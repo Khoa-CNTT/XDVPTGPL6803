@@ -4,7 +4,6 @@ public class ActorHitbox : MonoBehaviour
 {
     [SerializeField] GameObject hitParticle;
     [SerializeField] bool isAttacking;
-    [SerializeField] Animator animator;
     [SerializeField] string EnemyTag;
     private Collider colliderBoxHit;
 

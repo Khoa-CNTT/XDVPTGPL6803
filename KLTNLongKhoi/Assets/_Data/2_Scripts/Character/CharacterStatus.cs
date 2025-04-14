@@ -83,6 +83,7 @@ namespace KLTNLongKhoi
             if (isDead) return;
             isDead = true;
 
+            ccBePushedBack.IsDead = true; // Không cho push back nữa khi chết
             ragdollAnimator?.EnableRagdoll();
         }
 

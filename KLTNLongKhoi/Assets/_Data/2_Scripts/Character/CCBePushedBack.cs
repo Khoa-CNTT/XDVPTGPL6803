@@ -1,30 +1,79 @@
+using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CCBePushedBack : MonoBehaviour
 {
     [Header("Push Back Settings")]
-    [SerializeField] private float pushForce = 10f;
-    [SerializeField] private float damageForceMultiplier = 0.5f;
-    [SerializeField] private float recoveryTime = 0.5f;
-    [SerializeField] private float gravity = -9.81f; // Thêm gravity
-
-    private CharacterController controller;
+    [SerializeField] float pushForce = 10f;
+    [SerializeField] float damageForceMultiplier = 0.5f;
+    [SerializeField] float recoveryTime = 0.5f;
+    [SerializeField] float gravity = -9.81f; // Thêm gravity
+    [SerializeField] CharacterController controller;
+    [SerializeField] NavMeshAgent agent;
     private bool isPushed = false;
     private float pushTimer = 0f;
     private Vector3 pushVelocity;
     private float verticalVelocity;
     private bool isGrounded;
+    private Rigidbody rb;
 
-    private void Awake()
+    private bool isDead = false;
+
+    public bool IsDead
     {
-        controller = GetComponent<CharacterController>();
-        if (controller == null)
+        get => isDead;
+        set
         {
-            Debug.LogError("CCBePushedBack requires a CharacterController component!");
+            isDead = value;
+            if (isDead)
+            {
+                if (controller != null) controller.enabled = false;
+                if (agent != null) agent.enabled = false;
+                if (rb != null) rb.isKinematic = true;
+            }
         }
     }
 
+    private void Awake()
+    {
+
+    }
+
     private void Update()
+    {
+        if (isDead) return;
+
+        if (controller != null) CCPushBackUpdate();
+        else if (agent != null) NavMeshAgentUpdate();
+        else if (rb != null) RBPushBackUpdate();
+    }
+
+    private void NavMeshAgentUpdate()
+    {
+        if (isPushed)
+        {
+            pushTimer += Time.deltaTime;
+            if (pushTimer >= recoveryTime)
+            {
+                isPushed = false;
+                pushTimer = 0f;
+                agent.velocity = Vector3.zero;
+            }
+            else
+            {
+                // Tính toán movement với decay effect
+                float pushProgress = 1 - (pushTimer / recoveryTime);
+                Vector3 movement = pushVelocity * pushProgress;
+
+                // Apply movement
+                if (agent.enabled == true) agent.velocity = movement;
+            }
+        }
+    }
+
+
+    private void CCPushBackUpdate()
     {
         // Kiểm tra ground
         isGrounded = controller.isGrounded;
@@ -64,7 +113,7 @@ public class CCBePushedBack : MonoBehaviour
         }
     }
 
-    public void PushBack(Vector3 hitDirection, float finalDamage)
+    public void CCPushBack(Vector3 hitDirection, float finalDamage)
     {
         if (!controller || isPushed) return;
 
@@ -82,5 +131,64 @@ public class CCBePushedBack : MonoBehaviour
         // Start push back state
         isPushed = true;
         pushTimer = 0f;
+    }
+
+    private void RBPushBackUpdate()
+    {
+        if (isPushed)
+        {
+            pushTimer += Time.deltaTime;
+            if (pushTimer >= recoveryTime)
+            {
+                isPushed = false;
+                pushTimer = 0f;
+                rb.linearVelocity = Vector3.zero;
+            }
+        }
+    }
+
+    public void RBPushBack(Vector3 hitDirection, float finalDamage)
+    {
+        if (!rb || isPushed) return;
+
+        // Normalize the hit direction and remove vertical component
+        hitDirection.y = 0;
+        hitDirection.Normalize();
+
+        // Calculate push force based on damage
+        float totalForce = pushForce + (finalDamage * damageForceMultiplier);
+
+        // Apply the force
+        rb.linearVelocity = Vector3.zero; // Reset current velocity
+        rb.AddForce(hitDirection * totalForce, ForceMode.Impulse);
+
+        // Start push back state
+        isPushed = true;
+        pushTimer = 0f;
+    }
+
+    public void PushBack(Vector3 hitDirection, float finalDamage)
+    {
+        if (controller != null) CCPushBack(hitDirection, finalDamage);
+        else if (agent != null) NewMethod(hitDirection, finalDamage);
+        else if (rb != null) RBPushBack(hitDirection, finalDamage);
+    }
+
+    private static void NewMethod(Vector3 hitDirection, float finalDamage)
+    {
+        // Normalize the hit direction and remove vertical component
+        hitDirection.y = 0;
+        hitDirection.Normalize();
+
+        // Calculate push force based on damage
+        float totalForce = 10f + (finalDamage * 0.5f);
+
+        // Apply the force
+        // rb.linearVelocity = Vector3.zero; // Reset current velocity
+        // rb.AddForce(hitDirection * totalForce, ForceMode.Impulse);
+
+        // Start push back state
+        // isPushed = true;
+        // pushTimer = 0f;
     }
 }
