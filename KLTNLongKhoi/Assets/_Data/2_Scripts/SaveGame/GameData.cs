@@ -24,6 +24,7 @@ namespace KLTNLongKhoi
         // Xóa mana vì nó được tính dựa trên Intelligence
         public Vector3 position = Vector3.zero;
         public int currency;
+        public int diamonds;
         public InventoryData inventory = new InventoryData();
         // Thêm các chỉ số base mới
         public int baseStrength;
@@ -96,9 +97,8 @@ namespace KLTNLongKhoi
         public float sfxVolume = 1f;
 
         // Graphics Settings
-        public string graphics = "High";
-        public int qualityLevel = 3;
-        public int resolutionIndex = 0;
+        public string graphics = "Medium";
+        public string resolution = "1920x1080";
         public int targetFrameRate = 60;
         public float brightness = 1f;
         public bool rayTracingEnabled = false;

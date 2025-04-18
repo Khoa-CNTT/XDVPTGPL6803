@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace KLTNLongKhoi
@@ -5,9 +6,9 @@ namespace KLTNLongKhoi
     public class GameSettings : MonoBehaviour, ISaveData
     {
         [Header("Graphics Settings")]
-        [SerializeField] private int _qualityLevel = 3;
+        [SerializeField] private string _qualityLevel = "Medium";
         [SerializeField] private Resolution[] _resolutions;
-        [SerializeField] private int _currentResolutionIndex;
+        [SerializeField] private string _currentResolution = "1920x1080";
         [SerializeField] private int _targetFrameRate = 60;
         [SerializeField] private float _brightness = 1f;
         [SerializeField] private bool _rayTracingEnabled;
@@ -29,48 +30,81 @@ namespace KLTNLongKhoi
 
         private void LoadCurrentSettings()
         {
-            _currentResolutionIndex = PlayerPrefs.GetInt("ResolutionIndex", 0);
-            _qualityLevel = PlayerPrefs.GetInt("QualityLevel", 3);
-            _targetFrameRate = PlayerPrefs.GetInt("TargetFPS", 60);
-            _brightness = PlayerPrefs.GetFloat("Brightness", 1f);
-            _rayTracingEnabled = PlayerPrefs.GetInt("RayTracing", 0) == 1;
-            _vSyncEnabled = PlayerPrefs.GetInt("VSync", 0) == 1;
-            _masterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
-            _musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
-            _sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
-
             ApplySettings();
+        }
+
+        private int MapStringToQuality(string quality)
+        {
+            return quality switch
+            {
+                "Low" => 0,
+                "Medium" => 1,
+                "High" => 2,
+                _ => 1  // Default to Medium
+            };
         }
 
         private void ApplySettings()
         {
-            SetQualityLevel(_qualityLevel);
-            SetResolution(_currentResolutionIndex);
-            SetTargetFrameRate(_targetFrameRate);
-            SetBrightness(_brightness);
-            SetRayTracing(_rayTracingEnabled);
-            SetVSync(_vSyncEnabled);
-            SetMasterVolume(_masterVolume);
-            SetMusicVolume(_musicVolume);
-            SetSFXVolume(_sfxVolume);
+            // Áp dụng graphics settings
+            QualitySettings.SetQualityLevel(MapStringToQuality(_qualityLevel), true);
+            
+            // Áp dụng resolution
+            string[] dimensions = _currentResolution.Split('x');
+            if (dimensions.Length == 2 && 
+                int.TryParse(dimensions[0], out int width) && 
+                int.TryParse(dimensions[1], out int height))
+            {
+                Screen.SetResolution(width, height, Screen.fullScreen);
+            }
+            
+            // Áp dụng frame rate và vsync
+            Application.targetFrameRate = _targetFrameRate;
+            QualitySettings.vSyncCount = _vSyncEnabled ? 1 : 0;
+
+            // Áp dụng master volume
+            AudioListener.volume = _masterVolume;
+            
+            // Tìm và áp dụng Audio Mixer settings
+            var audioMixer = Resources.Load<UnityEngine.Audio.AudioMixer>("MainAudioMixer");
+            if (audioMixer != null)
+            {
+                audioMixer.SetFloat("MusicVolume", Mathf.Log10(_musicVolume) * 20);
+                audioMixer.SetFloat("SFXVolume", Mathf.Log10(_sfxVolume) * 20);
+            }
+
+            // Todo: Áp dụng brightness thông qua post-processing
+            // var postProcessVolume = FindFirstObjectByType<UnityEngine.Rendering.PostProcessing.PostProcessVolume>();
+            // if (postProcessVolume != null && 
+            //     postProcessVolume.profile.TryGetSettings(out UnityEngine.Rendering.PostProcessing.ColorGrading colorGrading))
+            // {
+            //     colorGrading.postExposure.value = _brightness;
+            // }
+
+            // Ray tracing settings
+            if (_rayTracingEnabled)
+            {
+                // Implement ray tracing logic here if your project supports it
+            }
         }
 
-        public void SetQualityLevel(int level)
+        public void SetQualityLevel(string quality)
         {
-            _qualityLevel = Mathf.Clamp(level, 0, QualitySettings.names.Length - 1);
-            QualitySettings.SetQualityLevel(_qualityLevel);
-            PlayerPrefs.SetInt("QualityLevel", _qualityLevel);
+            _qualityLevel = quality;
+            PlayerPrefs.SetString("QualityLevel", _qualityLevel);
         }
 
-        public void SetResolution(int resolutionIndex)
+        public void SetResolution(string resolution)
         {
-            if (resolutionIndex < 0 || resolutionIndex >= _resolutions.Length)
-                return;
-
-            _currentResolutionIndex = resolutionIndex;
-            Resolution resolution = _resolutions[resolutionIndex];
-            Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
-            PlayerPrefs.SetInt("ResolutionIndex", resolutionIndex);
+            _currentResolution = resolution;
+            string[] dimensions = resolution.Split('x');
+            if (dimensions.Length == 2 && 
+                int.TryParse(dimensions[0], out int width) && 
+                int.TryParse(dimensions[1], out int height))
+            {
+                Screen.SetResolution(width, height, Screen.fullScreen);
+                PlayerPrefs.SetString("Resolution", _currentResolution);
+            }
         }
 
         public void SetTargetFrameRate(int fps)
@@ -125,7 +159,7 @@ namespace KLTNLongKhoi
             PlayerPrefs.SetFloat("SFXVolume", _sfxVolume);
         }
 
-        #region SaveData
+        #region ISaveData Implementation
         public void LoadData<T>(T data)
         {
             if (data is GameSettingsData settings)
@@ -133,12 +167,8 @@ namespace KLTNLongKhoi
                 _masterVolume = settings.masterVolume;
                 _musicVolume = settings.musicVolume;
                 _sfxVolume = settings.sfxVolume;
-                _qualityLevel = settings.qualityLevel;
-                _currentResolutionIndex = settings.resolutionIndex;
+                _qualityLevel = settings.graphics;
                 _targetFrameRate = settings.targetFrameRate;
-                _brightness = settings.brightness;
-                _rayTracingEnabled = settings.rayTracingEnabled;
-                _vSyncEnabled = settings.vSyncEnabled;
 
                 ApplySettings();
             }
@@ -151,13 +181,8 @@ namespace KLTNLongKhoi
                 masterVolume = _masterVolume,
                 musicVolume = _musicVolume,
                 sfxVolume = _sfxVolume,
-                qualityLevel = _qualityLevel,
-                resolutionIndex = _currentResolutionIndex,
-                targetFrameRate = _targetFrameRate,
-                brightness = _brightness,
-                rayTracingEnabled = _rayTracingEnabled,
-                vSyncEnabled = _vSyncEnabled,
-                graphics = QualitySettings.names[_qualityLevel]
+                graphics = _qualityLevel,
+                targetFrameRate = _targetFrameRate
             };
 
             return (T)(object)settings;
@@ -168,9 +193,9 @@ namespace KLTNLongKhoi
         public float GetMasterVolume() => _masterVolume;
         public float GetMusicVolume() => _musicVolume;
         public float GetSFXVolume() => _sfxVolume;
-        public int GetQualityLevel() => _qualityLevel;
+        public string GetQualityLevel() => _qualityLevel;
         public Resolution[] GetResolutions() => _resolutions;
-        public int GetCurrentResolutionIndex() => _currentResolutionIndex;
+        public string GetCurrentResolution() => _currentResolution;
         public int GetTargetFrameRate() => _targetFrameRate;
         public float GetBrightness() => _brightness;
         public bool IsRayTracingEnabled() => _rayTracingEnabled;
@@ -183,6 +208,11 @@ namespace KLTNLongKhoi
             {
                 DataManager.Instance.SaveGameData();
             }
+        }
+
+        public string GetResolution()
+        {
+            return _currentResolution;
         }
     }
 }

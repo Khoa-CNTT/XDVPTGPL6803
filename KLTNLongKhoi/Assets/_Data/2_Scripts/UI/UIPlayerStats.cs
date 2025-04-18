@@ -7,6 +7,8 @@ namespace KLTNLongKhoi
 {
     public class UIPlayerStats : MonoBehaviour
     {
+        [SerializeField] private TextMeshProUGUI nameAndLevel;
+
         [Header("Text Components")]
         [SerializeField] private TextMeshProUGUI healthText;
         [SerializeField] private TextMeshProUGUI staminaText;

@@ -5,29 +5,57 @@ using System.Linq;
 
 namespace KLTNLongKhoi
 {
-    public class SaveLoadManager : MonoBehaviour
+    public class SaveLoadManager : Singleton<SaveLoadManager>
     {
         [SerializeField] private GameObject saveLoadPanel;
         [SerializeField] private DataManager dataManager;
 
         private List<ISaveData> saveDataComponents = new List<ISaveData>();
+        private bool isInitialized = false;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            SetDontDestroyOnLoad(true);
+        }
 
         private void Start()
         {
-            // Find DataManager if not assigned
-            if (dataManager == null)
-            {
-                dataManager = FindFirstObjectByType<DataManager>();
-            }
+            // InitializeGame();
+
+            // Register to scene loading events to handle finding save components in new scenes
+            SceneManager.sceneLoaded += OnSceneLoaded;
 
             // Hide panel on start
             if (saveLoadPanel != null)
             {
                 saveLoadPanel.SetActive(false);
             }
+        }
 
-            // Register to scene loading events to handle finding save components in new scenes
-            SceneManager.sceneLoaded += OnSceneLoaded;
+        private void InitializeGame()
+        {
+            if (isInitialized) return;
+
+            // Find DataManager if not assigned
+            if (dataManager == null)
+            {
+                dataManager = FindFirstObjectByType<DataManager>();
+            }
+
+            // Load saved data
+            if (dataManager != null)
+            {
+                dataManager.LoadGameData();
+                
+                // Nếu có data đã lưu, load vào game
+                if (!dataManager.IsNewGameplay())
+                {
+                    LoadGame();
+                }
+            }
+
+            isInitialized = true;
         }
 
         private void OnDestroy()
@@ -39,13 +67,19 @@ namespace KLTNLongKhoi
         {
             // Find all ISaveData components in the new scene
             FindSaveDataComponents();
+            
+            // Nếu đã initialize và có data, load cho scene mới
+            if (isInitialized && dataManager != null && !dataManager.IsNewGameplay())
+            {
+                LoadGameState();
+            }
         }
 
         private void FindSaveDataComponents()
         {
             saveDataComponents.Clear();
             
-            // Find all objects that implement ISaveData in all scenes
+            // Tìm tất cả các object có implement ISaveData trong tất cả các scene
             var objectsWithSaveData = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveData>();
             saveDataComponents.AddRange(objectsWithSaveData);
         }
@@ -82,7 +116,6 @@ namespace KLTNLongKhoi
             // Save data from all ISaveData components
             foreach (var saveComponent in saveDataComponents)
             {
-                // Call SaveData on each component and store the result in appropriate GameData property
                 if (saveComponent is MonoBehaviour mb)
                 {
                     string componentType = mb.GetType().Name;
@@ -104,7 +137,6 @@ namespace KLTNLongKhoi
                                 gameData.monsters.Add(monsterData);
                             }
                             break;
-                        // Add more cases as needed
                     }
                 }
             }
@@ -137,28 +169,21 @@ namespace KLTNLongKhoi
             HideSavePanel();
         }
 
-        private void UpdateGameDataBeforeSave()
-        {
-            GameData gameData = dataManager.GameData;
-            
-            // Update basic world state information
-            gameData.worldState.currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-            gameData.worldState.sceneName = SceneManager.GetActiveScene().name;
-            gameData.worldState.dayTime = System.DateTime.Now.ToString(); // Or your in-game time system
-        }
-
         private void LoadGameState()
         {
             GameData gameData = dataManager.GameData;
 
-            // Load scene if different from current
+            // Load scene nếu khác với scene hiện tại
             if (SceneManager.GetActiveScene().buildIndex != gameData.worldState.currentSceneIndex)
             {
                 SceneManager.LoadScene(gameData.worldState.currentSceneIndex);
-                return; // Scene loading will trigger OnSceneLoaded which will handle the rest
+                return; // Scene loading sẽ trigger OnSceneLoaded và handle phần còn lại
             }
 
-            // Load data into all ISaveData components
+            // Tìm components trước khi load
+            FindSaveDataComponents();
+
+            // Load data vào tất cả các ISaveData components
             foreach (var saveComponent in saveDataComponents)
             {
                 if (saveComponent is MonoBehaviour mb)
@@ -175,10 +200,22 @@ namespace KLTNLongKhoi
                         case "WorldItems":
                             saveComponent.LoadData(gameData.worldItems);
                             break;
-                        // Add more cases as needed
+                        case "UIGameSettings":
+                            saveComponent.LoadData(gameData.gameSettings);
+                            break;
                     }
                 }
             }
+        }
+
+        private void UpdateGameDataBeforeSave()
+        {
+            GameData gameData = dataManager.GameData;
+            
+            // Update basic world state information
+            gameData.worldState.currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            gameData.worldState.sceneName = SceneManager.GetActiveScene().name;
+            gameData.worldState.dayTime = System.DateTime.Now.ToString();
         }
 
         public void StartNewGame()
@@ -186,7 +223,8 @@ namespace KLTNLongKhoi
             if (dataManager != null)
             {
                 dataManager.ResetGameplayData();
-                SceneManager.LoadScene(1); // Assuming your first gameplay scene is at build index 1
+                isInitialized = false;
+                InitializeGame();
             }
         }
 
@@ -194,6 +232,17 @@ namespace KLTNLongKhoi
         {
             SaveGame(); // Save before quitting
             Application.Quit();
+        }
+
+        // Method để reset toàn bộ game state
+        public void ResetGame()
+        {
+            if (dataManager != null)
+            {
+                dataManager.ResetGame();
+                isInitialized = false;
+                InitializeGame();
+            }
         }
     }
 }
