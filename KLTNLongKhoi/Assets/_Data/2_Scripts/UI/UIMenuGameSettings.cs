@@ -21,6 +21,7 @@ namespace KLTNLongKhoi
         [SerializeField] private Slider sfxVolumeSlider;
 
         private GameSettings gameSettings;
+        private bool isInitializing = false;
 
         private void Start()
         {
@@ -31,12 +32,36 @@ namespace KLTNLongKhoi
                 return;
             }
 
+            // Đăng ký lắng nghe sự kiện từ GameSettings
+            gameSettings.onSettingsChanged.AddListener(OnSettingsChanged);
+
             InitializeUI();
             SetupListeners();
         }
 
+        private void OnDestroy()
+        {
+            // Hủy đăng ký lắng nghe khi component bị hủy
+            if (gameSettings != null)
+            {
+                gameSettings.onSettingsChanged.RemoveListener(OnSettingsChanged);
+            }
+        }
+
+        // Callback khi settings thay đổi từ bên ngoài
+        private void OnSettingsChanged()
+        {
+            if (!isInitializing) // Tránh vòng lặp vô hạn
+            {
+                InitializeUI();
+            }
+        }
+
+        // Initialize UI elements from GameSettings
         private void InitializeUI()
         {
+            isInitializing = true;
+
             if (qualityOptions != null)
             {
                 qualityOptions.SetOptions(
@@ -92,8 +117,11 @@ namespace KLTNLongKhoi
 
             if (sfxVolumeSlider != null)
                 sfxVolumeSlider.value = gameSettings.GetSFXVolume();
+
+            isInitializing = false;
         }
 
+        // Setup listeners for UI elements
         private void SetupListeners()
         {
             if (qualityOptions != null)

@@ -26,11 +26,11 @@ namespace KLTNLongKhoi
 
         public GameData GameData { get => gameData; set => gameData = value; }
 
-        void Start()
+        protected override void Awake()
         {
-            filePath = Application.persistentDataPath + "/" + fileSaveName;
+            base.Awake();
             SetDontDestroyOnLoad(true);
-            LoadGameData();
+            filePath = Application.persistentDataPath + "/" + fileSaveName;
         }
 
         // kiểm tra xem đây có phải là gameplay mới hay không
@@ -46,26 +46,18 @@ namespace KLTNLongKhoi
             GameData.worldState = new WorldState();
         }
 
-        // xoá file save
-        public void ResetGame()
+        public void DeleteFileSave()
         {
             File.Delete(filePath);
-            LoadGameData();
         }
 
-        // khi thoát game
-        void OnApplicationQuit()
-        {
-            SaveGameData();
-        }
-
-        public void SaveGameData()
+        public void ArchiveGameData()
         {
             File.WriteAllText(filePath, SerializeAndEncrypt(GameData));
             Debug.Log("Game data saved to: " + filePath);
         }
 
-        public void LoadGameData()
+        public void ImportFileGameData()
         {
             if (File.Exists(filePath))
             {
@@ -77,7 +69,7 @@ namespace KLTNLongKhoi
             {
                 Debug.LogWarning("Save file not found in: " + filePath);
                 GameData = new GameData();
-                SaveGameData();
+                ArchiveGameData();
             }
         }
 

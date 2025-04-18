@@ -1,10 +1,14 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace KLTNLongKhoi
 {
     public class GameSettings : MonoBehaviour, ISaveData
     {
+        // Một event duy nhất cho mọi thay đổi
+        public UnityEvent onSettingsChanged = new UnityEvent();
+
         [Header("Graphics Settings")]
         [SerializeField] private string _qualityLevel = "Medium";
         [SerializeField] private Resolution[] _resolutions;
@@ -13,7 +17,7 @@ namespace KLTNLongKhoi
         [SerializeField] private float _brightness = 1f;
         [SerializeField] private bool _rayTracingEnabled;
         [SerializeField] private bool _vSyncEnabled;
-        
+
         [Header("Audio Settings")]
         [Range(0f, 1f)]
         [SerializeField] private float _masterVolume = 1f;
@@ -48,23 +52,23 @@ namespace KLTNLongKhoi
         {
             // Áp dụng graphics settings
             QualitySettings.SetQualityLevel(MapStringToQuality(_qualityLevel), true);
-            
+
             // Áp dụng resolution
             string[] dimensions = _currentResolution.Split('x');
-            if (dimensions.Length == 2 && 
-                int.TryParse(dimensions[0], out int width) && 
+            if (dimensions.Length == 2 &&
+                int.TryParse(dimensions[0], out int width) &&
                 int.TryParse(dimensions[1], out int height))
             {
                 Screen.SetResolution(width, height, Screen.fullScreen);
             }
-            
+
             // Áp dụng frame rate và vsync
             Application.targetFrameRate = _targetFrameRate;
             QualitySettings.vSyncCount = _vSyncEnabled ? 1 : 0;
 
             // Áp dụng master volume
             AudioListener.volume = _masterVolume;
-            
+
             // Tìm và áp dụng Audio Mixer settings
             var audioMixer = Resources.Load<UnityEngine.Audio.AudioMixer>("MainAudioMixer");
             if (audioMixer != null)
@@ -86,24 +90,24 @@ namespace KLTNLongKhoi
             {
                 // Implement ray tracing logic here if your project supports it
             }
+
+            onSettingsChanged.Invoke();
         }
 
         public void SetQualityLevel(string quality)
         {
             _qualityLevel = quality;
-            PlayerPrefs.SetString("QualityLevel", _qualityLevel);
         }
 
         public void SetResolution(string resolution)
         {
             _currentResolution = resolution;
             string[] dimensions = resolution.Split('x');
-            if (dimensions.Length == 2 && 
-                int.TryParse(dimensions[0], out int width) && 
+            if (dimensions.Length == 2 &&
+                int.TryParse(dimensions[0], out int width) &&
                 int.TryParse(dimensions[1], out int height))
             {
                 Screen.SetResolution(width, height, Screen.fullScreen);
-                PlayerPrefs.SetString("Resolution", _currentResolution);
             }
         }
 
@@ -111,7 +115,6 @@ namespace KLTNLongKhoi
         {
             _targetFrameRate = fps;
             Application.targetFrameRate = fps;
-            PlayerPrefs.SetInt("TargetFPS", fps);
         }
 
         public void SetBrightness(float brightness)
@@ -119,28 +122,24 @@ namespace KLTNLongKhoi
             _brightness = Mathf.Clamp(brightness, 0f, 2f);
             // Implement brightness adjustment logic here
             // This might involve post-processing or other screen effects
-            PlayerPrefs.SetFloat("Brightness", _brightness);
         }
 
         public void SetRayTracing(bool enabled)
         {
             _rayTracingEnabled = enabled;
             // Implement ray tracing toggle logic here
-            PlayerPrefs.SetInt("RayTracing", enabled ? 1 : 0);
         }
 
         public void SetVSync(bool enabled)
         {
             _vSyncEnabled = enabled;
             QualitySettings.vSyncCount = enabled ? 1 : 0;
-            PlayerPrefs.SetInt("VSync", enabled ? 1 : 0);
         }
 
         public void SetMasterVolume(float volume)
         {
             _masterVolume = Mathf.Clamp01(volume);
             AudioListener.volume = _masterVolume;
-            PlayerPrefs.SetFloat("MasterVolume", _masterVolume);
         }
 
         public void SetMusicVolume(float volume)
@@ -148,7 +147,6 @@ namespace KLTNLongKhoi
             _musicVolume = Mathf.Clamp01(volume);
             // Implement music volume adjustment logic here
             // This might involve finding and adjusting an audio mixer
-            PlayerPrefs.SetFloat("MusicVolume", _musicVolume);
         }
 
         public void SetSFXVolume(float volume)
@@ -156,7 +154,6 @@ namespace KLTNLongKhoi
             _sfxVolume = Mathf.Clamp01(volume);
             // Implement SFX volume adjustment logic here
             // This might involve finding and adjusting an audio mixer
-            PlayerPrefs.SetFloat("SFXVolume", _sfxVolume);
         }
 
         #region ISaveData Implementation
@@ -169,6 +166,10 @@ namespace KLTNLongKhoi
                 _sfxVolume = settings.sfxVolume;
                 _qualityLevel = settings.graphics;
                 _targetFrameRate = settings.targetFrameRate;
+                _currentResolution = settings.resolution;
+                _brightness = settings.brightness;
+                _rayTracingEnabled = settings.rayTracingEnabled;
+                _vSyncEnabled = settings.vSyncEnabled;
 
                 ApplySettings();
             }
@@ -182,7 +183,11 @@ namespace KLTNLongKhoi
                 musicVolume = _musicVolume,
                 sfxVolume = _sfxVolume,
                 graphics = _qualityLevel,
-                targetFrameRate = _targetFrameRate
+                targetFrameRate = _targetFrameRate,
+                resolution = _currentResolution,
+                brightness = _brightness,
+                rayTracingEnabled = _rayTracingEnabled,
+                vSyncEnabled = _vSyncEnabled,
             };
 
             return (T)(object)settings;
@@ -204,9 +209,9 @@ namespace KLTNLongKhoi
         // Khi cần lưu settings
         public void SaveSettings()
         {
-            if (DataManager.Instance != null)
+            if (SaveLoadManager.Instance != null)
             {
-                DataManager.Instance.SaveGameData();
+                SaveLoadManager.Instance.SaveGame();
             }
         }
 

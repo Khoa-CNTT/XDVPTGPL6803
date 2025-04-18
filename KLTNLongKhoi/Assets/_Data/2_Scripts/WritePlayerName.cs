@@ -35,7 +35,7 @@ namespace KLTNLongKhoi
             if (DataManager.Instance != null)
             {
                 DataManager.Instance.GameData.player.name = nameInputField.text;
-                DataManager.Instance.SaveGameData();
+                DataManager.Instance.ArchiveGameData();
             }
         }
     }
