@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using System;
 
 namespace KLTNLongKhoi
 {
-    public class AudioManager : MonoBehaviour
+    public class AudioManager : MonoBehaviour, ISaveData
     {
         [Header("Audio Mixer")]
         [SerializeField] private AudioMixer audioMixer;
@@ -23,12 +24,9 @@ namespace KLTNLongKhoi
                 Debug.LogWarning("GameSettings not found in scene!");
                 return;
             }
-
-            // Initial load from GameSettings
-            InitializeVolumes();
         }
 
-        private void InitializeVolumes()
+        public void Initialize()
         {
             SetMasterVolume(gameSettings.GetMasterVolume());
             SetMusicVolume(gameSettings.GetMusicVolume());
@@ -127,6 +125,36 @@ namespace KLTNLongKhoi
         {
             if (source == null) return;
             source.UnPause();
+        }
+
+        public void LoadData<T>(T data)
+        {
+            if (data is GameSettingsData settingsData)
+            {
+                SetMasterVolume(settingsData.masterVolume);
+                SetMusicVolume(settingsData.musicVolume);
+                SetSFXVolume(settingsData.sfxVolume);
+
+                Initialize();
+            }
+        }
+
+        public T SaveData<T>()
+        {
+            if (gameSettings == null)
+            {
+                Debug.LogWarning("GameSettings not found in scene!");
+                return default;
+            }
+
+            GameSettingsData settingsData = new GameSettingsData
+            {
+                masterVolume = GetMasterVolume(),
+                musicVolume = GetMusicVolume(),
+                sfxVolume = GetSFXVolume()
+            };
+            
+            return (T)(object)settingsData;
         }
         #endregion
     }

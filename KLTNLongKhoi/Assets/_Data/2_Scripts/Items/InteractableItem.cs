@@ -44,7 +44,6 @@ namespace KLTNLongKhoi
                 Destroy(gameObject);
             }
         }
-        
     }
 }
 

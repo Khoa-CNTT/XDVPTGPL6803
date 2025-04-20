@@ -2,17 +2,46 @@ using System.Collections.Generic;
 using StarterAssets;
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections;
 
 /// <summary> Sử dụng collider để phát hiện va chạm </summary>
 public class CharacterVision : MonoBehaviour
 {
-    [SerializeField] private Transform playerTransform;
+    [SerializeField] Transform target;
     [SerializeField] Transform rayStartPoint; // Biến công khai cho điểm bắt đầu của tia
     [SerializeField] LayerMask allowedLayers; // Biến cho phép cấu hình layer
     [SerializeField] List<string> allowedTags; // Danh sách các tag được phép
     [SerializeField] List<Transform> unobstructedHits; // Danh sách các đối tượng không bị cản trở
     [SerializeField] List<Transform> detectedObjects; // Danh sách các đối tượng được phát hiện theo layer và tag
     [SerializeField] List<Transform> allCollidingObjects; // Danh sách tất cả các đối tượng va chạm
+
+    [Header("Target Memory Settings")]
+    [SerializeField] float targetMemoryDuration = 3f; // Thời gian nhớ target sau khi mất tầm nhìn
+    private Coroutine forgetTargetCoroutine;
+
+    public Transform Target
+    {
+        get => target;
+        set
+        {
+            // Nếu target mới giống target cũ, không làm gì cả
+            if (target == value || value == null) return;
+            target = value;
+
+            // Hủy coroutine cũ nếu có
+            if (forgetTargetCoroutine != null)
+            {
+                StopCoroutine(forgetTargetCoroutine);
+                forgetTargetCoroutine = null;
+            }
+
+            // Nếu có target mới, bắt đầu đếm ngược để xóa
+            if (target != null)
+            {
+                forgetTargetCoroutine = StartCoroutine(ForgetTargetAfterDelay());
+            }
+        }
+    }
 
     void Start()
     {
@@ -24,6 +53,13 @@ public class CharacterVision : MonoBehaviour
     void Update()
     {
         UpdateUnobstructedHits();
+    }
+
+    IEnumerator ForgetTargetAfterDelay()
+    {
+        yield return new WaitForSeconds(targetMemoryDuration);
+        target = null;
+        forgetTargetCoroutine = null;
     }
 
     void OnTriggerStay(Collider other)
@@ -82,28 +118,30 @@ public class CharacterVision : MonoBehaviour
             if (hitInfo.transform.GetComponentInParent<ThirdPersonController>())
             {
                 Debug.DrawLine(rayStartPoint.position, hit.position, Color.green);
-                playerTransform = hitInfo.transform;
+                Target = hitInfo.transform; // Sử dụng SetTarget thay vì gán trực tiếp
                 return true;
             }
         }
-        playerTransform = null;
         Debug.DrawLine(rayStartPoint.position, hitInfo.point, Color.red);
         return false;
     }
 
-    public Transform GetPlayerTransform()
+    // Thêm phương thức để điều chỉnh thời gian nhớ target
+    public void SetTargetMemoryDuration(float duration)
     {
-        return playerTransform;
+        targetMemoryDuration = duration;
     }
 
-    public bool CanSeePlayer()
+    // Thêm phương thức để reset target ngay lập tức
+    public void ResetTarget()
     {
-        return playerTransform != null;
-    }
-
-    public Vector3 GetPlayerPosition()
-    {
-        return playerTransform.position;
+        if (forgetTargetCoroutine != null)
+        {
+            StopCoroutine(forgetTargetCoroutine);
+            forgetTargetCoroutine = null;
+        }
+        Target = null;
     }
 }
+
 

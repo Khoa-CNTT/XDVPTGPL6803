@@ -2,38 +2,55 @@ using StarterAssets;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PauseManager : MonoBehaviour
+namespace KLTNLongKhoi
 {
-    private bool isPaused = false;
 
-    public UnityEvent<bool> onGamePaused;
-
-    public bool IsPaused => isPaused;
-
-    public void TogglePause(bool value)
+    public class PauseManager : MonoBehaviour
     {
-        isPaused = value;
-        if (value)
+        private bool isPaused = false;
+
+        public UnityEvent onGamePaused;
+        public UnityEvent onGameResumed;
+
+        public bool IsPaused => isPaused;
+
+        public void TogglePause()
         {
-            PauseGame();
+            isPaused = !isPaused;
+            if (isPaused)
+            {
+                PauseGame();
+            }
+            else
+            {
+                ResumeGame();
+            }
         }
-        else
+
+        public void SetPause(bool value)
         {
-            ResumeGame();
+            isPaused = value;
+            if (isPaused)
+            {
+                PauseGame();
+            }
+            else
+            {
+                ResumeGame();
+            }
+        }
+
+        public void PauseGame()
+        {
+            isPaused = true;
+            onGamePaused?.Invoke();
+        }
+
+        public void ResumeGame()
+        {
+            isPaused = false;
+            onGameResumed?.Invoke();
         }
     }
 
-    public void PauseGame()
-    {
-        isPaused = true;
-
-        onGamePaused?.Invoke(true);
-    }
-
-    public void ResumeGame()
-    {
-        isPaused = false;
-
-        onGamePaused?.Invoke(false);
-    }
 }

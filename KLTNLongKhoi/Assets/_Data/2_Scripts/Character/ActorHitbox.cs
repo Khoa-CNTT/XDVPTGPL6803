@@ -5,6 +5,7 @@ public class ActorHitbox : MonoBehaviour
     [SerializeField] GameObject hitParticle;
     [SerializeField] bool isAttacking;
     [SerializeField] string EnemyTag;
+    [SerializeField] Transform attacker;
     private Collider colliderBoxHit;
 
     public bool IsAttacking
@@ -32,7 +33,7 @@ public class ActorHitbox : MonoBehaviour
             if (damageable != null)
             {
                 Vector3 hitDirection = (other.transform.position - transform.position).normalized;
-                damageable.TakeDamage(10f, hitDirection);
+                damageable.TakeDamage(10f, hitDirection, attacker);
                 Instantiate(hitParticle, new Vector3(transform.position.x, transform.position.y, transform.position.z), other.transform.rotation);
             }
         }

@@ -98,15 +98,8 @@ namespace StarterAssets
         private int _animIDJump;
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
-        private int _animIDAttack; // Thêm ID cho animation đánh
         private int _animIDHurt; // Thêm ID cho animation bị đánh
-
-        public float _attackCooldown = 1.5f; // Thời gian giữa các đòn đánh
-        private float _attackTimer = 1f;
-
         private bool _canMove = true; // Biến kiểm tra có thể di chuyển
-
-        private ActorHitbox _actorHitbox;
         private bool _isHurt;
         public float _hurtDuration = 1f; // Thời gian animation bị đánh
         private float _hurtTimer;
@@ -118,10 +111,11 @@ namespace StarterAssets
         private CharacterController _controller;
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
+        private bool _hasAnimator;
+        private bool _isDead = false;
+        private PlayerStatus _playerStatus;
 
         private const float _threshold = 0.01f;
-
-        private bool _hasAnimator;
 
         private bool IsCurrentDeviceMouse
         {
@@ -135,8 +129,9 @@ namespace StarterAssets
             }
         }
 
-        private bool _isDead = false;
-        private PlayerStatus _playerStatus;
+        public bool IsDead { get => _isDead; set => _isDead = value; }
+        public bool CanMove { get => _canMove; set => _canMove = value; }
+        public bool IsHurt { get => _isHurt; set => _isHurt = value; }
 
         private void Awake()
         {
@@ -157,7 +152,6 @@ namespace StarterAssets
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
-            _actorHitbox = GetComponentInChildren<ActorHitbox>();
 
 #if ENABLE_INPUT_SYSTEM 
             _playerInput = GetComponent<PlayerInput>();
@@ -175,7 +169,7 @@ namespace StarterAssets
         private void Update()
         {
             // Không xử lý movement và các logic khác nếu đã chết
-            if (_isDead) return;
+            if (IsDead) return;
 
             _hasAnimator = TryGetComponent(out _animator);
 
@@ -184,7 +178,6 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
-            HandleAttack();
             HandleHurt();
         }
 
@@ -200,7 +193,6 @@ namespace StarterAssets
             _animIDJump = Animator.StringToHash("Jump");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
-            _animIDAttack = Animator.StringToHash("Attack"); // Thêm ID cho animation đánh
             _animIDHurt = Animator.StringToHash("Hurt"); // Thêm ID cho animation bị đánh
         }
 
@@ -243,7 +235,7 @@ namespace StarterAssets
         private void Move()
         {
             // Nếu đang không thể di chuyển thì return
-            if (!_canMove)
+            if (!CanMove)
             {
                 // Reset animation speed khi không di chuyển
                 if (_hasAnimator)
@@ -396,20 +388,6 @@ namespace StarterAssets
             return Mathf.Clamp(lfAngle, lfMin, lfMax);
         }
 
-        private void OnDrawGizmosSelected()
-        {
-            Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
-            Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
-
-            if (Grounded) Gizmos.color = transparentGreen;
-            else Gizmos.color = transparentRed;
-
-            // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
-            Gizmos.DrawSphere(
-                new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z),
-                GroundedRadius);
-        }
-
         private void OnFootstep(AnimationEvent animationEvent)
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
@@ -422,25 +400,6 @@ namespace StarterAssets
             }
         }
 
-        private void OnSendDamage(AnimationEvent animationEvent)
-        {
-            if (_actorHitbox != null)
-            {
-                _actorHitbox.IsAttacking = true;
-            }
-        }
-
-        // Thêm method này để handle animation event
-        private void OnAttackComplete(AnimationEvent animationEvent)
-        {
-            _canMove = true;
-            if (_actorHitbox != null)
-            {
-                _actorHitbox.IsAttacking = false;
-            }
-        }
-
-
         private void OnLand(AnimationEvent animationEvent)
         {
             if (animationEvent.animatorClipInfo.weight > 0.5f)
@@ -449,44 +408,15 @@ namespace StarterAssets
             }
         }
 
-        private void HandleAttack()
-        {
-            if (_attackTimer > 0)
-            {
-                _attackTimer -= Time.deltaTime;
-
-                if (_attackTimer <= 0)
-                {
-                    _canMove = true;
-                    _input.attack = false;
-                }
-            }
-
-            // Chỉ cho phép đánh khi:
-            // 1. Đang ở trên mặt đất (Grounded)
-            // 2. Không trong thời gian cooldown (_attackTimer <= 0)
-            // 3. Nhấn chuột trái
-            if (_input.attack && _attackTimer <= 0 && Grounded)
-            {
-                _attackTimer = _attackCooldown;
-                _canMove = false;
-
-                if (_hasAnimator)
-                {
-                    _animator.SetTrigger(_animIDAttack);
-                }
-            }
-        }
-
         // Method public để các object khác có thể gọi khi đánh trúng người chơi
         public void TakeHit(Vector3 hitDirection, float damage)
         {
-            if (_isDead) return;
+            if (IsDead) return;
 
             // Handle hurt animation
-            _isHurt = true;
+            IsHurt = true;
             _hurtTimer = _hurtDuration;
-            _canMove = false;
+            CanMove = false;
 
             if (_hasAnimator)
             {
@@ -496,7 +426,7 @@ namespace StarterAssets
 
         private void HandleHurt()
         {
-            if (_isHurt)
+            if (IsHurt)
             {
                 if (_hurtTimer > 0)
                 {
@@ -504,8 +434,8 @@ namespace StarterAssets
                 }
                 else
                 {
-                    _isHurt = false;
-                    _canMove = true; // Cho phép di chuyển lại sau khi hết animation bị đánh
+                    IsHurt = false;
+                    CanMove = true; // Cho phép di chuyển lại sau khi hết animation bị đánh
                 }
             }
         }
@@ -513,7 +443,7 @@ namespace StarterAssets
         // Thêm method để xử lý khi chết
         public void Die()
         {
-            if (_isDead) return;
+            if (IsDead) return;
 
             if (_hasAnimator)
             {

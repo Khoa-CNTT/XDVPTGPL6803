@@ -47,7 +47,7 @@ namespace KLTNLongKhoi
                 inventoryUI.ScaleDown();
             }
 
-            pauseManager.TogglePause(isOpen);
+            pauseManager.SetPause(isOpen);
         }
 
         public void OpenInventory(bool isOpen)
@@ -63,7 +63,7 @@ namespace KLTNLongKhoi
             {
                 inventoryUI.ScaleDown();
             }
-            pauseManager.TogglePause(isOpen);
+            pauseManager.SetPause(isOpen);
         }
     }
 }

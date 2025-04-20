@@ -39,7 +39,7 @@ namespace KLTNLongKhoi
 
             if (gameManager.IsGameOver == false)
             {
-                pauseManager.TogglePause(isShowSettingPanel);
+                pauseManager.SetPause(isShowSettingPanel);
             }
         }
     }

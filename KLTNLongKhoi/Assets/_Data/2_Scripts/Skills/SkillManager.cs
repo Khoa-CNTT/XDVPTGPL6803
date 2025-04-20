@@ -6,6 +6,7 @@ namespace KLTNLongKhoi
     public class SkillManager : MonoBehaviour
     {
         [SerializeField] private List<SkillData> startingSkills;
+        [SerializeField] private Transform attacker;
         
         private Dictionary<string, Skill> skills = new Dictionary<string, Skill>();
         private PlayerStatsManager statsManager;
@@ -84,7 +85,7 @@ namespace KLTNLongKhoi
                     foreach (var hit in hits)
                     {
                         var damageable = hit.collider.GetComponent<IDamageable>();
-                        damageable?.TakeDamage(skill.Data.damage, (hit.point - transform.position).normalized);
+                        damageable?.TakeDamage(skill.Data.damage, (hit.point - transform.position).normalized, attacker);
                     }
                     break;
                     

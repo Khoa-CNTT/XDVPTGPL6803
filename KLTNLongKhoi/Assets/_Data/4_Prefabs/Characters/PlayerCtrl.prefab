@@ -1125,12 +1125,13 @@ GameObject:
   - component: {fileID: 261610551842451942}
   - component: {fileID: 6678775228178739971}
   - component: {fileID: 4181409765537469344}
+  - component: {fileID: 439618044774793180}
   - component: {fileID: 3859010210447197518}
   - component: {fileID: 3033233044376476498}
   - component: {fileID: 5292911713778641596}
   - component: {fileID: 8403504781289924889}
   - component: {fileID: 4976683102012242621}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: PlayerCtrl
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1229,10 +1230,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad4e731b0ce589349b9eb59ff0747c7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  currentHealth: 0
-  healthBar: {fileID: 0}
-  respawnDelay: 5
+--- !u!114 &439618044774793180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3541616872175445631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cf3efbc005076b4eb861b8af52e1e13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  comboTimeWindow: 1
+  attackCooldown: 0.5
+  maxComboCount: 3
 --- !u!114 &3859010210447197518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1271,13 +1283,12 @@ MonoBehaviour:
   GroundedRadius: 0.28
   GroundLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 8
   CinemachineCameraTarget: {fileID: 7695005716659279692}
   TopClamp: 70
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
-  _attackCooldown: 1.5
   _hurtDuration: 1
 --- !u!114 &3033233044376476498
 MonoBehaviour:
@@ -1291,10 +1302,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a484742be4699499c7c6ec1cab422d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 10
-  damageForceMultiplier: 0.5
+  pushForce: 5
+  damageForceMultiplier: 0
   recoveryTime: 0.5
   gravity: -9.81
+  controller: {fileID: 0}
+  agent: {fileID: 0}
 --- !u!114 &5292911713778641596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1329,7 +1342,12 @@ MonoBehaviour:
   jump: 0
   sprint: 0
   attack: 0
-  escape: 0
+  Escape:
+    m_PersistentCalls:
+      m_Calls: []
+  openInventory:
+    m_PersistentCalls:
+      m_Calls: []
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
@@ -2242,11 +2260,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1efe40ca3d18ecf449d7c70f26d8fd6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 3
-  interactableLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  interactionText: {fileID: 0}
   interactionIcon: {fileID: 0}
 --- !u!65 &2603791497794614401
 BoxCollider:
@@ -2783,8 +2796,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitParticle: {fileID: 8635024801403827782, guid: 4358e2354a99a2e4ca9e8412632bd046, type: 3}
   isAttacking: 0
-  animator: {fileID: 0}
   EnemyTag: Enemy
+  attacker: {fileID: 7260877105511733929}
 --- !u!1 &8872195690432973758
 GameObject:
   m_ObjectHideFlags: 0

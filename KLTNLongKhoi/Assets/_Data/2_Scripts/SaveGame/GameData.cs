@@ -122,6 +122,12 @@ namespace KLTNLongKhoi
         public string state; // IDLE, PATROL, PURSUE, ATTACK, SLEEP
     }
 
-
+    [Serializable]
+    public class ActorStats
+    {
+        public string actorName;
+        public string id;
+        public string state;
+    }
 
 }

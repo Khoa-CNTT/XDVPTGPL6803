@@ -18,7 +18,6 @@ namespace KLTNLongKhoi
         private void OnTriggerEnter(Collider other)
         { 
             IInteractable interactable = other.GetComponent<IInteractable>();
-
             if (interactable != null && interactable.CanInteract())
             {
                 currentInteractable = interactable;

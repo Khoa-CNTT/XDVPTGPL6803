@@ -14,7 +14,7 @@ namespace StarterAssets
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
-		public bool attack; // Thêm biến attack
+		public UnityEvent Attack; // Thay thế biến attack bằng UnityEvent
 		public UnityEvent Escape;
 		public UnityEvent openInventory;
 
@@ -31,6 +31,7 @@ namespace StarterAssets
 		{
 			pauseManager = FindFirstObjectByType<PauseManager>();
 			pauseManager.onGamePaused.AddListener(OnPauseGame);
+			pauseManager.onGameResumed.AddListener(OnResumeGame);
 		}
 
 		void Start()
@@ -73,8 +74,11 @@ namespace StarterAssets
 		public void OnAttack(InputValue value)
 		{
 			if (pauseManager.IsPaused) return;
-
-			AttackInput(value.isPressed);
+			
+			if (value.isPressed)
+			{
+				Attack.Invoke();
+			}
 		}
 
 		public void OnEscape(InputValue value)
@@ -108,11 +112,6 @@ namespace StarterAssets
 		{
 			sprint = newSprintState;
 		}
-
-		public void AttackInput(bool newAttackState)
-		{
-			attack = newAttackState;
-		}
 #endregion
 
 		private void OnApplicationFocus(bool hasFocus)
@@ -125,7 +124,9 @@ namespace StarterAssets
 			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 		}
 
-		private void OnPauseGame(bool value)
+		private void OnPauseGame() => SetActivePlayerInput(true);
+		private void OnResumeGame() => SetActivePlayerInput(false);
+		private void SetActivePlayerInput(bool value)
 		{
 			bool activeMouse = !value;
 

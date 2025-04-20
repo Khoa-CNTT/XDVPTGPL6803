@@ -3,6 +3,7 @@ using UnityEngine;
 public class BoxTakeDamage : MonoBehaviour
 {
     public float damage = 10f;
+    public Transform attacker;
     
     private void OnTriggerEnter(Collider other)
     {
@@ -11,7 +12,7 @@ public class BoxTakeDamage : MonoBehaviour
         if (damageable != null)
         {
             Vector3 hitDirection = (other.transform.position - transform.position).normalized;
-            damageable.TakeDamage(damage, hitDirection);
+            damageable.TakeDamage(damage, hitDirection, attacker);
         }
     }
 }

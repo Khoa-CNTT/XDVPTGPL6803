@@ -129,7 +129,7 @@ namespace KLTNLongKhoi
                 if (saveComponent is MonoBehaviour mb)
                 {
                     string componentType = mb.GetType().Name;
-                    Debug.Log("Saving component: " + componentType);
+                    // Debug.Log("Saving component: " + componentType);
                     switch (componentType)
                     {
                         case "Player":
@@ -154,7 +154,7 @@ namespace KLTNLongKhoi
 
             // Save using DataManager
             dataManager.ArchiveGameData();
-            Debug.Log("Game saved successfully");
+            // Debug.Log("Game saved successfully");
             HideSavePanel();
         }
 

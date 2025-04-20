@@ -22,7 +22,7 @@ namespace KLTNLongKhoi
         private CCBePushedBack ccBePushedBack;
         private bool isDead = false;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             ragdollAnimator = GetComponent<RagdollAnimator>();
             ccBePushedBack = GetComponent<CCBePushedBack>();
@@ -31,13 +31,13 @@ namespace KLTNLongKhoi
             currentHealth = maxHealth;
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             currentHealth = maxHealth;
             healthBar.Initialize(maxHealth);
         }
 
-        public void TakeDamage(float damage, Vector3 hitDirection)
+        public virtual void TakeDamage(float damage, Vector3 hitDirection, Transform attacker)
         {
             if (isDead) return;
 

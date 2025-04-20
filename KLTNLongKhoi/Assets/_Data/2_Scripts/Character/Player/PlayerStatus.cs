@@ -25,7 +25,7 @@ namespace KLTNLongKhoi
             pauseManager = FindFirstObjectByType<PauseManager>();
         }
 
-        public void TakeDamage(float damage, Vector3 hitDirection)
+        public void TakeDamage(float damage, Vector3 hitDirection, Transform attacker)
         {
             if (isDead) return;
 
