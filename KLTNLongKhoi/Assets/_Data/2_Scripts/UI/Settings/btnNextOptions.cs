@@ -113,7 +113,7 @@ namespace KLTNLongKhoi
         [ContextMenu("Generate Quality Options")]
         public void GenerateQualityOptions()
         {
-            options = new string[] { "Low", "Medium", "High", "Ultra" };
+            options = new string[] { "Thấp", "Trung bình", "Cao", "Cực cao" };
             currentIndex = 1; // Default to Medium
             UpdateDisplayText();
         }
@@ -129,7 +129,7 @@ namespace KLTNLongKhoi
         [ContextMenu("Generate Brightness Options")]
         public void GenerateBrightnessOptions()
         {
-            options = new string[] { "Very Dark", "Dark", "Normal", "Bright", "Very Bright" };
+            options = new string[] { "Tối", "Tối hơn", "Bình thường", "Sáng", "Sáng hơn" };
             currentIndex = 2; // Default to Normal
             UpdateDisplayText();
         }
@@ -137,7 +137,7 @@ namespace KLTNLongKhoi
         [ContextMenu("Generate Toggle Options")]
         public void GenerateToggleOptions()
         {
-            options = new string[] { "Off", "On" };
+            options = new string[] { "Tắt", "Bật" };
             currentIndex = 0; // Default to Off
             UpdateDisplayText();
         }

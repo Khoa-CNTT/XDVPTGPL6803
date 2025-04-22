@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using TMPro;
 
 namespace KLTNLongKhoi
 {
@@ -8,6 +9,7 @@ namespace KLTNLongKhoi
         [SerializeField] private InventoryCell weaponCell;        // Slot cho vũ khí
         [SerializeField] private InventoryCell materialCell;      // Slot cho nguyên liệu
         [SerializeField] private InventoryController targetContainer;   // Container để nhận item nâng cấp
+        [SerializeField] private TextMeshProUGUI upgradeChanceText;
         
         [Header("Upgrade System")]
         [SerializeField] private UpgradeRecipeDatabase recipeDatabase;
@@ -19,30 +21,53 @@ namespace KLTNLongKhoi
         private void Awake()
         {
             targetContainer = FindFirstObjectByType<InventoryController>();
+            recipeDatabase = FindFirstObjectByType<UpgradeRecipeDatabase>();
+        }
+        
+        private void Update()
+        {
+            UpdateUpgradeChance();
+        }
+
+        private void UpdateUpgradeChance()
+        {
+            if (weaponCell.Item != null && materialCell.Item != null)
+            {
+                var result = recipeDatabase.TryGetInventoryItemSOResult(weaponCell.Item, materialCell.Item, out var itemInventoryResult, out var upgradeRecipe);
+
+                if (result)
+                {
+                    upgradeChanceText.text = $"Upgrade Chance: {upgradeRecipe.successRate * 100}%";
+                }
+                else
+                {
+                    upgradeChanceText.text = "Upgrade Chance: 0%";
+                }
+            }
         }
 
         public void TryUpgrade()
         {
             if (weaponCell.Item == null || materialCell.Item == null) return;
 
-            var recipe = recipeDatabase.FindRecipe(weaponCell.Item, materialCell.Item);
-            
-            if (recipe != null)
+            var result = recipeDatabase.TryGetInventoryItemSOResult(weaponCell.Item, materialCell.Item, out var itemInventoryResult, out var upgradeRecipe);
+
+            if (result)
             {
-                bool success = Random.value <= recipe.upgradeChance;
-                
+                bool success = Random.value <= upgradeRecipe.successRate; // Tỷ lệ thành công
+
                 if (success)
                 {
                     // Thêm vũ khí mới vào container
-                    targetContainer.AddItemsCount(recipe.resultWeapon, recipe.resultWeapon.maxItemsCount, out var itemsLeft);
-                    
+                    targetContainer.AddItemsCount(itemInventoryResult, itemInventoryResult.maxItemsCount, out var itemsLeft);
+
                     if (itemsLeft <= 0)
                     {
                         // Xóa các nguyên liệu khi thêm thành công
                         ClearCells();
                         onUpgradeSuccess?.Invoke();
                     }
-                    else 
+                    else
                     {
                         Debug.Log($"Not enough space! {itemsLeft} items left!");
                     }

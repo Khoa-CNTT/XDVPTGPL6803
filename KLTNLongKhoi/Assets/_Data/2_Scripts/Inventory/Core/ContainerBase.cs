@@ -54,7 +54,7 @@ namespace KLTNLongKhoi
             return false;
         }
 
-        public bool TryGetCellWithFreeItemsCount(InventoryItem item, out InventoryCell cell)
+        public bool TryGetCellWithFreeItemsCount(InventoryItemSO item, out InventoryCell cell)
         {
             for (int i = 0; i < inventoryCells.Count; i++)
             {
@@ -71,7 +71,7 @@ namespace KLTNLongKhoi
             return false;
         }
 
-        public void AddItemsCount(InventoryItem item, int count, out int countLeft)
+        public void AddItemsCount(InventoryItemSO item, int count, out int countLeft)
         {
             while (count > 0)
             {

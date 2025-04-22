@@ -3,6 +3,7 @@ using UnityEngine;
 public class btnOpenPopupPanel : MonoBehaviour
 {
     public bool isOpenPanel;
+    [SerializeField] Transform objectActive;
     [SerializeField] PopupScale popupScale;
 
     void Start()
@@ -14,10 +15,18 @@ public class btnOpenPopupPanel : MonoBehaviour
     {
         if (isOpenPanel)
         {
+            if (objectActive != null)
+            {
+                objectActive.gameObject.SetActive(true);
+            }
             popupScale.ScaleUp();
         }
         else
         {
+            if (objectActive != null)
+            {
+                objectActive.gameObject.SetActive(false);
+            }
             popupScale.ScaleDown();
         }
     }

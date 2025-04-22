@@ -6,7 +6,7 @@ namespace KLTNLongKhoi
     {
         [SerializeField] private string interactionText = "Press E to pickup";
         [SerializeField] private bool isInteractable = true;
-        [SerializeField] InventoryItem inventoryItem;
+        [SerializeField] InventoryItemSO inventoryItem;
         private InventoryController inventoryController;
 
         void Start()

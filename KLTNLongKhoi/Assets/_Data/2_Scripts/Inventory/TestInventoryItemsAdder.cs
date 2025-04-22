@@ -38,7 +38,7 @@ namespace KLTNLongKhoi
         [System.Serializable]
         public class AddingItem
         {
-            public InventoryItem item;
+            public InventoryItemSO item;
             public KeyCode key;
         }
     }

@@ -14,6 +14,11 @@ namespace KLTNLongKhoi
 
         bool isCrafted;
 
+        void Start()
+        {
+            recipeDatabase = FindFirstObjectByType<CraftingRecipeDatabase>();
+        }
+
         void Update()
         {
             Craft();
@@ -52,7 +57,7 @@ namespace KLTNLongKhoi
 
             if (recipe != null)
             {
-                inventoryCellResult.SetInventoryItem(recipe.result);
+                inventoryCellResult.SetInventoryItem(recipe);
                 inventoryCellResult.UpdateCellUI();
                 isCrafted = true;
             }

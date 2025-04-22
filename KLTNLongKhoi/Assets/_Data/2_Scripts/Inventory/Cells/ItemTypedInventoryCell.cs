@@ -6,7 +6,7 @@ namespace KLTNLongKhoi
     //class that overrides CanBeDropped method of the cell for custom logic
     public class ItemTypedInventoryCell : InventoryCell
     {
-        [SerializeField] private InventoryItem _itemType;
+        [SerializeField] private InventoryItemSO _itemType;
 
         public override bool CanBeDropped(InventoryCell cell)
         {

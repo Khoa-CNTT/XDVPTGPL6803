@@ -3,6 +3,7 @@ using UnityEngine;
 public class PanelPressToStart : MonoBehaviour
 {
     private SceneLoader sceneLoader;
+    [SerializeField] AudioSource audioSource;
 
     private void Start()
     {
@@ -14,7 +15,8 @@ public class PanelPressToStart : MonoBehaviour
         // nhấn bất kỳ phím để chuyển level
         if (Input.anyKeyDown)
         {
-            LoadNextLevel();
+            LoadNextLevel(); 
+            audioSource.Play();
         }
     }
 

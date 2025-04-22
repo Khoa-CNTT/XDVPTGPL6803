@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace KLTNLongKhoi
@@ -21,14 +22,12 @@ namespace KLTNLongKhoi
         public int level;
         public int experience;
         public int health;
-        // Xóa mana vì nó được tính dựa trên Intelligence
         public Vector3 position = Vector3.zero;
         public int currency;
         public int diamonds;
         public InventoryData inventory = new InventoryData();
-        // Thêm các chỉ số base mới
         public int baseStrength;
-        public int baseCritical;  // Đổi từ baseCharm
+        public int baseCritical;
         public int baseIntelligence;
         public int baseStamina;
     }
@@ -67,17 +66,6 @@ namespace KLTNLongKhoi
         public int manaBonus;       // For potions
     }
 
-    [Serializable]
-    public enum ItemType
-    {
-        None,
-        Weapon,
-        Armor,
-        Tool,
-        Resource,
-        Consumable,
-        Quest
-    }
 
     [Serializable]
     public class WorldState
@@ -130,4 +118,78 @@ namespace KLTNLongKhoi
         public string state;
     }
 
+
+
+    [System.Serializable]
+    public class ItemStats
+    {
+        // Combat stats
+        public int physicalDamage;
+        public int magicDamage;
+        public int armor;
+        public int resistance;
+        [Range(0, 1)] public float attackSpeed;
+
+        // Bonus stats
+        public int healthBonus;
+        public int manaBonus;
+        public int healthRecovery;
+        public int manaRecovery;
+
+        // Hidden stats
+        public float criticalChance;
+        public float dodgeChance;
+    }
+
+    [Serializable]
+    public enum ItemType
+    {
+        None,
+        Weapon,
+        Armor,
+        Tool,
+        Resource,
+        Consumable,
+        Quest
+    }
+
+    public enum WeaponType
+    {
+        Dagger,
+        Spear,
+        Sword,
+        Shield
+    }
+
+    public enum ArmorType
+    {
+        Cloak,      // Áo choàng
+        BronzeRing, // Vòng đồng
+        DragonHelm, // Mũ rồng
+        Loincloth,  // Khố
+        DragonBlood // Long Huyết
+    }
+
+    public enum ConsumableType
+    {
+        HealthPotion, // Bình máu
+        ManaPotion,
+        BuffPotion
+    }
+
+    public enum ResourceType
+    {
+        Stone,      // Đá
+        Iron,       // Sắt
+        Wood,       // Gỗ
+        Coral,      // San hô
+        Pearl,      // Ngọc trai
+        FishScale,  // Da Ngư Tinh
+        FoxFur,     // Lông Hồ Tinh
+        FairyWater, // Nước tiên
+        Rope,       // Dây thừng
+        Quartz,     // Đá thạch anh
+        Gemstone,   // Đá quý
+        SpiderSilk  // Tơ nhện
+    }
 }

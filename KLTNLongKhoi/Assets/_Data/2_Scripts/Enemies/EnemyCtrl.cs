@@ -14,6 +14,7 @@ namespace KLTNLongKhoi
         private NavMeshAgent agent;
         private Animator animator;
         private bool isSeePlayer = false;
+        private ActorHitbox actorHitbox;
 
         // Animation IDs
         private int _animIDSpeed;
@@ -91,27 +92,25 @@ namespace KLTNLongKhoi
 
         private void OnSendDamage(AnimationEvent animationEvent)
         {
-            // if (_actorHitbox != null)
-            // {
-            //     _actorHitbox.IsAttacking = true;
-            // }
+            if (actorHitbox != null)
+            {
+                actorHitbox.IsAttacking = true;
+            }
         }
 
         private void OnAttackComplete(AnimationEvent animationEvent)
         {
             agent.isStopped = false;
-            // if (_actorHitbox != null)
-            // {
-            //     _actorHitbox.IsAttacking = false;
-            // }
+            if (actorHitbox != null)
+            {
+                actorHitbox.IsAttacking = false;
+            }
         }
 
         private void OnAttack(AnimationEvent animationEvent)
         {
             agent.isStopped = true;
         }
-
-        
 
         private void Patrol()
         {
