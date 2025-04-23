@@ -115,7 +115,6 @@ namespace KLTNLongKhoi
             }
             return gameData;
         }
-
     }
 
     public static class Utils
