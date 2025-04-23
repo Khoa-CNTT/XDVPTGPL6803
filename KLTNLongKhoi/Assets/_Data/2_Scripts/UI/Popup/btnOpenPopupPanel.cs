@@ -19,7 +19,10 @@ public class btnOpenPopupPanel : MonoBehaviour
             {
                 objectActive.gameObject.SetActive(true);
             }
-            popupScale.ScaleUp();
+            if (popupScale != null)
+            {
+                popupScale.ScaleUp();
+            }
         }
         else
         {
@@ -27,7 +30,10 @@ public class btnOpenPopupPanel : MonoBehaviour
             {
                 objectActive.gameObject.SetActive(false);
             }
-            popupScale.ScaleDown();
+            if (popupScale != null)
+            {
+                popupScale.ScaleDown();
+            }
         }
     }
 

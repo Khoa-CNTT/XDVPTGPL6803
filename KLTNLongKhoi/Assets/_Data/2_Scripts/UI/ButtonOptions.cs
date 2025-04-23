@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
 
 public class ButtonOptions : MonoBehaviour
 {
     [System.Serializable]
     public class OptionButton
     {
-        public Button button;
-        public Image buttonImage;
+        public Transform buttonTransform;
         public string value;
     }
 
@@ -23,7 +23,7 @@ public class ButtonOptions : MonoBehaviour
         // Setup click listeners cho mỗi button
         foreach (var option in optionButtons)
         {
-            option.button.onClick.AddListener(() => OnOptionSelected(option.value));
+            option.buttonTransform.GetComponent<Button>().onClick.AddListener(() => OnOptionSelected(option.value));
         }
     }
 
@@ -38,8 +38,6 @@ public class ButtonOptions : MonoBehaviour
         currentValue = value;
         UpdateButtonsVisibility();
         // Thêm event hoặc callback nếu cần
-
-        Debug.Log($"Selected: {value}");
     }
 
     private void UpdateButtonsVisibility()
@@ -48,7 +46,7 @@ public class ButtonOptions : MonoBehaviour
         {
             // Giữ Image component enabled nhưng thay đổi alpha
             Color color = option.value == currentValue ? selectedColor : unselectedColor;
-            option.buttonImage.color = color;
+            option.buttonTransform.GetComponent<Image>().color = color;
             
             // Button vẫn có thể click được vì Image vẫn enabled
         }

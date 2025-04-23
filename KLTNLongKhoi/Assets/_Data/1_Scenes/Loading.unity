@@ -312,6 +312,10 @@ PrefabInstance:
       value: "Nh\u1EA5n n\xFAt \u0111\u1EC3 b\u1EAFt \u0111\u1EA7u"
       objectReference: {fileID: 0}
     - target: {fileID: 9135233585179881986, guid: cf94c0ab966c0c54cac58110873067b0, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 015d9d749211139478d47ed9eb38b605, type: 2}
+    - target: {fileID: 9135233585179881986, guid: cf94c0ab966c0c54cac58110873067b0, type: 3}
       propertyPath: m_fontStyle
       value: 1
       objectReference: {fileID: 0}
@@ -330,6 +334,10 @@ PrefabInstance:
     - target: {fileID: 9135233585179881986, guid: cf94c0ab966c0c54cac58110873067b0, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4278190080
+      objectReference: {fileID: 0}
+    - target: {fileID: 9135233585179881986, guid: cf94c0ab966c0c54cac58110873067b0, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -432,11 +440,11 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6952353551567831420}
   - {fileID: 1048512922}
   - {fileID: 742490994}
   - {fileID: 1883174760}
   - {fileID: 2808045200729471973}
+  - {fileID: 6952353551567831420}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1363,8 +1371,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u0110ang T\u1EA3i 0%"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 015d9d749211139478d47ed9eb38b605, type: 2}
+  m_sharedMaterial: {fileID: 188309556180032878, guid: 015d9d749211139478d47ed9eb38b605, type: 2}
   m_fontSharedMaterials:
   - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontMaterial: {fileID: 0}
@@ -1389,7 +1397,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.55
+  m_fontSize: 26.45
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1

@@ -48,7 +48,7 @@ MonoBehaviour:
   _dontDestroyOnLoad: 1
   serialize: 1
   usingXML: 0
-  encrypt: 0
+  encrypt: 1
   fileSaveName: GameData.txt
   gameData:
     player:
@@ -58,6 +58,7 @@ MonoBehaviour:
       health: 0
       position: {x: 0, y: 0, z: 0}
       currency: 0
+      diamonds: 0
       inventory:
         items: []
       baseStrength: 0
@@ -74,8 +75,7 @@ MonoBehaviour:
       musicVolume: 1
       sfxVolume: 1
       graphics: 
-      qualityLevel: 3
-      resolutionIndex: 0
+      resolution: 1920x1080
       targetFrameRate: 60
       brightness: 1
       rayTracingEnabled: 0
@@ -98,5 +98,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d3eb25f24edd184a830ea8dea126a8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dontDestroyOnLoad: 0
   saveLoadPanel: {fileID: 0}
-  dataManager: {fileID: 0}
+  onStartLoadGameSettings:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishLoadGameSettings:
+    m_PersistentCalls:
+      m_Calls: []
+  onStartLoadGameWorld:
+    m_PersistentCalls:
+      m_Calls: []
+  onFinishLoadGameWorld:
+    m_PersistentCalls:
+      m_Calls: []

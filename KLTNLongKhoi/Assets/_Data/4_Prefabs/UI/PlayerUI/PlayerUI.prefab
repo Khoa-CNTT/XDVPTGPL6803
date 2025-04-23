@@ -253,6 +253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a3126de606ec54fa58538a7218b6a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nameAndLevel: {fileID: 0}
   healthText: {fileID: 0}
   staminaText: {fileID: 0}
   manaText: {fileID: 0}

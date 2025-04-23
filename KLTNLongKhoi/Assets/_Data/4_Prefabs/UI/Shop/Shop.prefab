@@ -688,6 +688,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpenPanel: 0
+  objectActive: {fileID: 0}
   popupScale: {fileID: 1275427859233086385}
 --- !u!1 &8490638779036787932
 GameObject:

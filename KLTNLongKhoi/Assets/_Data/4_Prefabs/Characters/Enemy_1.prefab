@@ -3850,6 +3850,8 @@ MonoBehaviour:
   damageForceMultiplier: 0.5
   recoveryTime: 0.5
   gravity: -9.81
+  controller: {fileID: 0}
+  agent: {fileID: 0}
 --- !u!114 &8835986929347570886
 MonoBehaviour:
   m_ObjectHideFlags: 0
