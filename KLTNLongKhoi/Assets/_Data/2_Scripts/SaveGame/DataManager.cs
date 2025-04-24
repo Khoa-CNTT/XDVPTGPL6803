@@ -18,7 +18,7 @@ namespace KLTNLongKhoi
         [SerializeField] bool serialize;
         [SerializeField] bool usingXML;
         [SerializeField] bool encrypt;
-        [SerializeField] string fileSaveName = "GameData.txt";
+        [SerializeField] string fileSaveName = "GameData.json";
         string filePath;
 
         [Header("Data")]

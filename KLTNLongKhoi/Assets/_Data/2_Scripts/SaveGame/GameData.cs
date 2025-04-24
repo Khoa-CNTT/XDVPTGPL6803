@@ -88,9 +88,7 @@ namespace KLTNLongKhoi
         public string graphics = "Medium";
         public string resolution = "1920x1080";
         public int targetFrameRate = 60;
-        public float brightness = 1f;
-        public bool rayTracingEnabled = false;
-        public bool vSyncEnabled = true;
+        public float brightness = 1f; 
 
         // Gameplay Settings
         public float mouseSensitivity = 1f;

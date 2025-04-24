@@ -795,14 +795,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   optionButtons:
-  - button: {fileID: 6218350336612039534}
-    buttonImage: {fileID: 8568460283316806062}
+  - buttonTransform: {fileID: 0}
     value: High
-  - button: {fileID: 5558931854235553034}
-    buttonImage: {fileID: 8239666301219596544}
+  - buttonTransform: {fileID: 0}
     value: Medium
-  - button: {fileID: 6005274823203093032}
-    buttonImage: {fileID: 5444751851938048494}
+  - buttonTransform: {fileID: 0}
     value: Low
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
   unselectedColor: {r: 1, g: 1, b: 1, a: 0}
@@ -1430,8 +1427,6 @@ MonoBehaviour:
   resolutionOptions: {fileID: 6301046851259454149}
   fpsOptions: {fileID: 859493812644160395}
   brightnessOptions: {fileID: 3030798390385135340}
-  rayTracingOptions: {fileID: 0}
-  vSyncOptions: {fileID: 0}
   masterVolumeSlider: {fileID: 7437920835174811216}
   musicVolumeSlider: {fileID: 3155252842154908264}
   sfxVolumeSlider: {fileID: 531744062325356168}

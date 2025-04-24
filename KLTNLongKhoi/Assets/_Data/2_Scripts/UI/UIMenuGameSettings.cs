@@ -12,8 +12,6 @@ namespace KLTNLongKhoi
         [SerializeField] private btnNextOptions resolutionOptions; 
         [SerializeField] private btnNextOptions fpsOptions;
         [SerializeField] private btnNextOptions brightnessOptions;
-        [SerializeField] private btnNextOptions rayTracingOptions;
-        [SerializeField] private btnNextOptions vSyncOptions;
 
         [Header("Audio Settings")]
         [SerializeField] private Slider masterVolumeSlider;
@@ -91,23 +89,7 @@ namespace KLTNLongKhoi
                     new string[] { "Very Dark", "Dark", "Normal", "Bright", "Very Bright" },
                     GetBrightnessText(gameSettings.GetBrightness())
                 );
-            }
-
-            if (rayTracingOptions != null)
-            {
-                rayTracingOptions.SetOptions(
-                    new string[] { "Off", "On" },
-                    gameSettings.IsRayTracingEnabled() ? "On" : "Off"
-                );
-            }
-
-            if (vSyncOptions != null)
-            {
-                vSyncOptions.SetOptions(
-                    new string[] { "Off", "On" },
-                    gameSettings.IsVSyncEnabled() ? "On" : "Off"
-                );
-            }
+            }  
 
             if (masterVolumeSlider != null)
                 masterVolumeSlider.value = gameSettings.GetMasterVolume();
@@ -125,29 +107,17 @@ namespace KLTNLongKhoi
         private void SetupListeners()
         {
             if (qualityOptions != null)
-                qualityOptions.onClick.AddListener(OnQualityChanged);
-            
+                qualityOptions.onClick.AddListener(OnQualityChanged); 
             if (resolutionOptions != null)
-                resolutionOptions.onClick.AddListener(OnResolutionChanged);
-            
+                resolutionOptions.onClick.AddListener(OnResolutionChanged); 
             if (fpsOptions != null)
-                fpsOptions.onClick.AddListener(OnFPSChanged);
-            
+                fpsOptions.onClick.AddListener(OnFPSChanged); 
             if (brightnessOptions != null)
-                brightnessOptions.onClick.AddListener(OnBrightnessChanged);
-
-            if (rayTracingOptions != null)
-                rayTracingOptions.onClick.AddListener(OnRayTracingChanged);
-
-            if (vSyncOptions != null)
-                vSyncOptions.onClick.AddListener(OnVSyncChanged);
-            
+                brightnessOptions.onClick.AddListener(OnBrightnessChanged);  
             if (masterVolumeSlider != null)
-                masterVolumeSlider.onValueChanged.AddListener(OnMasterVolumeChanged);
-            
+                masterVolumeSlider.onValueChanged.AddListener(OnMasterVolumeChanged); 
             if (musicVolumeSlider != null)
-                musicVolumeSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
-            
+                musicVolumeSlider.onValueChanged.AddListener(OnMusicVolumeChanged); 
             if (sfxVolumeSlider != null)
                 sfxVolumeSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
         }
@@ -174,19 +144,7 @@ namespace KLTNLongKhoi
         {
             float brightness = GetBrightnessFromIndex(brightnessOptions.GetCurrentIndex());
             gameSettings.SetBrightness(brightness);
-        }
-
-        private void OnRayTracingChanged()
-        {
-            bool isEnabled = rayTracingOptions.GetCurrentIndex() == 1;
-            gameSettings.SetRayTracing(isEnabled);
-        }
-
-        private void OnVSyncChanged()
-        {
-            bool isEnabled = vSyncOptions.GetCurrentIndex() == 1;
-            gameSettings.SetVSync(isEnabled);
-        }
+        } 
 
         private void OnMasterVolumeChanged(float value)
         {
