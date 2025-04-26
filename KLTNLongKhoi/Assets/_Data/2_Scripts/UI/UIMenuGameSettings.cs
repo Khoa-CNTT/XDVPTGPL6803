@@ -2,14 +2,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using System;
 
 namespace KLTNLongKhoi
 {
     public class UIMenuGameSettings : MonoBehaviour
     {
         [Header("Graphics Settings")]
-        [SerializeField] private btnNextOptions qualityOptions;
-        [SerializeField] private btnNextOptions resolutionOptions; 
+        [SerializeField] private ButtonOptions qualityOptions;
+        [SerializeField] private btnNextOptions resolutionOptions;
         [SerializeField] private btnNextOptions fpsOptions;
         [SerializeField] private btnNextOptions brightnessOptions;
 
@@ -59,13 +60,9 @@ namespace KLTNLongKhoi
         private void InitializeUI()
         {
             isInitializing = true;
-
             if (qualityOptions != null)
             {
-                qualityOptions.SetOptions(
-                    new string[] { "Low", "Medium", "High", "Ultra" },
-                    gameSettings.GetQualityLevel()
-                );
+                qualityOptions.SetCurrentIndex(gameSettings.GetQualityLevel());
             }
 
             if (resolutionOptions != null)
@@ -78,7 +75,7 @@ namespace KLTNLongKhoi
             if (fpsOptions != null)
             {
                 fpsOptions.SetOptions(
-                    new string[] { "30 FPS", "60 FPS", "120 FPS", "144 FPS", "240 FPS" },
+                    new string[] { "30 FPS", "60 FPS", "120 FPS" },
                     $"{gameSettings.GetTargetFrameRate()} FPS"
                 );
             }
@@ -86,10 +83,10 @@ namespace KLTNLongKhoi
             if (brightnessOptions != null)
             {
                 brightnessOptions.SetOptions(
-                    new string[] { "Very Dark", "Dark", "Normal", "Bright", "Very Bright" },
+                    new string[] { "Tối", "Tối hơn", "Trung bình", "Sáng", "Sáng hơn" },
                     GetBrightnessText(gameSettings.GetBrightness())
                 );
-            }  
+            }
 
             if (masterVolumeSlider != null)
                 masterVolumeSlider.value = gameSettings.GetMasterVolume();
@@ -103,21 +100,23 @@ namespace KLTNLongKhoi
             isInitializing = false;
         }
 
+
+
         // Setup listeners for UI elements
         private void SetupListeners()
         {
             if (qualityOptions != null)
-                qualityOptions.onClick.AddListener(OnQualityChanged); 
+                qualityOptions.onClick.AddListener(OnQualityChanged);
             if (resolutionOptions != null)
-                resolutionOptions.onClick.AddListener(OnResolutionChanged); 
+                resolutionOptions.onClick.AddListener(OnResolutionChanged);
             if (fpsOptions != null)
-                fpsOptions.onClick.AddListener(OnFPSChanged); 
+                fpsOptions.onClick.AddListener(OnFPSChanged);
             if (brightnessOptions != null)
-                brightnessOptions.onClick.AddListener(OnBrightnessChanged);  
+                brightnessOptions.onClick.AddListener(OnBrightnessChanged);
             if (masterVolumeSlider != null)
-                masterVolumeSlider.onValueChanged.AddListener(OnMasterVolumeChanged); 
+                masterVolumeSlider.onValueChanged.AddListener(OnMasterVolumeChanged);
             if (musicVolumeSlider != null)
-                musicVolumeSlider.onValueChanged.AddListener(OnMusicVolumeChanged); 
+                musicVolumeSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
             if (sfxVolumeSlider != null)
                 sfxVolumeSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
         }
@@ -125,8 +124,8 @@ namespace KLTNLongKhoi
         #region Event Handlers
         private void OnQualityChanged()
         {
-            string quality = qualityOptions.options[qualityOptions.GetCurrentIndex()];
-            gameSettings.SetQualityLevel(quality);
+            int quality = qualityOptions.GetCurrentIndex();
+            gameSettings.SetQualityLevel(quality); // Lưu setting vào GameSettings
         }
 
         private void OnResolutionChanged()
@@ -144,7 +143,7 @@ namespace KLTNLongKhoi
         {
             float brightness = GetBrightnessFromIndex(brightnessOptions.GetCurrentIndex());
             gameSettings.SetBrightness(brightness);
-        } 
+        }
 
         private void OnMasterVolumeChanged(float value)
         {
@@ -168,19 +167,6 @@ namespace KLTNLongKhoi
         }
 
         #region Helper Methods
-        private int GetFPSDropdownIndex(int fps)
-        {
-            return fps switch
-            {
-                30 => 0,
-                60 => 1,
-                120 => 2,
-                144 => 3,
-                240 => 4,
-                _ => 1 // Default to 60 FPS
-            };
-        }
-
         private int GetFPSFromDropdownIndex(int index)
         {
             return index switch
@@ -188,8 +174,6 @@ namespace KLTNLongKhoi
                 0 => 30,
                 1 => 60,
                 2 => 120,
-                3 => 144,
-                4 => 240,
                 _ => 60
             };
         }
@@ -218,11 +202,11 @@ namespace KLTNLongKhoi
 
         private string GetBrightnessText(float brightness)
         {
-            if (brightness <= 0.25f) return "Very Dark";
-            if (brightness <= 0.5f) return "Dark";
-            if (brightness <= 0.75f) return "Normal";
-            if (brightness <= 1.0f) return "Bright";
-            return "Very Bright";
+            if (brightness <= 0.25f) return "Tối";
+            if (brightness <= 0.5f) return "Tối hơn";
+            if (brightness <= 0.75f) return "Trung bình";
+            if (brightness <= 1.0f) return "Sáng";
+            return "Sáng hơn";
         }
         #endregion
     }

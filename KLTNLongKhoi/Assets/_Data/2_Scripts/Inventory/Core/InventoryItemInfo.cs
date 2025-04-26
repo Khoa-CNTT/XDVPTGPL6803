@@ -8,8 +8,6 @@ namespace KLTNLongKhoi
     public class InventoryItemInfo : MonoBehaviour
     {
         private CellsCallbacksController callbacksController;
-
-        [SerializeField] private RectTransform _infoPanel;
         [SerializeField] private TextMeshProUGUI _itemName;
         [SerializeField] private TextMeshProUGUI _itemDescription;
         [SerializeField] private Image _icon;
@@ -19,21 +17,9 @@ namespace KLTNLongKhoi
             callbacksController = FindFirstObjectByType<CellsCallbacksController>();
         }
 
-        private void Start()
-        {
-            _infoPanel.gameObject.SetActive(false);
-        }
-
         private void OnEnable()
         {
             callbacksController.onClick += OnClick;
-            callbacksController.onBeginDrag += OnBeginDrag;
-        }
-
-        private void OnDisable()
-        {
-            callbacksController.onClick -= OnClick;
-            callbacksController.onBeginDrag -= OnBeginDrag;
         }
 
         private void OnClick(InventoryCell cell, PointerEventData eventData)
@@ -41,23 +27,14 @@ namespace KLTNLongKhoi
             Logic(cell);
         }
 
-        private void OnBeginDrag(InventoryCell cell, PointerEventData eventData)
-        {
-            Logic(null);
-        }
-
         private void Logic(InventoryCell cell)
         {
+            if (_itemName == null || _itemDescription == null || _icon == null) return;
             if (cell != null && cell.Item != null)
             {
-                _infoPanel.gameObject.SetActive(true);
                 _icon.sprite = cell.Item.icon;
                 _itemName.text = cell.Item.itemName;
                 _itemDescription.text = cell.Item.itemDescription;
-            }
-            else
-            {
-                _infoPanel.gameObject.SetActive(false);
             }
         }
     }

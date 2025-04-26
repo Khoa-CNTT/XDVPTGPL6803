@@ -60,7 +60,6 @@ namespace KLTNLongKhoi
 
             playerController.Die();
             ragdollAnimator.EnableRagdoll();
-            gameManager.GameOver();
         }
 
         public void RespawnToLastPoint()

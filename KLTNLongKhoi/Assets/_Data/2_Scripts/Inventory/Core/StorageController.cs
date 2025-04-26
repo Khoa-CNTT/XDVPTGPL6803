@@ -10,7 +10,6 @@ namespace KLTNLongKhoi
     {
         [Header("StorageController")]
         [SerializeField] private RectTransform _storage;
-        [SerializeField] private TextMeshProUGUI _storageName;
         private InventoryOpener inventoryOpener;
         private Chest currentChest;
         public Chest CurrentChest => currentChest;
@@ -34,8 +33,6 @@ namespace KLTNLongKhoi
             SaveToChest();
 
             currentChest = chest;
-
-            _storageName.text = currentChest.ChestName;
 
             var cells = currentChest.GetCells();
 

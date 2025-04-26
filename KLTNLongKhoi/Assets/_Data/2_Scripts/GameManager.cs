@@ -1,15 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace KLTNLongKhoi
 {
     public class GameManager : MonoBehaviour
     {
-        [Header("UI Panels")]
-        [SerializeField] private GameOverPanel gameOverPanel;
-        [SerializeField] private SaveLoadManager saveLoadManager;
-        [SerializeField] private GameObject saveLoadPanel;
         [SerializeField] private CharacterStatus finalBoss;
-        [SerializeField] private GameObject youWinPanel;
+
+        [Header("Events")]
+        public UnityEvent onGameOver;
+        public UnityEvent onWinGame;
 
         private PlayerStatsManager playerStatsManager;
         private PlayerStatus playerStatus;
@@ -29,11 +30,7 @@ namespace KLTNLongKhoi
 
         private void Start()
         {
-            // Existing code...
-            if (saveLoadPanel != null)
-            {
-                saveLoadPanel.SetActive(false);
-            }
+
         }
 
         private void Update()
@@ -42,35 +39,32 @@ namespace KLTNLongKhoi
             {
                 WinGame();
             }
+
+            if (playerStatus.IsDead())
+            {
+                GameOver();
+            }
         }
 
-
-        public void GameOver()
+        private void GameOver()
         {
             if (isGameOver) return;
 
-            isGameOver = true;
-            // delay 1 khoản thời gian rồi hiện bản gameover
             Invoke(nameof(ShowGameOverPanel), 1f);
-
-            // Thêm logic game over khác ở đây
-            // Ví dụ: dừng nhạc, lưu điểm cao, etc.
+            isGameOver = true;
+            pauseManager.PauseGame();
         }
 
         private void ShowGameOverPanel()
         {
-            gameOverPanel.Show();
-            pauseManager.PauseGame();
+            onGameOver?.Invoke();
         }
 
         // UI chọn restart gameplay
         public void RestartGame()
         {
             isGameOver = false;
-            gameOverPanel.Hide();
             pauseManager.ResumeGame();
-
-            // Reset game state
             playerStatus.RespawnToLastPoint();
             playerStatsManager.ResetStats();
         }
@@ -80,8 +74,8 @@ namespace KLTNLongKhoi
             if (isGameOver) return;
 
             isGameOver = true;
-            youWinPanel.SetActive(true);
             pauseManager.PauseGame();
+            onWinGame?.Invoke();
         }
     }
 }

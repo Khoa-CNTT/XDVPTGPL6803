@@ -50,6 +50,7 @@ namespace KLTNLongKhoi
         {
             // Initialize NavMeshAgent settings
             agent.speed = movementSpeed;
+            agent.acceleration = 1f; // Tăng acceleration lên để giảm tốc nhanh hơn
             agent.stoppingDistance = 1f; // Stop before reaching the target
             agent.updateRotation = true; // Rotate towards the target
             agent.updatePosition = true; // Move towards the target
@@ -72,7 +73,7 @@ namespace KLTNLongKhoi
             {
                 animator.SetTrigger("Attack");
                 agent.isStopped = true;
-                Debug.Log("Attack");
+                // Debug.Log("Attack");
                 return;
             }
 
@@ -117,6 +118,8 @@ namespace KLTNLongKhoi
             // Nếu đã đến gần waypoint hiện tại (trong khoảng stopping distance)
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
+                StopAgentImmediately(); // Add this line
+
                 if (!isWaitingAtWaypoint)
                 {
                     isWaitingAtWaypoint = true;
@@ -124,12 +127,11 @@ namespace KLTNLongKhoi
                 }
 
                 idleTimer += Time.deltaTime;
-                animator.SetFloat(_animIDSpeed, 0f);
-                animator.SetFloat(_animIDMotionSpeed, 0f);
 
                 if (idleTimer >= idleTimeAtWaypoint)
                 {
                     isWaitingAtWaypoint = false;
+                    agent.isStopped = false; // Allow movement again
                     MoveToNextWaypoint();
                 }
                 return;
@@ -192,6 +194,18 @@ namespace KLTNLongKhoi
             Debug.LogWarning("No reachable waypoints found!");
             animator.SetFloat(_animIDSpeed, 0f);
             animator.SetFloat(_animIDMotionSpeed, 0f);
+        }
+
+        private void StopAgentImmediately()
+        {
+            if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending)
+            {
+                agent.velocity = Vector3.zero;
+                agent.isStopped = true;
+                // Reset animation
+                animator.SetFloat(_animIDSpeed, 0f);
+                animator.SetFloat(_animIDMotionSpeed, 0f);
+            }
         }
     }
 }

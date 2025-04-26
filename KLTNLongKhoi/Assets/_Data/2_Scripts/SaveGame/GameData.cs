@@ -85,7 +85,7 @@ namespace KLTNLongKhoi
         public float sfxVolume = 1f;
 
         // Graphics Settings
-        public string graphics = "Medium";
+        public int graphics = 1;
         public string resolution = "1920x1080";
         public int targetFrameRate = 60;
         public float brightness = 1f; 

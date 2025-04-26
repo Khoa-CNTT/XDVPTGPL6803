@@ -1,11 +1,12 @@
 using StarterAssets;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace KLTNLongKhoi
 {
-    public class MenuManager : MonoBehaviour
+    public class GameSettingOpener : MonoBehaviour
     {
-        [SerializeField] PopupScale panelSetting;
+        public OnTriggerThis onOpenSettingPanel;
         PauseManager pauseManager;
         GameManager gameManager;
         StarterAssetsInputs inputs;
@@ -30,11 +31,29 @@ namespace KLTNLongKhoi
 
             if (isShowSettingPanel)
             {
-                panelSetting.ScaleUp();
+                onOpenSettingPanel.ActiveObjects();
             }
             else
             {
-                panelSetting.ScaleDown();
+                onOpenSettingPanel.UnActiveObjects();
+            }
+
+            if (gameManager.IsGameOver == false)
+            {
+                pauseManager.SetPause(isShowSettingPanel);
+            }
+        }
+
+        public void OpenPopupPanelSetting(bool isOpen)
+        {
+            isShowSettingPanel = isOpen;
+            if (isShowSettingPanel)
+            {
+                onOpenSettingPanel.ActiveObjects();
+            }
+            else
+            {
+                onOpenSettingPanel.UnActiveObjects();
             }
 
             if (gameManager.IsGameOver == false)

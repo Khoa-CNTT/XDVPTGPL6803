@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d23f20b23eea8842bfc05a396f4fa58, type: 3}
   m_Name: New Upgrade Recipe
   m_EditorClassIdentifier: 
-  targetItem: {fileID: 0}
+  targetItem: {fileID: 11400000, guid: adf352669b519b64bbb3c24701ef6a2c, type: 2}
   requiredLevel: 1
-  resultItem: {fileID: 0}
+  resultItem: {fileID: 11400000, guid: 0df50777921db3149b7885bfd8c2204e, type: 2}
   resultAmount: 1
   materials: []
-  successRate: 1
+  successRate: 0.457
   destroyOnFailure: 0
   consumeMaterialsOnFailure: 0

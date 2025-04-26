@@ -2,53 +2,59 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
+using UnityEngine.Events;
 
 public class ButtonOptions : MonoBehaviour
 {
-    [System.Serializable]
-    public class OptionButton
-    {
-        public Transform buttonTransform;
-        public string value;
-    }
-
-    [SerializeField] private List<OptionButton> optionButtons;
+    [SerializeField] private List<Transform> optionButtons;
     [SerializeField] private Color selectedColor = Color.white;
     [SerializeField] private Color unselectedColor = new Color(1, 1, 1, 0.5f);
-    
-    private string currentValue;
+
+    private int currentIndex;
+
+    public UnityEvent onClick;
 
     void Start()
     {
         // Setup click listeners cho mỗi button
         foreach (var option in optionButtons)
         {
-            option.buttonTransform.GetComponent<Button>().onClick.AddListener(() => OnOptionSelected(option.value));
+            option.GetComponent<Button>().onClick.AddListener(() => OnOptionSelected(optionButtons.IndexOf(option)));
         }
     }
 
-    public void SetCurrentOption(string value)
+    public int GetCurrentIndex()
     {
-        currentValue = value;
-        UpdateButtonsVisibility();
+        return currentIndex;
     }
 
-    private void OnOptionSelected(string value)
+    private void OnOptionSelected(int index)
     {
-        currentValue = value;
+        currentIndex = index;
         UpdateButtonsVisibility();
-        // Thêm event hoặc callback nếu cần
+        onClick.Invoke(); // Thêm event hoặc callback nếu cần
     }
 
     private void UpdateButtonsVisibility()
     {
-        foreach (var option in optionButtons)
+        for (int i = 0; i < optionButtons.Count; i++)
         {
-            // Giữ Image component enabled nhưng thay đổi alpha
-            Color color = option.value == currentValue ? selectedColor : unselectedColor;
-            option.buttonTransform.GetComponent<Image>().color = color;
-            
-            // Button vẫn có thể click được vì Image vẫn enabled
+            Transform button = optionButtons[i];
+            Image image = button.GetComponent<Image>();
+            image.color = i == currentIndex ? selectedColor : unselectedColor;
+        }
+    }
+
+    public void SetCurrentIndex(int v)
+    {
+        if (v >= 0 && v < optionButtons.Count)
+        {
+            currentIndex = v;
+            UpdateButtonsVisibility();
+        }
+        else
+        {
+            Debug.LogError("Index out of range: " + v);
         }
     }
 }

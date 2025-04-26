@@ -11,7 +11,7 @@ namespace KLTNLongKhoi
         public UnityEvent onSettingsChanged = new UnityEvent();
 
         [Header("Graphics Settings")]
-        [SerializeField] private string _qualityLevel = "Medium";
+        [SerializeField] private int _qualityLevel = 1;
         [SerializeField] private Resolution[] _resolutions;
         [SerializeField] private string _currentResolution = "1920x1080";
         [SerializeField] private int _targetFrameRate = 60;
@@ -37,21 +37,10 @@ namespace KLTNLongKhoi
             ApplySettings();
         }
 
-        private int MapStringToQuality(string quality)
-        {
-            return quality switch
-            {
-                "Low" => 0,
-                "Medium" => 1,
-                "High" => 2,
-                _ => 1  // Default to Medium
-            };
-        }
-
         private void ApplySettings()
         {
             // Áp dụng graphics settings
-            QualitySettings.SetQualityLevel(MapStringToQuality(_qualityLevel), true);
+            QualitySettings.SetQualityLevel(_qualityLevel, true);
 
             // Áp dụng resolution
             string[] dimensions = _currentResolution.Split('x');
@@ -89,9 +78,11 @@ namespace KLTNLongKhoi
             }
         }
 
-        public void SetQualityLevel(string quality)
+        public void SetQualityLevel(int quality)
         {
             _qualityLevel = quality;
+            QualitySettings.SetQualityLevel(quality, true);
+            Debug.Log("Quality level set to: " + quality);
         }
 
         public void SetResolution(string resolution)
@@ -181,7 +172,7 @@ namespace KLTNLongKhoi
         public float GetMasterVolume() => _masterVolume;
         public float GetMusicVolume() => _musicVolume;
         public float GetSFXVolume() => _sfxVolume;
-        public string GetQualityLevel() => _qualityLevel;
+        public int GetQualityLevel() => _qualityLevel;
         public Resolution[] GetResolutions() => _resolutions;
         public string GetCurrentResolution() => _currentResolution;
         public int GetTargetFrameRate() => _targetFrameRate;

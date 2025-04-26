@@ -7,8 +7,7 @@ namespace KLTNLongKhoi
 {
     public class InventoryOpener : MonoBehaviour
     {
-        [SerializeField] PopupScale inventoryUI;
-        [SerializeField] private bool openAtStart;
+        [SerializeField] private OnTriggerThis onTriggerThis;
         private bool isOpen = false;
 
         StarterAssetsInputs inputs;
@@ -21,11 +20,6 @@ namespace KLTNLongKhoi
             inputs.openInventory.AddListener(OpenInventory);
             inventoryDragNDrop = FindFirstObjectByType<InventoryDragNDrop>();
             pauseManager = FindFirstObjectByType<PauseManager>();
-
-            if (openAtStart == false)
-            {
-                inventoryUI.ScaleDown();
-            }
         }
 
         private void OpenInventory()
@@ -40,11 +34,11 @@ namespace KLTNLongKhoi
 
             if (isOpen)
             {
-                inventoryUI.ScaleUp();
+                onTriggerThis.ActiveObjects();
             }
             else
             {
-                inventoryUI.ScaleDown();
+                onTriggerThis.UnActiveObjects();
             }
 
             pauseManager.SetPause(isOpen);
@@ -57,11 +51,11 @@ namespace KLTNLongKhoi
             
             if (isOpen)
             {
-                inventoryUI.ScaleUp();
+                onTriggerThis.ActiveObjects();
             }
             else
             {
-                inventoryUI.ScaleDown();
+                onTriggerThis.UnActiveObjects();
             }
             pauseManager.SetPause(isOpen);
         }
