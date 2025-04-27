@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace KLTNLongKhoi
 {
@@ -9,36 +10,27 @@ namespace KLTNLongKhoi
     public class StorageController : ContainerBase
     {
         [Header("StorageController")]
-        [SerializeField] private RectTransform _storage;
-        private InventoryOpener inventoryOpener;
+        public UnityEvent openPanel;
+        public UnityEvent closePanel;
         private Chest currentChest;
         public Chest CurrentChest => currentChest;
-
-        protected override void Awake()
-        {
-            base.Awake();
-            inventoryOpener = FindFirstObjectByType<InventoryOpener>();
-        }
-
+        PauseManager pauseManager;
         protected override void Start()
         {
             base.Start();
-            _storage.gameObject.SetActive(false);
+            pauseManager = FindFirstObjectByType<PauseManager>();
         }
 
         public void OpenStorage(Chest chest)
         {
-            inventoryOpener.OpenInventory(true);
-
+            openPanel.Invoke();
+            pauseManager.PauseGame();
+            Debug.Log("Open storage");
             SaveToChest();
-
             currentChest = chest;
-
             var cells = currentChest.GetCells();
-
             if (cells != null)
             {
-                _storage.gameObject.SetActive(true);
                 if (cells.Count > 0)
                 {
                     for (int i = 0; i < inventoryCells.Count; i++)
@@ -62,17 +54,10 @@ namespace KLTNLongKhoi
 
         public void CloseStorage()
         {
-            inventoryOpener.OpenInventory(false);
-
             SaveToChest();
             currentChest = null;
-
-            Invoke(nameof(DisableStorageUI), 0.6f);
-        }
-
-        private void DisableStorageUI()
-        {
-            _storage.gameObject.SetActive(false);
+            closePanel.Invoke();
+            pauseManager.ResumeGame();
         }
 
         public void SaveToChest()

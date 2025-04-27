@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -54,13 +55,13 @@ namespace KLTNLongKhoi
             return false;
         }
 
-        public bool TryGetCellWithFreeItemsCount(InventoryItemSO item, out InventoryCell cell)
+        public bool TryGetCellWithFreeItemsCount(ItemDataSO item, out InventoryCell cell)
         {
             for (int i = 0; i < inventoryCells.Count; i++)
             {
                 if (inventoryCells[i].Item == item)
                 {
-                    if (inventoryCells[i].ItemsCount < item.maxItemsCount)
+                    if (inventoryCells[i].ItemsCount < item.itemData.maxStack)
                     {
                         cell = inventoryCells[i];
                         return true;
@@ -71,16 +72,16 @@ namespace KLTNLongKhoi
             return false;
         }
 
-        public void AddItemsCount(InventoryItemSO item, int count, out int countLeft)
+        public void AddItemsCount(ItemDataSO item, int count, out int countLeft)
         {
             while (count > 0)
             {
                 if (TryGetCellWithFreeItemsCount(item, out var cell))
                 {
-                    if ((cell.ItemsCount + count) > item.maxItemsCount)
+                    if ((cell.ItemsCount + count) > item.itemData.maxStack)
                     {
-                        count -= (item.maxItemsCount - cell.ItemsCount);
-                        cell.ItemsCount = item.maxItemsCount;
+                        count -= (item.itemData.maxStack - cell.ItemsCount);
+                        cell.ItemsCount = item.itemData.maxStack;
                     }
                     else
                     {
@@ -92,10 +93,10 @@ namespace KLTNLongKhoi
                 else if (TryGetEmptyCell(out cell))
                 {
                     cell.SetInventoryItem(item);
-                    if (count > item.maxItemsCount)
+                    if (count > item.itemData.maxStack)
                     {
-                        cell.ItemsCount = item.maxItemsCount;
-                        count -= item.maxItemsCount;
+                        cell.ItemsCount = item.itemData.maxStack;
+                        count -= item.itemData.maxStack;
                     }
                     else
                     {

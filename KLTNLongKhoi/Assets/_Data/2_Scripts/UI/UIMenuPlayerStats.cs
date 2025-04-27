@@ -1,26 +1,24 @@
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace KLTNLongKhoi
 {
     public class UIMenuPlayerStats : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI nameAndLevel;
-        [SerializeField] private TextMeshProUGUI moneyText;
-        [SerializeField] private TextMeshProUGUI moneyText2;
-        [SerializeField] private TextMeshProUGUI diamondsText;
-        [SerializeField] private TextMeshProUGUI diamondsText2;
+        [SerializeField] private List<TextMeshProUGUI> moneyText;
 
-        PlayerData playerData = null;
+        SaveLoadManager saveLoadManager;
+        PlayerData playerData = null; 
+        void Start()
+        {
+            saveLoadManager = FindFirstObjectByType<SaveLoadManager>();
+            playerData = saveLoadManager.GetGameData().player;
+        }
 
         void FixedUpdate()
         {
-            playerData = DataManager.Instance.GameData.player;
-            if (nameAndLevel != null) nameAndLevel.text = $"Name: {playerData.name} + Level: {playerData.level}";
-            if (moneyText != null) moneyText.text = $"Money: {playerData.currency}";
-            if (moneyText2 != null) moneyText2.text = $"Money: {playerData.currency}";
-            if (diamondsText != null) diamondsText.text = $"Diamonds: {playerData.diamonds}";
-            if (diamondsText2 != null) diamondsText2.text = $"Diamonds: {playerData.diamonds}";
+            foreach (var text in moneyText) text.text = $"{playerData.money}";
         }
     }
 }

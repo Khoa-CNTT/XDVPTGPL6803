@@ -99,7 +99,7 @@ namespace StarterAssets
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
         private int _animIDHurt; // Thêm ID cho animation bị đánh
-        private bool _canMove = true; // Biến kiểm tra có thể di chuyển
+        private bool _canMove; // Biến kiểm tra có thể di chuyển
         private bool _isHurt;
         public float _hurtDuration = 1f; // Thời gian animation bị đánh
         private float _hurtTimer;
@@ -112,7 +112,7 @@ namespace StarterAssets
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
         private bool _hasAnimator;
-        private bool _isDead = false;
+        private bool _isDead;
         private PlayerStatus _playerStatus;
 
         private const float _threshold = 0.01f;
@@ -164,6 +164,10 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
+            _canMove = true;
+            _isHurt = false;
+            _isDead = false;
+            _hurtTimer = 0f;
         }
 
         private void Update()
@@ -444,6 +448,7 @@ namespace StarterAssets
         public void Die()
         {
             if (IsDead) return;
+            IsDead = true; // Không cho di chuyển và không cho nhảy nữa khi chết
 
             if (_hasAnimator)
             {

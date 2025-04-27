@@ -18,7 +18,7 @@ namespace KLTNLongKhoi
                 return _icon;
             }
         }
-        public InventoryItemSO Item
+        public ItemDataSO Item
         {
             get
             {
@@ -38,7 +38,7 @@ namespace KLTNLongKhoi
         }
 
         private int _itemsCount;
-        private InventoryItemSO _item;
+        private ItemDataSO _item;
         private ContainerBase _container;
 
         public void Init(ContainerBase container)
@@ -47,7 +47,7 @@ namespace KLTNLongKhoi
             UpdateCellUI();
         }
 
-        public void SetInventoryItem(InventoryItemSO item)
+        public void SetInventoryItem(ItemDataSO item)
         {
             _item = item;
         }

@@ -26,7 +26,7 @@ namespace KLTNLongKhoi
             {
                 if (Input.GetKeyDown(addingItems[i].key))
                 {
-                    _container.AddItemsCount(addingItems[i].item, addingItems[i].item.maxItemsCount, out var itemsLeft);
+                    _container.AddItemsCount(addingItems[i].item, addingItems[i].item.itemData.maxStack, out var itemsLeft);
                     if (itemsLeft > 0)
                     {
                         //this is where you can throw away remaining items
@@ -38,7 +38,7 @@ namespace KLTNLongKhoi
         [System.Serializable]
         public class AddingItem
         {
-            public InventoryItemSO item;
+            public ItemDataSO item;
             public KeyCode key;
         }
     }

@@ -48,8 +48,8 @@ MonoBehaviour:
   _dontDestroyOnLoad: 1
   serialize: 1
   usingXML: 0
-  encrypt: 1
-  fileSaveName: GameData.txt
+  encrypt: 0
+  fileSaveName: GameData.json
   gameData:
     player:
       name: 
@@ -74,12 +74,10 @@ MonoBehaviour:
       masterVolume: 1
       musicVolume: 1
       sfxVolume: 1
-      graphics: 
+      graphics: 0
       resolution: 1920x1080
       targetFrameRate: 60
       brightness: 1
-      rayTracingEnabled: 0
-      vSyncEnabled: 1
       mouseSensitivity: 1
       invertYAxis: 0
       language: English

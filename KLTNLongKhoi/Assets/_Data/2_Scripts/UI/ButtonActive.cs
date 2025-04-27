@@ -23,7 +23,13 @@ public class ButtonActive : MonoBehaviour
 
         foreach (GameObject obj in objectUnActive)
         {
+            if (obj == null)
+            {
+                Debug.LogWarning("Object is null", transform);
+                continue;
+            }
             obj.SetActive(false);
+
         }
 
     }

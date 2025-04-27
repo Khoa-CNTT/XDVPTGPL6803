@@ -8,18 +8,18 @@ namespace KLTNLongKhoi
     public class EnemyCtrl : MonoBehaviour
     {
         [SerializeField] List<Transform> waypoints;
-        [SerializeField] float hitRange;
+        [SerializeField] float hitRange; // Khoảng cách để tấn công
         private CharacterStatus characterStatus;
         private CharacterVision characterVision;
         private NavMeshAgent agent;
         private Animator animator;
         private bool isSeePlayer = false;
         private ActorHitbox actorHitbox;
+        private bool isAttacking = false;
+        private PlayerStatsManager playerStatsManager;
 
         // Animation IDs
-        private int _animIDSpeed;
-        private int _animIDMotionSpeed;
-        
+
         [SerializeField] private float movementSpeed = 3f;
         [SerializeField] private float idleTimeAtWaypoint = 2f; // Time to wait at each waypoint
         private float idleTimer = 0f;
@@ -35,55 +35,37 @@ namespace KLTNLongKhoi
             characterVision = GetComponentInChildren<CharacterVision>();
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
-            
-            // Khởi tạo Animation IDs
-            AssignAnimationIDs();
-        }
+            actorHitbox = GetComponentInChildren<ActorHitbox>();
 
-        private void AssignAnimationIDs()
-        {
-            _animIDSpeed = Animator.StringToHash("Speed");
-            _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+            // Find PlayerStatsManager
+            playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
         }
-
         private void Start()
         {
             // Initialize NavMeshAgent settings
             agent.speed = movementSpeed;
-            agent.acceleration = 1f; // Tăng acceleration lên để giảm tốc nhanh hơn
-            agent.stoppingDistance = 1f; // Stop before reaching the target
-            agent.updateRotation = true; // Rotate towards the target
-            agent.updatePosition = true; // Move towards the target
-
-            // Set initial destination to the first waypoint
-            if (waypoints.Count > 0)
-            {
-                agent.SetDestination(waypoints[0].position);
-            }
         }
 
         private void FixedUpdate()
         {
             if (characterStatus.IsDead()) return;
 
+            if (isAttacking) return;
+
             isSeePlayer = characterVision.Target != null;
 
             // Check if the enemy is within hit range of the player
             if (isSeePlayer && Vector3.Distance(transform.position, characterVision.Target.position) <= hitRange)
             {
-                animator.SetTrigger("Attack");
-                agent.isStopped = true;
-                // Debug.Log("Attack");
+                SetStateAttack();
                 return;
             }
 
             // If the enemy sees the player, move towards them
             if (isSeePlayer)
             {
-                agent.isStopped = false;
                 agent.SetDestination(characterVision.Target.position);
-                animator.SetFloat(_animIDSpeed, movementSpeed);
-                animator.SetFloat(_animIDMotionSpeed, 1f);
+                SetStateMove();
             }
             else
             {
@@ -93,24 +75,19 @@ namespace KLTNLongKhoi
 
         private void OnSendDamage(AnimationEvent animationEvent)
         {
-            if (actorHitbox != null)
+            if (animationEvent.intParameter == 1)
             {
                 actorHitbox.IsAttacking = true;
             }
-        }
-
-        private void OnAttackComplete(AnimationEvent animationEvent)
-        {
-            agent.isStopped = false;
-            if (actorHitbox != null)
+            else
             {
                 actorHitbox.IsAttacking = false;
             }
         }
 
-        private void OnAttack(AnimationEvent animationEvent)
+        private void OnAttackComplete(AnimationEvent animationEvent)
         {
-            agent.isStopped = true;
+            isAttacking = false;
         }
 
         private void Patrol()
@@ -118,7 +95,7 @@ namespace KLTNLongKhoi
             // Nếu đã đến gần waypoint hiện tại (trong khoảng stopping distance)
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
-                StopAgentImmediately(); // Add this line
+                SetStateIdle();
 
                 if (!isWaitingAtWaypoint)
                 {
@@ -131,7 +108,6 @@ namespace KLTNLongKhoi
                 if (idleTimer >= idleTimeAtWaypoint)
                 {
                     isWaitingAtWaypoint = false;
-                    agent.isStopped = false; // Allow movement again
                     MoveToNextWaypoint();
                 }
                 return;
@@ -156,9 +132,7 @@ namespace KLTNLongKhoi
             }
             else
             {
-                // Đang di chuyển, cập nhật animation
-                animator.SetFloat(_animIDSpeed, movementSpeed);
-                animator.SetFloat(_animIDMotionSpeed, 1f);
+                SetStateMove();
             }
         }
 
@@ -179,8 +153,7 @@ namespace KLTNLongKhoi
                     if (path.status == NavMeshPathStatus.PathComplete)
                     {
                         agent.SetDestination(waypoints[nextWaypointIndex].position);
-                        animator.SetFloat(_animIDSpeed, movementSpeed);
-                        animator.SetFloat(_animIDMotionSpeed, 1f);
+                        SetStateMove();
                         return;
                     }
                 }
@@ -190,22 +163,29 @@ namespace KLTNLongKhoi
                 attempts++;
             }
 
-            // Nếu không tìm được waypoint nào có thể đi được
-            Debug.LogWarning("No reachable waypoints found!");
-            animator.SetFloat(_animIDSpeed, 0f);
-            animator.SetFloat(_animIDMotionSpeed, 0f);
+            Debug.LogWarning("không tìm được waypoint nào có thể đi được!");
+            SetStateIdle();
         }
 
-        private void StopAgentImmediately()
+        // Animation
+        public void SetStateAttack()
         {
-            if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending)
-            {
-                agent.velocity = Vector3.zero;
-                agent.isStopped = true;
-                // Reset animation
-                animator.SetFloat(_animIDSpeed, 0f);
-                animator.SetFloat(_animIDMotionSpeed, 0f);
-            }
+            if (isAttacking) return; // Prevent attack animation interruption
+
+            isAttacking = true;
+            animator.SetTrigger("Attack");
+        }
+
+        public void SetStateMove()
+        {
+            animator.SetFloat("Speed", movementSpeed);
+            animator.SetFloat("MotionSpeed", 1f);
+        }
+
+        public void SetStateIdle()
+        {
+            animator.SetFloat("Speed", 0f);
+            animator.SetFloat("MotionSpeed", 1f);
         }
     }
 }

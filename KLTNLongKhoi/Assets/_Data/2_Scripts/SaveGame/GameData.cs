@@ -8,47 +8,29 @@ namespace KLTNLongKhoi
     [Serializable]
     public class GameData
     {
-        public PlayerData player = new PlayerData();
-        public WorldState worldState = new WorldState();
+        // User Data
         public GameSettingsData gameSettings = new GameSettingsData();
-        public WorldItemsData worldItems = new WorldItemsData();
+
+        // GamePlay data
+        public PlayerData player = new PlayerData();
+        public List<ItemData> worldItems = new List<ItemData>();
         public List<MonsterData> monsters = new List<MonsterData>();
     }
 
     [Serializable]
     public class PlayerData
     {
-        public string name;
-        public int level;
-        public int experience;
-        public int health;
-        public Vector3 position = Vector3.zero;
-        public int currency;
-        public int diamonds;
-        public InventoryData inventory = new InventoryData();
-        public int baseStrength;
-        public int baseCritical;
-        public int baseIntelligence;
-        public int baseStamina;
-    }
-
-    [Serializable]
-    public class InventoryData
-    {
-        public List<ItemData> items = new List<ItemData>();
-    }
-
-    [Serializable]
-    public class WorldItemsData
-    {
-        public List<WorldItemData> items = new List<WorldItemData>();
-    }
-
-    [Serializable]
-    public class WorldItemData : ItemData
-    {
+        public float baseHP = 5;
+        public float baseSP = 5;
+        public float baseMP = 5;
+        public float baseStr = 5;
+        public float baseCri = 5;
+        public float baseInt = 5;
+        public float money = 0;
+        public float level = 1;
+        public float experience = 0;
         public Vector3 position;
-        public bool isActive;
+        public List<ItemData> inventory;
     }
 
     [Serializable]
@@ -56,24 +38,20 @@ namespace KLTNLongKhoi
     {
         public string id;
         public string itemName;
+        public string description;
         public ItemType itemType;
-        public int count = 1;
+        public int currentCount = 1;
+        public int maxStack = 1;
 
-        // Specific properties based on item type
-        public float defensePoints; // For armor items
-        public float durability;    // For tools
-        public int healthBonus;     // For food/consumables
-        public int manaBonus;       // For potions
-    }
-
-
-    [Serializable]
-    public class WorldState
-    {
-        public string dayTime;
-        public string weather;
-        public int currentSceneIndex;
-        public string sceneName;
+        // Bonus stats
+        public int physicalDamage;
+        public int magicDamage;
+        public int defensePoints;
+        public int resistance; // sức chống cự 
+        public float attackSpeed;
+        public int healthRecovery;
+        public int manaRecovery;
+        public float criticalChance;
     }
 
     [Serializable]
@@ -85,58 +63,24 @@ namespace KLTNLongKhoi
         public float sfxVolume = 1f;
 
         // Graphics Settings
-        public int graphics = 1;
+        public int qualityLevel = 1; // 0: Thấp, 1: Trung bình, 2: Cao
         public string resolution = "1920x1080";
         public int targetFrameRate = 60;
-        public float brightness = 1f; 
+        public float brightness = 1f;
 
-        // Gameplay Settings
         public float mouseSensitivity = 1f;
-        public bool invertYAxis = false;
-        public string language = "English";
     }
 
     [Serializable]
     public class MonsterData
     {
         public string id;
-        public string type;
+        public string name;
+        public string description;
         public int level;
         public int health;
         public bool isDefeated;
         public Vector3 position;
-        public string state; // IDLE, PATROL, PURSUE, ATTACK, SLEEP
-    }
-
-    [Serializable]
-    public class ActorStats
-    {
-        public string actorName;
-        public string id;
-        public string state;
-    }
-
-
-
-    [System.Serializable]
-    public class ItemStats
-    {
-        // Combat stats
-        public int physicalDamage;
-        public int magicDamage;
-        public int armor;
-        public int resistance;
-        [Range(0, 1)] public float attackSpeed;
-
-        // Bonus stats
-        public int healthBonus;
-        public int manaBonus;
-        public int healthRecovery;
-        public int manaRecovery;
-
-        // Hidden stats
-        public float criticalChance;
-        public float dodgeChance;
     }
 
     [Serializable]
@@ -149,45 +93,5 @@ namespace KLTNLongKhoi
         Resource,
         Consumable,
         Quest
-    }
-
-    public enum WeaponType
-    {
-        Dagger,
-        Spear,
-        Sword,
-        Shield
-    }
-
-    public enum ArmorType
-    {
-        Cloak,      // Áo choàng
-        BronzeRing, // Vòng đồng
-        DragonHelm, // Mũ rồng
-        Loincloth,  // Khố
-        DragonBlood // Long Huyết
-    }
-
-    public enum ConsumableType
-    {
-        HealthPotion, // Bình máu
-        ManaPotion,
-        BuffPotion
-    }
-
-    public enum ResourceType
-    {
-        Stone,      // Đá
-        Iron,       // Sắt
-        Wood,       // Gỗ
-        Coral,      // San hô
-        Pearl,      // Ngọc trai
-        FishScale,  // Da Ngư Tinh
-        FoxFur,     // Lông Hồ Tinh
-        FairyWater, // Nước tiên
-        Rope,       // Dây thừng
-        Quartz,     // Đá thạch anh
-        Gemstone,   // Đá quý
-        SpiderSilk  // Tơ nhện
     }
 }

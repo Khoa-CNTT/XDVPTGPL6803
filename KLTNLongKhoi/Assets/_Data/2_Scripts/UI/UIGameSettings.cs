@@ -6,7 +6,7 @@ using System;
 
 namespace KLTNLongKhoi
 {
-    public class UIMenuGameSettings : MonoBehaviour
+    public class UIGameSettings : MonoBehaviour
     {
         [Header("Graphics Settings")]
         [SerializeField] private ButtonOptions qualityOptions;
@@ -20,63 +20,40 @@ namespace KLTNLongKhoi
         [SerializeField] private Slider sfxVolumeSlider;
 
         private GameSettings gameSettings;
-        private bool isInitializing = false;
 
         private void Start()
         {
             gameSettings = FindFirstObjectByType<GameSettings>();
-            if (gameSettings == null)
-            {
-                Debug.LogError("GameSettings not found!");
-                return;
-            }
-
-            // Đăng ký lắng nghe sự kiện từ GameSettings
             gameSettings.onSettingsChanged.AddListener(OnSettingsChanged);
-
-            InitializeUI();
             SetupListeners();
+            OnSettingsChanged();
         }
 
         private void OnDestroy()
         {
-            // Hủy đăng ký lắng nghe khi component bị hủy
-            if (gameSettings != null)
-            {
-                gameSettings.onSettingsChanged.RemoveListener(OnSettingsChanged);
-            }
-        }
-
-        // Callback khi settings thay đổi từ bên ngoài
-        private void OnSettingsChanged()
-        {
-            if (!isInitializing) // Tránh vòng lặp vô hạn
-            {
-                InitializeUI();
-            }
+            gameSettings.onSettingsChanged.RemoveListener(OnSettingsChanged);
         }
 
         // Initialize UI elements from GameSettings
-        private void InitializeUI()
+        private void OnSettingsChanged()
         {
-            isInitializing = true;
             if (qualityOptions != null)
             {
-                qualityOptions.SetCurrentIndex(gameSettings.GetQualityLevel());
+                qualityOptions.SetCurrentIndex(gameSettings.GameSettingsData.qualityLevel);
             }
 
             if (resolutionOptions != null)
             {
                 Resolution[] resolutions = Screen.resolutions;
                 string[] resolutionStrings = resolutions.Select(r => $"{r.width}x{r.height}").ToArray();
-                resolutionOptions.SetOptions(resolutionStrings, gameSettings.GetCurrentResolution());
+                resolutionOptions.SetOptions(resolutionStrings, gameSettings.GameSettingsData.resolution);
             }
 
             if (fpsOptions != null)
             {
                 fpsOptions.SetOptions(
                     new string[] { "30 FPS", "60 FPS", "120 FPS" },
-                    $"{gameSettings.GetTargetFrameRate()} FPS"
+                    $"{gameSettings.GameSettingsData.targetFrameRate} FPS"
                 );
             }
 
@@ -84,27 +61,24 @@ namespace KLTNLongKhoi
             {
                 brightnessOptions.SetOptions(
                     new string[] { "Tối", "Tối hơn", "Trung bình", "Sáng", "Sáng hơn" },
-                    GetBrightnessText(gameSettings.GetBrightness())
+                    GetBrightnessText(gameSettings.GameSettingsData.brightness)
                 );
             }
 
             if (masterVolumeSlider != null)
-                masterVolumeSlider.value = gameSettings.GetMasterVolume();
+                masterVolumeSlider.value = gameSettings.GameSettingsData.masterVolume;
 
             if (musicVolumeSlider != null)
-                musicVolumeSlider.value = gameSettings.GetMusicVolume();
+                musicVolumeSlider.value = gameSettings.GameSettingsData.musicVolume;
 
             if (sfxVolumeSlider != null)
-                sfxVolumeSlider.value = gameSettings.GetSFXVolume();
-
-            isInitializing = false;
+                sfxVolumeSlider.value = gameSettings.GameSettingsData.sfxVolume;
         }
-
 
 
         // Setup listeners for UI elements
         private void SetupListeners()
-        {
+        { 
             if (qualityOptions != null)
                 qualityOptions.onClick.AddListener(OnQualityChanged);
             if (resolutionOptions != null)
@@ -160,11 +134,6 @@ namespace KLTNLongKhoi
             gameSettings.SetSFXVolume(value);
         }
         #endregion
-
-        public void SaveSettings()
-        {
-            gameSettings.SaveSettings();
-        }
 
         #region Helper Methods
         private int GetFPSFromDropdownIndex(int index)

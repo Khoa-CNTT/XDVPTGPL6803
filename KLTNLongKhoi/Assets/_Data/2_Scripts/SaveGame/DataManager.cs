@@ -30,20 +30,12 @@ namespace KLTNLongKhoi
         {
             base.Awake();
             SetDontDestroyOnLoad(true);
+#if UNITY_EDITOR
+            filePath = Application.dataPath + "/" + fileSaveName;
+#else
             filePath = Application.persistentDataPath + "/" + fileSaveName;
-        }
-
-        // kiểm tra xem đây có phải là gameplay mới hay không
-        public bool IsNewGameplay()
-        {
-            return GameData.player.position == Vector3.zero;
-        }
-
-        // reset gameplay data
-        public void ResetGameplayData()
-        {
-            GameData.player = new PlayerData();
-            GameData.worldState = new WorldState();
+#endif
+            ImportFileGameData();
         }
 
         public void DeleteFileSave()
@@ -54,7 +46,7 @@ namespace KLTNLongKhoi
         public void ArchiveGameData()
         {
             File.WriteAllText(filePath, SerializeAndEncrypt(GameData));
-            Debug.Log("Game data saved to: " + filePath);
+            // Debug.Log("Game data saved to: " + filePath);
         }
 
         public void ImportFileGameData()
@@ -62,12 +54,12 @@ namespace KLTNLongKhoi
             if (File.Exists(filePath))
             {
                 string stringData = File.ReadAllText(filePath);
-                Debug.Log("Game data loaded from: " + filePath);
+                // Debug.Log("Game data loaded from: " + filePath);
                 GameData = Deserialized(stringData);
             }
             else
             {
-                Debug.LogWarning("Save file not found in: " + filePath);
+                // Debug.LogWarning("Save file not found in: " + filePath);
                 GameData = new GameData();
                 ArchiveGameData();
             }

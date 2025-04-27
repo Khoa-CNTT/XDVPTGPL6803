@@ -5,89 +5,63 @@ using UnityEngine.Events;
 
 namespace KLTNLongKhoi
 {
-    public class GameSettings : MonoBehaviour, ISaveData
+    public class GameSettings : MonoBehaviour
     {
         // Một event duy nhất cho mọi thay đổi
         public UnityEvent onSettingsChanged = new UnityEvent();
 
-        [Header("Graphics Settings")]
-        [SerializeField] private int _qualityLevel = 1;
-        [SerializeField] private Resolution[] _resolutions;
-        [SerializeField] private string _currentResolution = "1920x1080";
-        [SerializeField] private int _targetFrameRate = 60;
-        [SerializeField] private float _brightness = 1f;
+        [SerializeField] private GameSettingsData gameSettingsData;
+        [SerializeField] private AudioMixer audioMixer;
 
-        [Header("Audio Settings")]
-        [SerializeField] private AudioMixer _audioMixer;
-        [Range(0f, 1f)]
-        [SerializeField] private float _masterVolume = 1f;
-        [Range(0f, 1f)]
-        [SerializeField] private float _musicVolume = 1f;
-        [Range(0f, 1f)]
-        [SerializeField] private float _sfxVolume = 1f;
+        public GameSettingsData GameSettingsData { get => gameSettingsData; set => gameSettingsData = value; }
+
+        private SaveLoadManager saveLoadManager;
+
+        void Awake()
+        {
+            saveLoadManager = FindFirstObjectByType<SaveLoadManager>();
+        }
 
         private void Start()
         {
-            _resolutions = Screen.resolutions;
-            LoadCurrentSettings();
+            GameSettingsData = saveLoadManager.GetGameData().gameSettings;
+            Init();
         }
 
-        private void LoadCurrentSettings()
+        void OnDestroy()
         {
-            ApplySettings();
+            SaveSettings();
         }
 
-        private void ApplySettings()
+        public void SaveSettings()
         {
-            // Áp dụng graphics settings
-            QualitySettings.SetQualityLevel(_qualityLevel, true);
+            saveLoadManager.SaveData(gameSettingsData);
+        }
 
-            // Áp dụng resolution
-            string[] dimensions = _currentResolution.Split('x');
-            if (dimensions.Length == 2 &&
-                int.TryParse(dimensions[0], out int width) &&
-                int.TryParse(dimensions[1], out int height))
-            {
-                Screen.SetResolution(width, height, Screen.fullScreen);
-            }
-
-            // Áp dụng frame rate và vsync
-            Application.targetFrameRate = _targetFrameRate;
-
-            ApplyAudioSettings();
-
-            // Todo: Áp dụng brightness thông qua post-processing
-            // var postProcessVolume = FindFirstObjectByType<UnityEngine.Rendering.PostProcessing.PostProcessVolume>();
-            // if (postProcessVolume != null && 
-            //     postProcessVolume.profile.TryGetSettings(out UnityEngine.Rendering.PostProcessing.ColorGrading colorGrading))
-            // {
-            //     colorGrading.postExposure.value = _brightness;
-            // } 
+        public void Init()
+        {
+            SetQualityLevel(gameSettingsData.qualityLevel);
+            SetResolution(gameSettingsData.resolution);
+            SetTargetFrameRate(gameSettingsData.targetFrameRate);
+            SetBrightness(gameSettingsData.brightness);
+            SetMasterVolume(gameSettingsData.masterVolume);
+            SetMusicVolume(gameSettingsData.musicVolume);
+            SetSFXVolume(gameSettingsData.sfxVolume);
 
             onSettingsChanged.Invoke();
         }
 
-        private void ApplyAudioSettings()
-        {
-            // Tìm và áp dụng Audio Mixer settings
-            if (_audioMixer != null)
-            {
-                _audioMixer.SetFloat("Master", Mathf.Log10(_masterVolume) * 20);
-                _audioMixer.SetFloat("Music", Mathf.Log10(_musicVolume) * 20);
-                _audioMixer.SetFloat("SFX", Mathf.Log10(_sfxVolume) * 20);
-            }
-        }
 
         public void SetQualityLevel(int quality)
         {
-            _qualityLevel = quality;
+            gameSettingsData.qualityLevel = quality;
             QualitySettings.SetQualityLevel(quality, true);
-            Debug.Log("Quality level set to: " + quality);
+            SaveSettings();
         }
 
         public void SetResolution(string resolution)
         {
-            _currentResolution = resolution;
+            gameSettingsData.resolution = resolution;
             string[] dimensions = resolution.Split('x');
             if (dimensions.Length == 2 &&
                 int.TryParse(dimensions[0], out int width) &&
@@ -95,101 +69,46 @@ namespace KLTNLongKhoi
             {
                 Screen.SetResolution(width, height, Screen.fullScreen);
             }
+
+            SaveSettings();
         }
 
         public void SetTargetFrameRate(int fps)
         {
-            _targetFrameRate = fps;
+            gameSettingsData.targetFrameRate = fps;
             Application.targetFrameRate = fps;
+
+            SaveSettings();
         }
 
         public void SetBrightness(float brightness)
         {
-            _brightness = Mathf.Clamp(brightness, 0f, 2f);
-            // Implement brightness adjustment logic here
-            // This might involve post-processing or other screen effects
+            gameSettingsData.brightness = Mathf.Clamp(brightness, 0f, 2f);
+
+            // TODO: Chỉnh ánh sáng lại 
+
+            SaveSettings();
         }
 
         public void SetMasterVolume(float volume)
         {
-            _masterVolume = Mathf.Clamp01(volume);
-            AudioListener.volume = _masterVolume;
-
-            ApplyAudioSettings();
+            gameSettingsData.masterVolume = Mathf.Clamp01(volume);
+            audioMixer.SetFloat("Master", Mathf.Log10(gameSettingsData.masterVolume) * 20);
+            SaveSettings();
         }
 
         public void SetMusicVolume(float volume)
         {
-            _musicVolume = Mathf.Clamp01(volume);
-            // Implement music volume adjustment logic here
-            // This might involve finding and adjusting an audio mixer 
-            ApplyAudioSettings();
+            gameSettingsData.musicVolume = Mathf.Clamp01(volume);
+            audioMixer.SetFloat("Music", Mathf.Log10(gameSettingsData.musicVolume) * 20);
+            SaveSettings();
         }
 
         public void SetSFXVolume(float volume)
         {
-            _sfxVolume = Mathf.Clamp01(volume);
-            // Implement SFX volume adjustment logic here
-            // This might involve finding and adjusting an audio mixer 
-            ApplyAudioSettings();
-        }
-
-        #region ISaveData Implementation
-        public void LoadData<T>(T data)
-        {
-            if (data is GameSettingsData settings)
-            {
-                _masterVolume = settings.masterVolume;
-                _musicVolume = settings.musicVolume;
-                _sfxVolume = settings.sfxVolume;
-                _qualityLevel = settings.graphics;
-                _targetFrameRate = settings.targetFrameRate;
-                _currentResolution = settings.resolution;
-                _brightness = settings.brightness;
-
-                ApplySettings();
-            }
-        }
-
-        public T SaveData<T>()
-        {
-            GameSettingsData settings = new GameSettingsData
-            {
-                masterVolume = _masterVolume,
-                musicVolume = _musicVolume,
-                sfxVolume = _sfxVolume,
-                graphics = _qualityLevel,
-                targetFrameRate = _targetFrameRate,
-                resolution = _currentResolution,
-                brightness = _brightness,
-            };
-
-            return (T)(object)settings;
-        }
-        #endregion
-
-        // Getters for current settings
-        public float GetMasterVolume() => _masterVolume;
-        public float GetMusicVolume() => _musicVolume;
-        public float GetSFXVolume() => _sfxVolume;
-        public int GetQualityLevel() => _qualityLevel;
-        public Resolution[] GetResolutions() => _resolutions;
-        public string GetCurrentResolution() => _currentResolution;
-        public int GetTargetFrameRate() => _targetFrameRate;
-        public float GetBrightness() => _brightness;
-
-        // Khi cần lưu settings
-        public void SaveSettings()
-        {
-            if (SaveLoadManager.Instance != null)
-            {
-                SaveLoadManager.Instance.SaveGame();
-            }
-        }
-
-        public string GetResolution()
-        {
-            return _currentResolution;
+            gameSettingsData.sfxVolume = Mathf.Clamp01(volume);
+            audioMixer.SetFloat("SFX", Mathf.Log10(gameSettingsData.sfxVolume) * 20);
+            SaveSettings();
         }
     }
 }

@@ -35,6 +35,7 @@ namespace KLTNLongKhoi
         {
             InitializeComponents();
             RegisterInputEvents();
+            IsAttacking = false;
         }
 
         private void OnDestroy()
@@ -99,7 +100,7 @@ namespace KLTNLongKhoi
         }
 
         // Animation Event Handlers
-        public void OnAttackComplete(AnimationEvent animationEvent)
+        private void OnAttackComplete(AnimationEvent animationEvent)
         {
             if (actorHitbox != null)
             {

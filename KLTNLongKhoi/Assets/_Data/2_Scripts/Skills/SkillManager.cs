@@ -8,7 +8,7 @@ namespace KLTNLongKhoi
         [SerializeField] private List<SkillData> startingSkills;
         [SerializeField] private Transform attacker;
         
-        private Dictionary<string, Skill> skills = new Dictionary<string, Skill>();
+        private Dictionary<string, PlayerSkill> skills = new Dictionary<string, PlayerSkill>();
         private PlayerStatsManager statsManager;
 
         private void Awake()
@@ -37,13 +37,13 @@ namespace KLTNLongKhoi
         {
             if (!skills.ContainsKey(skillData.skillId))
             {
-                var skill = new Skill(skillData);
+                var skill = new PlayerSkill(skillData);
                 skills.Add(skillData.skillId, skill);
                 SetupSkillEffects(skill);
             }
         }
 
-        private void SetupSkillEffects(Skill skill)
+        private void SetupSkillEffects(PlayerSkill skill)
         {
             skill.SetCastCallback((targetPosition) =>
             {
@@ -71,7 +71,7 @@ namespace KLTNLongKhoi
             });
         }
 
-        private void ApplySkillEffects(Skill skill, Vector3 targetPosition)
+        private void ApplySkillEffects(PlayerSkill skill, Vector3 targetPosition)
         {
             switch (skill.Data.targetType)
             {
@@ -95,16 +95,16 @@ namespace KLTNLongKhoi
 
         public bool TryCastSkill(string skillId, Vector3 targetPosition)
         {
-            if (skills.TryGetValue(skillId, out Skill skill))
+            if (skills.TryGetValue(skillId, out PlayerSkill skill))
             {
-                return skill.TryCast(statsManager, targetPosition);
+                return skill.OnUseSkill(statsManager, targetPosition);
             }
             return false;
         }
 
         public void UnlockSkill(string skillId)
         {
-            if (skills.TryGetValue(skillId, out Skill skill))
+            if (skills.TryGetValue(skillId, out PlayerSkill skill))
             {
                 skill.Unlock();
             }
@@ -112,7 +112,7 @@ namespace KLTNLongKhoi
 
         public float GetSkillCooldown(string skillId)
         {
-            if (skills.TryGetValue(skillId, out Skill skill))
+            if (skills.TryGetValue(skillId, out PlayerSkill skill))
             {
                 return skill.CurrentCooldown;
             }
@@ -121,7 +121,7 @@ namespace KLTNLongKhoi
 
         public bool IsSkillReady(string skillId)
         {
-            if (skills.TryGetValue(skillId, out Skill skill))
+            if (skills.TryGetValue(skillId, out PlayerSkill skill))
             {
                 return skill.IsReady;
             }

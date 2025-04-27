@@ -20,7 +20,7 @@ namespace KLTNLongKhoi
 
         private RagdollAnimator ragdollAnimator;
         private CCBePushedBack ccBePushedBack;
-        private bool isDead = false;
+        protected bool isDead = false;
 
         protected virtual void Awake()
         {
@@ -64,7 +64,7 @@ namespace KLTNLongKhoi
             }
         }
 
-        public void Heal(float amount)
+        public void RestoreHealth(float amount)
         {
             if (isDead) return;
 
@@ -78,14 +78,17 @@ namespace KLTNLongKhoi
             }
         }
 
-        private void Die(Vector3 hitDirection)
+        protected virtual void Die(Vector3 hitDirection)
         {
             if (isDead) return;
+            HandleReward();
             isDead = true;
 
             ccBePushedBack.IsDead = true; // Không cho push back nữa khi chết
             ragdollAnimator?.EnableRagdoll();
         }
+
+        protected virtual void HandleReward() { } // Override this method to handle reward logic for specific characters (e.g., enemies)
 
         // Public getters for stats
         public float GetCurrentHealth() => currentHealth;

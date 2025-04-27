@@ -6,7 +6,7 @@ namespace KLTNLongKhoi
     {
         [SerializeField] private string interactionText = "Press E to pickup";
         [SerializeField] private bool isInteractable = true;
-        [SerializeField] InventoryItemSO inventoryItem;
+        [SerializeField] ItemDataSO inventoryItem;
         private InventoryController inventoryController;
 
         void Start()
@@ -33,7 +33,7 @@ namespace KLTNLongKhoi
             }
 
             // Add to inventory first
-            inventoryController.AddItemsCount(inventoryItem, inventoryItem.maxItemsCount, out var itemsLeft);
+            inventoryController.AddItemsCount(inventoryItem, inventoryItem.itemData.maxStack, out var itemsLeft);
             if (itemsLeft > 0)
             {
                 Debug.Log($"Not enough space! {itemsLeft} items left!");

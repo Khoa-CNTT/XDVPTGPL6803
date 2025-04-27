@@ -11,6 +11,8 @@ namespace KLTNLongKhoi
         [Header("Events")]
         public UnityEvent onGameOver;
         public UnityEvent onWinGame;
+        public UnityEvent onRestartGame;
+        [SerializeField] private float delayTimeShowPanel = 1.5f;
 
         private PlayerStatsManager playerStatsManager;
         private PlayerStatus playerStatus;
@@ -42,20 +44,20 @@ namespace KLTNLongKhoi
 
             if (playerStatus.IsDead())
             {
-                GameOver();
+                LoseGame();
             }
         }
 
-        private void GameOver()
+        private void LoseGame()
         {
             if (isGameOver) return;
 
-            Invoke(nameof(ShowGameOverPanel), 1f);
+            Invoke(nameof(ShowLosePanel), delayTimeShowPanel);
             isGameOver = true;
             pauseManager.PauseGame();
         }
 
-        private void ShowGameOverPanel()
+        private void ShowLosePanel()
         {
             onGameOver?.Invoke();
         }
@@ -63,18 +65,28 @@ namespace KLTNLongKhoi
         // UI chọn restart gameplay
         public void RestartGame()
         {
+            onRestartGame?.Invoke();
+        }
+
+        public void ContinueGame()
+        {
             isGameOver = false;
+            finalBoss = null;
             pauseManager.ResumeGame();
-            playerStatus.RespawnToLastPoint();
-            playerStatsManager.ResetStats();
         }
 
         private void WinGame()
         {
             if (isGameOver) return;
 
+            Invoke(nameof(ShowWinPanel), delayTimeShowPanel);
+
             isGameOver = true;
             pauseManager.PauseGame();
+        }
+
+        private void ShowWinPanel()
+        {
             onWinGame?.Invoke();
         }
     }

@@ -1,3 +1,4 @@
+using KLTNLongKhoi;
 using UnityEngine;
 
 public class ActorHitbox : MonoBehaviour
@@ -7,10 +8,17 @@ public class ActorHitbox : MonoBehaviour
     [SerializeField] string EnemyTag;
     [SerializeField] Transform attacker;
     private Collider colliderBoxHit;
+    private float damage = 100f;
+
+    public float Damage
+    {
+        get => damage;
+        set => damage = value;
+    }
 
     public bool IsAttacking
     {
-        get => isAttacking; 
+        get => isAttacking;
         set
         {
             isAttacking = value;
@@ -33,9 +41,11 @@ public class ActorHitbox : MonoBehaviour
             if (damageable != null)
             {
                 Vector3 hitDirection = (other.transform.position - transform.position).normalized;
-                damageable.TakeDamage(10f, hitDirection, attacker);
+                damageable.TakeDamage(damage, hitDirection, attacker);
                 Instantiate(hitParticle, new Vector3(transform.position.x, transform.position.y, transform.position.z), other.transform.rotation);
             }
         }
     }
+    
+
 }

@@ -10,7 +10,7 @@ public class BoxHealing : MonoBehaviour
         IDamageable damageable = other.GetComponent<IDamageable>();
         if (damageable != null)
         {
-            damageable.Heal(healAmount);
+            damageable.RestoreHealth(healAmount);
         }
     }
 }

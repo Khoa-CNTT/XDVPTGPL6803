@@ -8,17 +8,21 @@ namespace KLTNLongKhoi
 {
     public class PlayerStatus : MonoBehaviour, IDamageable
     {
-        private PlayerStatsManager statsManager;
+        private PlayerStatsManager playerStatsManager;
         private ThirdPersonController playerController;
         private RagdollAnimator ragdollAnimator;
         private CCBePushedBack ccBePushedBack;
         private bool isDead = false;
-        private GameManager gameManager;
         private PauseManager pauseManager;
+        private ThirdPersonController thirdPersonController;
+        private GameManager gameManager;
+
+        public bool IsDead() => isDead;
 
         private void Awake()
         {
-            statsManager = FindFirstObjectByType<PlayerStatsManager>();
+            thirdPersonController = GetComponent<ThirdPersonController>();
+            playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
             playerController = GetComponent<ThirdPersonController>();
             ragdollAnimator = GetComponent<RagdollAnimator>();
             ccBePushedBack = GetComponent<CCBePushedBack>();
@@ -30,12 +34,13 @@ namespace KLTNLongKhoi
         {
             if (isDead) return;
 
-            float finalDamage = statsManager.CalculateFinalDamage(damage);
-            statsManager.CurrentHealth -= finalDamage;
+            // trừ cho giáp và sức chống chịu tính damage cuối
+            float finalDamage = damage;
+            playerStatsManager.CurrentHP -= finalDamage;
 
-            if (statsManager.CurrentHealth <= 0)
+            if (playerStatsManager.CurrentHP <= 0)
             {
-                statsManager.CurrentHealth = 0;
+                playerStatsManager.CurrentHP = 0;
                 Die(hitDirection);
             }
             else
@@ -45,12 +50,30 @@ namespace KLTNLongKhoi
             }
         }
 
-        public void Heal(float amount)
+        public void RestoreHealth(float amount)
         {
             if (isDead) return;
 
-            float newHealth = Mathf.Min(statsManager.CurrentHealth + amount, statsManager.MaxHealth);
-            statsManager.CurrentHealth = newHealth;
+            float newHealth = Mathf.Min(playerStatsManager.CurrentHP + amount, playerStatsManager.BaseHP);
+            playerStatsManager.CurrentHP = newHealth;
+        }
+
+        // hồi mana
+        public void RestoreMana(float amount)
+        {
+            if (isDead) return;
+
+            float newMana = Mathf.Min(playerStatsManager.CurrentMP + amount, playerStatsManager.BaseMP);
+            playerStatsManager.CurrentMP = newMana;
+        }
+
+        // hồi stamina
+        public void RestoreStamina(float amount)
+        {
+            if (isDead) return;
+
+            float newStamina = Mathf.Min(playerStatsManager.CurrentSP + amount, playerStatsManager.BaseSP);
+            playerStatsManager.CurrentSP = newStamina;
         }
 
         private void Die(Vector3 hitDirection)
@@ -62,20 +85,5 @@ namespace KLTNLongKhoi
             ragdollAnimator.EnableRagdoll();
         }
 
-        public void RespawnToLastPoint()
-        {
-            if (!isDead) return;
-
-            transform.position = statsManager.LastCheckpoint;
-            isDead = false;
-
-            ragdollAnimator.DisableRagdoll();
-            pauseManager.ResumeGame();
-        }
-
-        // Public getters
-        public float GetCurrentHealth() => statsManager.CurrentHealth;
-        public float GetMaxHealth() => statsManager.MaxHealth;
-        public bool IsDead() => isDead;
     }
 }

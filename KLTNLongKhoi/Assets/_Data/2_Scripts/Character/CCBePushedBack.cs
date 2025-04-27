@@ -9,8 +9,8 @@ public class CCBePushedBack : MonoBehaviour
     [SerializeField] float damageForceMultiplier = 0.5f;
     [SerializeField] float recoveryTime = 0.5f;
     [SerializeField] float gravity = -9.81f; // Thêm gravity
-    [SerializeField] CharacterController controller;
-    [SerializeField] NavMeshAgent agent;
+    private CharacterController controller;
+    private NavMeshAgent agent;
     private bool isPushed = false;
     private float pushTimer = 0f;
     private Vector3 pushVelocity;
@@ -37,7 +37,9 @@ public class CCBePushedBack : MonoBehaviour
 
     private void Awake()
     {
-
+        controller = GetComponent<CharacterController>();
+        agent = GetComponent<NavMeshAgent>();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -114,8 +116,8 @@ public class CCBePushedBack : MonoBehaviour
     }
 
     public void CCPushBack(Vector3 hitDirection, float finalDamage)
-    {
-        if (!controller || isPushed) return;
+    { 
+        if (!controller || isPushed) return; 
 
         // Normalize hit direction và thêm component dọc để tạo effect bị hất tung lên
         hitDirection.y = 0.5f; // Có thể điều chỉnh giá trị này để thay đổi độ cao bị hất
@@ -148,7 +150,7 @@ public class CCBePushedBack : MonoBehaviour
     }
 
     public void RBPushBack(Vector3 hitDirection, float finalDamage)
-    {
+    {  
         if (!rb || isPushed) return;
 
         // Normalize the hit direction and remove vertical component
@@ -169,26 +171,29 @@ public class CCBePushedBack : MonoBehaviour
 
     public void PushBack(Vector3 hitDirection, float finalDamage)
     {
+        // Debug.Log("Pushed back1 ");
         if (controller != null) CCPushBack(hitDirection, finalDamage);
-        else if (agent != null) NewMethod(hitDirection, finalDamage);
         else if (rb != null) RBPushBack(hitDirection, finalDamage);
+        else if (agent != null) NavMeshAgentPushBack(hitDirection, finalDamage);
     }
 
-    private static void NewMethod(Vector3 hitDirection, float finalDamage)
+    private void NavMeshAgentPushBack(Vector3 hitDirection, float finalDamage)
     {
+        if (!agent || isPushed) return;
+
         // Normalize the hit direction and remove vertical component
         hitDirection.y = 0;
         hitDirection.Normalize();
 
         // Calculate push force based on damage
-        float totalForce = 10f + (finalDamage * 0.5f);
+        float totalForce = pushForce + (finalDamage * damageForceMultiplier);
 
         // Apply the force
-        // rb.linearVelocity = Vector3.zero; // Reset current velocity
-        // rb.AddForce(hitDirection * totalForce, ForceMode.Impulse);
+        agent.velocity = Vector3.zero; // Reset current velocity
+        agent.velocity = hitDirection * totalForce;
 
         // Start push back state
-        // isPushed = true;
-        // pushTimer = 0f;
+        isPushed = true;
+        pushTimer = 0f;
     }
 }

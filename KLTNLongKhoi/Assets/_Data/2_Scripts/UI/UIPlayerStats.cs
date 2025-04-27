@@ -7,8 +7,6 @@ namespace KLTNLongKhoi
 {
     public class UIPlayerStats : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI nameAndLevel;
-
         [Header("Text Components")]
         [SerializeField] private TextMeshProUGUI healthText;
         [SerializeField] private TextMeshProUGUI staminaText;
@@ -29,48 +27,23 @@ namespace KLTNLongKhoi
         void Awake()
         {
             playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
-            playerStatsManager.StatsUpdatedEvent += UpdateAllStats;
+            playerStatsManager.StatsUpdatedEvent.AddListener(UpdateAllStats);
         }
 
         private void Start()
         {
-            healthBar.Initialize(playerStatsManager.MaxHealth);
-            staminaBar.Initialize(playerStatsManager.MaxStamina);
-            manaBar.Initialize(playerStatsManager.MaxMana);
+            healthBar.Initialize(playerStatsManager.BaseHP);
+            staminaBar.Initialize(playerStatsManager.BaseSP);
+            manaBar.Initialize(playerStatsManager.BaseMP);
         }
 
         public void UpdateAllStats()
         {  
-            if (staminaText != null)
-                staminaText.text = $"Stamina: {playerStatsManager.CurrentStamina:F0}/{playerStatsManager.MaxStamina:F0}";
+            
 
-            if (manaText != null)
-                manaText.text = $"Mana: {playerStatsManager.CurrentMana:F0}/{playerStatsManager.MaxMana:F0}";
-
-            if (moneyText != null)
-                moneyText.text = $"Money: {playerStatsManager.BaseMoney}";
-
-            if (strengthText != null)
-                strengthText.text = $"Strength: {playerStatsManager.BaseStrength}";
-
-            if (criticalText != null)
-                criticalText.text = $"Critical: {playerStatsManager.BaseCritical}%";
-
-            if (intelligenceText != null)
-                intelligenceText.text = $"Intelligence: {playerStatsManager.BaseIntelligence}";
-
-            if (healthText != null)
-                healthText.text = $"HP: {playerStatsManager.CurrentHealth:F0}/{playerStatsManager.MaxHealth:F0}";
-
-            if (levelText != null)
-                levelText.text = $"Level: {playerStatsManager.Level}";
-
-            if (experienceText != null)
-                experienceText.text = $"Exp: {playerStatsManager.Experience}";
-
-            healthBar.UpdateBar(playerStatsManager.CurrentHealth);
-            staminaBar.UpdateBar(playerStatsManager.CurrentStamina);
-            manaBar.UpdateBar(playerStatsManager.CurrentMana);
+            healthBar.UpdateBar(playerStatsManager.CurrentHP);
+            staminaBar.UpdateBar(playerStatsManager.CurrentSP);
+            manaBar.UpdateBar(playerStatsManager.CurrentMP);
         }
     }
 }

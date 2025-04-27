@@ -21,7 +21,7 @@ namespace KLTNLongKhoi
                 return false;
 
             int totalCost = CalculateBuyPrice(shopItem, quantity);
-            _playerData.currency -= totalCost;
+            _playerData.money -= totalCost;
             
             // Add item to player inventory
             // You'll need to implement this based on your inventory system
@@ -35,7 +35,7 @@ namespace KLTNLongKhoi
             if (item == null) return false;
 
             int sellPrice = CalculateSellPrice(item, quantity);
-            _playerData.currency += sellPrice;
+            _playerData.money += sellPrice;
             
             // Remove item from player inventory
             // You'll need to implement this based on your inventory system
@@ -53,7 +53,7 @@ namespace KLTNLongKhoi
             if (!item.isAvailable) return false;
             if (item.stockQuantity != -1 && item.stockQuantity < quantity) return false;
             if (_playerData.level < item.levelRequirement) return false;
-            if (_playerData.currency < CalculateBuyPrice(item, quantity)) return false;
+            if (_playerData.money < CalculateBuyPrice(item, quantity)) return false;
             return true;
         }
 
