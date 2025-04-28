@@ -115,12 +115,12 @@ namespace KLTNLongKhoi
                     }
                     else
                     {
-                        OnBuyFail();
+                        OnBuyFail("Không đủ chỗ trong túi xách");
                     }
                 }
                 else
                 {
-                    OnBuyFail();
+                    OnBuyFail("Không đủ tiền");
                 }
             }
         }
@@ -133,10 +133,10 @@ namespace KLTNLongKhoi
             Invoke("HideNotify", 2f);
         }
 
-        private void OnBuyFail()
+        private void OnBuyFail(string message)
         {
             _notifyBuySuccess.gameObject.SetActive(true);
-            _notifyBuySuccess.text = "Không đủ tiền";
+            _notifyBuySuccess.text = message;
             _notifyBuySuccess.color = Color.red;
             Invoke("HideNotify", 2f);
         }

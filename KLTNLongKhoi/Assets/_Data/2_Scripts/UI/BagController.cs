@@ -79,7 +79,6 @@ namespace KLTNLongKhoi
         private List<ItemDataSO> GetPlayerInventoryItem()
         {
             List<ItemDataSO> resourceItems = new List<ItemDataSO>();
-
             foreach (var item in saveLoadManager.GetGameData().player.inventory)
             {
                 ItemDataSO itemDataSO = Resources.LoadAll<ItemDataSO>("Items")
