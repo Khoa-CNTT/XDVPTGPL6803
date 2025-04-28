@@ -11,11 +11,18 @@ namespace KLTNLongKhoi
     {
         private DataManager dataManager;
 
+        public UnityEvent OnLoaded;
+
         protected override void Awake()
         {
             base.Awake();
             SetDontDestroyOnLoad(true);
             dataManager = GetComponent<DataManager>();
+        }
+
+        private void Start()
+        {
+            OnLoaded?.Invoke();
         }
 
         // kiểm tra xem đây có phải là gameplay mới hay không

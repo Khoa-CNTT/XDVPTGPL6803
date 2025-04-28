@@ -8,7 +8,7 @@ namespace KLTNLongKhoi
     {
         [SerializeField] private string interactionText = "Press E to open/close";
         [SerializeField] private string chestName;
-        private List<StorageItem> storageItems = new List<StorageItem>();
+        private List<ItemDataSO> storageItems = new List<ItemDataSO>();
         private bool isInteractable = true;
 
         StorageController storageController;
@@ -20,13 +20,13 @@ namespace KLTNLongKhoi
             storageController = FindFirstObjectByType<StorageController>();
         }
 
-        public void SaveItems(List<StorageItem> storageItems)
+        public void SaveItems(List<ItemDataSO> storageItems)
         {
             this.storageItems = storageItems;
             //here you can save the items to a file
         }
 
-        internal List<StorageItem> GetCells()
+        internal List<ItemDataSO> GetCells()
         {
             return storageItems;
         }

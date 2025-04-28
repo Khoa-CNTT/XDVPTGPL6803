@@ -25,6 +25,7 @@ namespace KLTNLongKhoi
         private void Start()
         {
             GameSettingsData = saveLoadManager.GetGameData().gameSettings;
+            saveLoadManager.OnLoaded.AddListener(() => GameSettingsData = saveLoadManager.GetGameData().gameSettings);
             Init();
         }
 

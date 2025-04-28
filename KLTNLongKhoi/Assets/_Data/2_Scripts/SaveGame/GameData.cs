@@ -30,6 +30,7 @@ namespace KLTNLongKhoi
         public float level = 1;
         public float experience = 0;
         public Vector3 position;
+        public const int maxInventorySize = 16;
         public List<ItemData> inventory;
     }
 
@@ -37,11 +38,12 @@ namespace KLTNLongKhoi
     public class ItemData
     {
         public string id;
-        public string itemName;
+        public string name;
         public string description;
         public ItemType itemType;
-        public int currentCount = 1;
+        public int itemCount = 1;
         public int maxStack = 1;
+        public int price;
 
         // Bonus stats
         public int physicalDamage;
@@ -52,6 +54,9 @@ namespace KLTNLongKhoi
         public int healthRecovery;
         public int manaRecovery;
         public float criticalChance;
+
+        // tỷ lệ 
+        public float successRate;
     }
 
     [Serializable]
@@ -67,8 +72,6 @@ namespace KLTNLongKhoi
         public string resolution = "1920x1080";
         public int targetFrameRate = 60;
         public float brightness = 1f;
-
-        public float mouseSensitivity = 1f;
     }
 
     [Serializable]

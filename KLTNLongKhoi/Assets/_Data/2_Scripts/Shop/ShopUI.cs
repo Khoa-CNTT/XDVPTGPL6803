@@ -2,90 +2,148 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace KLTNLongKhoi
 {
-    public class ShopUI : MonoBehaviour
+    public class ShopUI : ContainerBase
     {
-        [Header("UI References")]
-        [SerializeField] private Transform _itemContainer;
-        [SerializeField] private GameObject _itemPrefab;
-        [SerializeField] private TMP_Text _playerCurrencyText;
-        [SerializeField] private TMP_Text _itemDescriptionText;
-        [SerializeField] private Button _buyButton;
-        [SerializeField] private Button _sellButton;
-        [SerializeField] private TMP_InputField _quantityInput;
-        
-        [Header("Category Filters")]
-        [SerializeField] private List<Toggle> _categoryToggles;
-        
-        private ShopManager _shopManager;
-        private ShopItem _selectedItem;
-        private int _quantity = 1;
+        [SerializeField] private List<ItemDataSO> _shopItemsEquipment; // Combined weapons and armor
+        [SerializeField] private List<ItemDataSO> _shopItemsPotions;
+        [SerializeField] private List<ItemDataSO> _shopItemsMaterials;
+        [SerializeField] private TMP_Text _notifyBuySuccess;
+        [SerializeField] private Button btnBuyEquipment;
+        [SerializeField] private Button btnBuyPotion;
+        [SerializeField] private Button btnBuyMaterial;
+        [SerializeField] private Button btnBuy;
+        [SerializeField] private Button btnOpenShop;
+        [SerializeField] private InventoryItemInfo inventoryItemInfo;
+        private InventoryDataContact inventoryDataContact;
+        private ItemType itemTypeOpening;
 
-        private void Start()
+        protected override void Start()
         {
-            _shopManager = ShopManager.Instance;
-            _shopManager.OnTransactionComplete += OnTransactionComplete;
-            
-            _buyButton.onClick.AddListener(OnBuyClicked);
-            _sellButton.onClick.AddListener(OnSellClicked);
-            _quantityInput.onValueChanged.AddListener(OnQuantityChanged);
-            
-            RefreshUI();
+            base.Start();
+            btnBuy.onClick.AddListener(OnBuyItem);
+            btnBuyMaterial.onClick.AddListener(OnClickBuyMaterial);
+            btnBuyPotion.onClick.AddListener(OnClickBuyPotion);
+            btnBuyEquipment.onClick.AddListener(OnClickBuyEquipment);
+            btnOpenShop.onClick.AddListener(OnClickOpenShop);
         }
 
-        private void OnBuyClicked()
+        public void OnClickOpenShop()
         {
-            if (_selectedItem == null) return;
-            if (_shopManager.TryBuyItem(_selectedItem.id, _quantity))
+            if (itemTypeOpening == ItemType.Resource)
             {
-                RefreshUI();
+                OnClickBuyMaterial();
+            }
+            else if (itemTypeOpening == ItemType.Weapon)
+            {
+                OnClickBuyEquipment();
+            }
+            else if (itemTypeOpening == ItemType.Consumable)
+            {
+                OnClickBuyPotion();
+            }
+            else
+            {
+                OnClickBuyPotion();
             }
         }
 
-        private void OnSellClicked()
+        private void OnClickBuyEquipment()
         {
-            if (_selectedItem == null) return;
-            if (_shopManager.TrySellItem(_selectedItem.item, _quantity))
+            DisplayShopItems(_shopItemsEquipment);
+            itemTypeOpening = ItemType.Weapon;
+        }
+
+        private void OnClickBuyPotion()
+        {
+            DisplayShopItems(_shopItemsPotions);
+            itemTypeOpening = ItemType.Consumable;
+        }
+
+        private void OnClickBuyMaterial()
+        {
+            DisplayShopItems(_shopItemsMaterials);
+            itemTypeOpening = ItemType.Resource;
+        }
+
+        private void DisplayShopItems(List<ItemDataSO> shopItems)
+        {
+            ClearInventoryCells();
+
+            foreach (var shopItem in shopItems)
             {
-                RefreshUI();
+
+                ItemDataSO itemDataSO = Resources.LoadAll<ItemDataSO>("Items")
+                                                .FirstOrDefault(x => x.itemData.name == shopItem.name);
+
+                if (itemDataSO != null)
+                {
+                    AddItemsCount(itemDataSO, itemDataSO.itemData.maxStack, out var countLeft);
+                    if (countLeft > 0)
+                    {
+                        Debug.Log($"Not enough space for {itemDataSO.itemData.name}! {countLeft} items left!");
+                    }
+                }
             }
         }
 
-        private void OnQuantityChanged(string value)
+        private void ClearInventoryCells()
         {
-            if (int.TryParse(value, out int result))
+            foreach (var cell in inventoryCells)
             {
-                _quantity = Mathf.Max(1, result);
-                UpdatePriceDisplay();
+                cell.SetInventoryItem(null);
+                cell.ItemsCount = 0;
+                cell.UpdateCellUI();
             }
         }
 
-        private void OnTransactionComplete(ShopItem item, int quantity, bool isBuying)
+        private void OnBuyItem()
         {
-            RefreshUI();
-            // Add visual/audio feedback here
-        }
+            inventoryDataContact = FindFirstObjectByType<InventoryDataContact>();
 
-        private void RefreshUI()
-        {
-            // Update currency display
-            // Refresh item list
-            // Update selected item info
-        }
-
-        private void UpdatePriceDisplay()
-        {
-            // Update buy/sell price based on selected item and quantity
-        }
-
-        private void OnDestroy()
-        {
-            if (_shopManager != null)
+            if (inventoryItemInfo.ItemDataSO != null)
             {
-                _shopManager.OnTransactionComplete -= OnTransactionComplete;
+                if (inventoryDataContact.PlayerData.money >= inventoryItemInfo.ItemDataSO.itemData.price)
+                { 
+                    if (inventoryDataContact.AddItem(inventoryItemInfo.ItemDataSO.itemData))
+                    {
+                        inventoryDataContact.PlayerData.money -= inventoryItemInfo.ItemDataSO.itemData.price;
+                        OnBuySuccess();
+                    }
+                    else
+                    {
+                        OnBuyFail();
+                    }
+                }
+                else
+                {
+                    OnBuyFail();
+                }
             }
+        }
+
+        private void OnBuySuccess()
+        {
+            _notifyBuySuccess.gameObject.SetActive(true);
+            _notifyBuySuccess.text = "Mua thành công";
+            _notifyBuySuccess.color = Color.green;
+            Invoke("HideNotify", 2f);
+        }
+
+        private void OnBuyFail()
+        {
+            _notifyBuySuccess.gameObject.SetActive(true);
+            _notifyBuySuccess.text = "Không đủ tiền";
+            _notifyBuySuccess.color = Color.red;
+            Invoke("HideNotify", 2f);
+        }
+
+        private void HideNotify()
+        {
+            _notifyBuySuccess.gameObject.SetActive(false);
         }
     }
 }

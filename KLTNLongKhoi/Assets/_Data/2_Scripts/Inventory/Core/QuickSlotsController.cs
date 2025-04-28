@@ -19,9 +19,9 @@ namespace KLTNLongKhoi
                             num -= 1;
                             if (num >= 0 && num < inventoryCells.Count)
 
-                                if (inventoryCells[num].Item != null)
+                                if (inventoryCells[num].ItemDataSO != null)
                                 {
-                                    Debug.Log("Item Selected: " + inventoryCells[num].Item.itemName);
+                                    Debug.Log("Item Selected: " + inventoryCells[num].ItemDataSO.itemData.name);
                                 }
                         }
                     }

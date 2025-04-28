@@ -66,15 +66,11 @@ namespace KLTNLongKhoi
             {
                 if (inventoryCells.Count > 0)
                 {
-                    currentChest.SaveItems(inventoryCells.Select(s => new StorageItem
-                    {
-                        item = s.Item,
-                        itemsCount = s.ItemsCount
-                    }).ToList());
+                    currentChest.SaveItems(inventoryCells.Select(s => s.ItemDataSO).ToList());
                 }
                 else
                 {
-                    currentChest.SaveItems(new List<StorageItem>());
+                    currentChest.SaveItems(new List<ItemDataSO>());
                 }
             }
         }

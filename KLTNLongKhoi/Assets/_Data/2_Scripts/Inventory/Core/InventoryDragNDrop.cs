@@ -51,27 +51,40 @@ namespace KLTNLongKhoi
                 if (!cell.CanBeDropped(_dragCell))
                     return;
 
+                bool inventoryChanged = false;
+
                 if (eventData.button == PointerEventData.InputButton.Middle)
                 {
-                    if (cell.Item == null)
+                    if (cell.ItemDataSO == null)
                     {
                         SplitItems(cell, _dragCell);
+                        inventoryChanged = true;
                     }
-                    else if (cell.Item == _dragCell.Item)
+                    else if (cell.ItemDataSO == _dragCell.ItemDataSO)
                     {
                         MoveItemsCount(cell, _dragCell, _dragCell.ItemsCount / 2);
+                        inventoryChanged = true;
                     }
                 }
-                else if (cell.Item != _dragCell.Item)
+                else if (cell.ItemDataSO != _dragCell.ItemDataSO)
                 {
                     SwapCells(cell, _dragCell);
+                    inventoryChanged = true;
                 }
-                else if (cell.Item == _dragCell.Item)
+                else if (cell.ItemDataSO == _dragCell.ItemDataSO)
                 {
                     MoveItemsCount(cell, _dragCell, _dragCell.ItemsCount);
+                    inventoryChanged = true;
                 }
+
                 cell.UpdateCellUI();
                 _dragCell.UpdateCellUI();
+
+                // Nếu có thay đổi, thông báo để save inventory
+                if (inventoryChanged)
+                {
+                    // callbacksController.onInventoryChanged?.Invoke();
+                }
             }
         }
 
@@ -80,7 +93,7 @@ namespace KLTNLongKhoi
             var half = cell2.ItemsCount / 2;
             if (half > 0)
             {
-                cell1.SetInventoryItem(cell2.Item);
+                cell1.SetInventoryItem(cell2.ItemDataSO);
                 cell1.ItemsCount += half;
                 cell2.ItemsCount -= half;
             }
@@ -90,7 +103,7 @@ namespace KLTNLongKhoi
         {
             if (count == 0)
                 return;
-            if (cell1.ItemsCount + count <= cell1.Item.maxItemsCount)
+            if (cell1.ItemsCount + count <= cell1.ItemDataSO.itemData.maxStack)
             {
                 cell1.ItemsCount += count;
                 cell2.ItemsCount -= count;
@@ -99,17 +112,17 @@ namespace KLTNLongKhoi
             }
             else
             {
-                if (cell1.ItemsCount < cell1.Item.maxItemsCount)
+                if (cell1.ItemsCount < cell1.ItemDataSO.itemData.maxStack)
                 {
-                    cell2.ItemsCount -= (cell1.Item.maxItemsCount - cell1.ItemsCount);
-                    cell1.ItemsCount += (cell1.Item.maxItemsCount - cell1.ItemsCount);
+                    cell2.ItemsCount -= (cell1.ItemDataSO.itemData.maxStack - cell1.ItemsCount);
+                    cell1.ItemsCount += (cell1.ItemDataSO.itemData.maxStack - cell1.ItemsCount);
                 }
             }
         }
 
         private void SwapCells(InventoryCell cell1, InventoryCell cell2)
         {
-            var itemsSwap = (cell1.Item, cell2.Item);
+            var itemsSwap = (cell1.ItemDataSO, cell2.ItemDataSO);
             var itemsCountSwap = (cell1.ItemsCount, cell2.ItemsCount);
 
             cell1.SetInventoryItem(itemsSwap.Item2);
@@ -121,7 +134,7 @@ namespace KLTNLongKhoi
 
         private void OnBeginDrag(InventoryCell cell, PointerEventData eventData)
         {
-            if (cell.Item == null)
+            if (cell.ItemDataSO == null)
                 return;
             _dragIcon.sprite = cell.Icon.sprite;
             _dragIcon.gameObject.SetActive(true);

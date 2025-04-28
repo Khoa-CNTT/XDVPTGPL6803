@@ -27,7 +27,7 @@ namespace KLTNLongKhoi
 
         private void CheckCraftResult()
         {
-            if (isCrafted && inventoryCellResult.Item == null)
+            if (isCrafted && inventoryCellResult.ItemDataSO == null)
             {
                 ClearIngredients();
                 isCrafted = false;
@@ -47,12 +47,12 @@ namespace KLTNLongKhoi
 
         public void Craft()
         {
-            if (inventoryCellResult.Item != null || isCrafted) return;
+            if (inventoryCellResult.ItemDataSO != null || isCrafted) return;
 
             var recipe = recipeDatabase.FindRecipe(
-                inventoryCell1.Item,
-                inventoryCell2.Item,
-                inventoryCell3.Item
+                inventoryCell1.ItemDataSO,
+                inventoryCell2.ItemDataSO,
+                inventoryCell3.ItemDataSO
             );
 
             if (recipe != null)

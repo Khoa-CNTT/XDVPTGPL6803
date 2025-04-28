@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d23f20b23eea8842bfc05a396f4fa58, type: 3}
+  m_Name: "G\u01B0\u01A1m 2"
+  m_EditorClassIdentifier: 
+  targetItem: {fileID: 11400000, guid: 6b862e96e8f66d64dac507e50754567f, type: 2}
+  requiredLevel: 1
+  item: {fileID: 11400000, guid: 8c5ddd76375a76f4489e3398d8d13e0d, type: 2}
+  amount: 0
+  resultItem: {fileID: 11400000, guid: dae1c06cc755dea4181f80592f4b9d73, type: 2}
+  resultAmount: 1
+  successRate: 1
+  destroyOnFailure: 0
+  consumeMaterialsOnFailure: 0

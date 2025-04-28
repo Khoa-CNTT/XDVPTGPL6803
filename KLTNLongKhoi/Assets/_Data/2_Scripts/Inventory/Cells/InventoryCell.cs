@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,6 +9,7 @@ namespace KLTNLongKhoi
     //cell for storing and displaying items
     public class InventoryCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerClickHandler
     {
+        [SerializeField] private bool isDraggable = true;
         [SerializeField] private Image _icon;
         [SerializeField] private TextMeshProUGUI _itemsCountText;
 
@@ -18,7 +20,7 @@ namespace KLTNLongKhoi
                 return _icon;
             }
         }
-        public ItemDataSO Item
+        public ItemDataSO ItemDataSO
         {
             get
             {
@@ -73,11 +75,13 @@ namespace KLTNLongKhoi
 
         public void OnBeginDrag(PointerEventData eventData)
         {
+            if (!isDraggable) return;
             _container.onBeginDrag?.Invoke(this, eventData);
         }
 
         public void OnDrag(PointerEventData eventData)
         {
+            if (!isDraggable) return;
             _container.onDrag?.Invoke(this, eventData);
         }
 
@@ -88,6 +92,7 @@ namespace KLTNLongKhoi
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            if (!isDraggable) return;
             _container.onEndDrag?.Invoke(this, eventData);
         }
 
@@ -96,10 +101,9 @@ namespace KLTNLongKhoi
             _container.onClick?.Invoke(this, eventData);
         }
 
-        internal void MigrateCell(StorageItem item)
+        internal void MigrateCell(ItemDataSO item)
         {
-            _itemsCount = item.itemsCount;
-            SetInventoryItem(item.item);
+            SetInventoryItem(item);
         }
 
         public virtual bool CanBeDropped(InventoryCell cell)

@@ -36,6 +36,13 @@ namespace KLTNLongKhoi
             }
         }
 
+        public List<ItemDataSO> GetInventoryItems()
+        {
+            return inventoryCells.Select(s => s.ItemDataSO)
+                                .Where(item => item != null)
+                                .ToList();
+        }
+
         public void AddInventoryCell(InventoryCell cell)
         {
             inventoryCells.Add(cell);
@@ -45,7 +52,7 @@ namespace KLTNLongKhoi
         {
             for (int i = 0; i < inventoryCells.Count; i++)
             {
-                if (inventoryCells[i].Item == null)
+                if (inventoryCells[i].ItemDataSO == null)
                 {
                     cell = inventoryCells[i];
                     return true;
@@ -55,11 +62,12 @@ namespace KLTNLongKhoi
             return false;
         }
 
+        // hàm để tìm ô trống trong inventory
         public bool TryGetCellWithFreeItemsCount(ItemDataSO item, out InventoryCell cell)
         {
             for (int i = 0; i < inventoryCells.Count; i++)
             {
-                if (inventoryCells[i].Item == item)
+                if (inventoryCells[i].ItemDataSO == item)
                 {
                     if (inventoryCells[i].ItemsCount < item.itemData.maxStack)
                     {
@@ -111,6 +119,10 @@ namespace KLTNLongKhoi
                 }
             }
             countLeft = count;
+            SaveInventory();
         }
+
+        protected virtual void SaveInventory() { }
+        protected virtual void LoadInventory() { }
     }
 }

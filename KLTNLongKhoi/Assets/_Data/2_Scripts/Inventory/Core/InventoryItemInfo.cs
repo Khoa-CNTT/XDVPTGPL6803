@@ -8,9 +8,12 @@ namespace KLTNLongKhoi
     public class InventoryItemInfo : MonoBehaviour
     {
         private CellsCallbacksController callbacksController;
+        private ItemDataSO itemDataSO;
         [SerializeField] private TextMeshProUGUI _itemName;
         [SerializeField] private TextMeshProUGUI _itemDescription;
         [SerializeField] private Image _icon;
+
+        public ItemDataSO ItemDataSO { get => itemDataSO; set => itemDataSO = value; }
 
         private void Awake()
         {
@@ -22,6 +25,11 @@ namespace KLTNLongKhoi
             callbacksController.onClick += OnClick;
         }
 
+        private void OnDisable()
+        {
+            callbacksController.onClick -= OnClick;
+        }
+
         private void OnClick(InventoryCell cell, PointerEventData eventData)
         {
             Logic(cell);
@@ -30,11 +38,12 @@ namespace KLTNLongKhoi
         private void Logic(InventoryCell cell)
         {
             if (_itemName == null || _itemDescription == null || _icon == null) return;
-            if (cell != null && cell.Item != null)
+            if (cell != null && cell.ItemDataSO != null)
             {
-                _icon.sprite = cell.Item.icon;
-                _itemName.text = cell.Item.itemName;
-                _itemDescription.text = cell.Item.itemDescription;
+                ItemDataSO = cell.ItemDataSO;
+                _icon.sprite = cell.ItemDataSO.icon;
+                _itemName.text = cell.ItemDataSO.itemData.name;
+                _itemDescription.text = cell.ItemDataSO.itemData.description;
             }
         }
     }
