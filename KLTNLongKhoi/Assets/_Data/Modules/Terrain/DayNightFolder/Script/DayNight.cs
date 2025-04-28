@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class DayNight : MonoBehaviour
 {
@@ -18,10 +17,6 @@ public class DayNight : MonoBehaviour
     }
     [SerializeField]
     private float elapsedTime;
-    [SerializeField]
-    private bool use24h = true;
-    [SerializeField]
-    private Text clock;
     [SerializeField]
     [Range(0f, 1f)]
     private float _timeOfDay;
@@ -91,6 +86,7 @@ public class DayNight : MonoBehaviour
     private void Start()
     {
         NormalTimeCurve();
+        _timeOfDay = 0.4f;
     }
 
     private void Update()
@@ -99,7 +95,7 @@ public class DayNight : MonoBehaviour
         {
             UpdateTimeScale();
             UpdateTime();
-            UpdateClock();
+            
         }
         AdjustSunRotation();
         SunIntensity();
@@ -142,37 +138,6 @@ public class DayNight : MonoBehaviour
                 _dayNumber = 0;
             }
         }
-    }
-
-    private void UpdateClock()
-    {
-        float time = elapsedTime / (targetDayLength * 60);
-        float hour = Mathf.FloorToInt(time * 24);
-        float minute = Mathf.FloorToInt(((time * 24) - hour) * 60);
-
-        string hourString;
-        string minuteString;
-
-        if (!use24h && hour > 12)
-            hour -= 12;
-
-        if (hour < 10)
-            hourString = "0" + hour.ToString();
-        else
-            hourString = hour.ToString();
-
-        if (minute < 10)
-            minuteString = "0" + minute.ToString();
-        else
-            minuteString = minute.ToString();
-                 
-
-        if(use24h)
-            clock.text = hourString + " : " + minuteString;
-        else if(time > 0.5f)
-            clock.text = hourString + " : " + minuteString + " pm";
-        else
-            clock.text = hourString + " : " + minuteString + " am";
     }
 
     private void AdjustSunRotation()
