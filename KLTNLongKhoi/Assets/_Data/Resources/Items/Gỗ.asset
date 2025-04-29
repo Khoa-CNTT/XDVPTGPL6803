@@ -29,5 +29,5 @@ MonoBehaviour:
     manaRecovery: 0
     criticalChance: 0
     successRate: 0
-  icon: {fileID: 21300000, guid: 422cd7ac02f06b64ba51c32639e5dcc6, type: 3}
+  icon: {fileID: 21300000, guid: fae7c20bff41eef49a29fc5703056b7d, type: 3}
   prefab: {fileID: 0}
