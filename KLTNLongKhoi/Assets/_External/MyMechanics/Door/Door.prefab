@@ -115,6 +115,7 @@ MonoBehaviour:
   rotationAxis: {x: 0, y: 1, z: 0}
   closedAngle: 0
   openAngle: 150
+  useFKey: 0
 --- !u!1 &7949003822006247763
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,10 +175,13 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
