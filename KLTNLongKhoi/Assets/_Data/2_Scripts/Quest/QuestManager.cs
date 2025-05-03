@@ -1,101 +1,82 @@
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+using System.Collections.Generic;
+using System;
 
 namespace KLTNLongKhoi
 {
-    public class QuestManager : MonoBehaviour
+    public class QuestManager : Singleton<QuestManager>
     {
-        [SerializeField] private List<QuestData> availableQuests;
-        private Dictionary<string, QuestStatus> questStatuses = new Dictionary<string, QuestStatus>();
-
-        private void Awake()
+        private List<Quest> activeQuests = new List<Quest>();
+        private List<Quest> completedQuests = new List<Quest>();
+        public event Action OnQuestUpdated;
+        protected override void Awake()
         {
-            InitializeQuests();
+            base.Awake();
+            LoadQuests();
         }
 
-        private void InitializeQuests()
+
+
+        private void LoadQuests()
         {
-            foreach (var quest in availableQuests)
+            // Load all quests from Resources folder
+            Quest[] allQuests = Resources.LoadAll<Quest>("Quests");
+
+            foreach (var quest in allQuests)
             {
-                questStatuses[quest.questID] = new QuestStatus(quest.questID);
+                quest.Initialize();
+                activeQuests.Add(quest);
             }
         }
 
-        public void ActivateQuest(string questID)
+        public List<Quest> GetActiveQuests()
         {
-            if (!questStatuses.ContainsKey(questID)) return;
+            return activeQuests;
+        }
 
-            QuestData quest = availableQuests.Find(q => q.questID == questID);
-            if (quest == null) return;
+        public List<Quest> GetCompletedQuests()
+        {
+            return completedQuests;
+        }
 
-            // Kiểm tra điều kiện tiên quyết
-            if (quest.prerequisiteQuests != null && quest.prerequisiteQuests.Length > 0)
+        public void UpdateQuestProgress(string questID, string objectiveDescription, int amount)
+        {
+            Quest quest = activeQuests.Find(q => q.questID == questID);
+            if (quest != null && quest.status != QuestStatus.Completed)
             {
-                foreach (var prereq in quest.prerequisiteQuests)
+                quest.status = QuestStatus.InProgress;
+                QuestObjective objective = quest.objectives.Find(o => o.objectiveDescription == objectiveDescription);
+                if (objective != null)
                 {
-                    if (!IsQuestCompleted(prereq.questID)) return;
-                }
-            }
-
-            questStatuses[questID].isActive = true;
-        }
-
-        public void UpdateQuestProgress(string questID, int amount)
-        {
-            if (!questStatuses.ContainsKey(questID) || !questStatuses[questID].isActive) return;
-
-            QuestData quest = availableQuests.Find(q => q.questID == questID);
-            if (quest == null) return;
-
-            QuestStatus status = questStatuses[questID];
-            status.currentAmount += amount;
-
-            if (status.currentAmount >= quest.requiredAmount)
-            {
-                CompleteQuest(questID);
-            }
-        }
-
-        public void CompleteQuest(string questID)
-        {
-            if (!questStatuses.ContainsKey(questID)) return;
-
-            QuestStatus status = questStatuses[questID];
-            status.isCompleted = true;
-            status.isActive = false;
-
-            // Thực hiện phần thưởng ở đây
-            QuestData quest = availableQuests.Find(q => q.questID == questID);
-            if (quest != null)
-            {
-                // Thêm gold
-                // GameManager.Instance.AddGold(quest.goldReward);
-
-                // Thêm items
-                if (quest.itemRewards != null)
-                {
-                    foreach (var item in quest.itemRewards)
+                    objective.currentAmount += amount;
+                    if (quest.CheckCompletion())
                     {
-                        // Inventory.Instance.AddItem(item);
+                        CompleteQuest(quest);
+                    }
+                    else
+                    {
+                        // Thông báo UI cập nhật ngay cả khi chưa hoàn thành
+                        OnQuestUpdated?.Invoke();
                     }
                 }
             }
         }
 
-        public bool IsQuestActive(string questID)
+        private void CompleteQuest(Quest quest)
         {
-            return questStatuses.ContainsKey(questID) && questStatuses[questID].isActive;
-        }
+            quest.status = QuestStatus.Completed;
+            activeQuests.Remove(quest);
+            completedQuests.Add(quest);
 
-        public bool IsQuestCompleted(string questID)
-        {
-            return questStatuses.ContainsKey(questID) && questStatuses[questID].isCompleted;
-        }
+            // Give rewards
+            GameData gameData = SaveLoadManager.Instance.GetGameData();
+            gameData.player.experience += quest.experienceReward;
+            gameData.player.money += quest.moneyReward;
 
-        public QuestStatus GetQuestStatus(string questID)
-        {
-            return questStatuses.ContainsKey(questID) ? questStatuses[questID] : null;
+            // Thông báo UI cập nhật
+            OnQuestUpdated?.Invoke();
+
+            SaveLoadManager.Instance.SaveData(gameData.player);
         }
     }
 }

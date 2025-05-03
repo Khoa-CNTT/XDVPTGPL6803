@@ -58,6 +58,35 @@ namespace KLTNLongKhoi
             return dataManager.GameData;
         }
 
+        public T LoadData<T>()
+        {
+            if (typeof(T) == typeof(PlayerData))
+            {
+                return (T)(object)dataManager.GameData.player;
+            }
+            else if (typeof(T) == typeof(GameSettingsData))
+            {
+                return (T)(object)dataManager.GameData.gameSettings;
+            }
+            else if (typeof(T) == typeof(List<ItemData>))
+            {
+                return (T)(object)dataManager.GameData.worldItems;
+            }
+            else if (typeof(T) == typeof(List<MonsterData>))
+            {
+                return (T)(object)dataManager.GameData.monsters;
+            }
+            else if (typeof(T) == typeof(List<QuestProgressData>))
+            {
+                return (T)(object)dataManager.GameData.questProgress;
+            }
+            else
+            {
+                Debug.LogError("Type not supported for loading: " + typeof(T));
+                return default;
+            }
+        }
+
         public void SaveData<D>(D data)
         {
             if (data is PlayerData playerData)
@@ -92,6 +121,57 @@ namespace KLTNLongKhoi
             }
 
             dataManager.ArchiveGameData();
+        }
+
+        public void SaveQuestProgress(List<Quest> quests)
+        {
+            List<QuestProgressData> progressData = new List<QuestProgressData>();
+
+            foreach (var quest in quests)
+            {
+                QuestProgressData data = new QuestProgressData
+                {
+                    questID = quest.questID,
+                    status = quest.status,
+                    objectives = new List<ObjectiveProgressData>()
+                };
+
+                foreach (var objective in quest.objectives)
+                {
+                    data.objectives.Add(new ObjectiveProgressData
+                    {
+                        objectiveDescription = objective.objectiveDescription,
+                        currentAmount = objective.currentAmount
+                    });
+                }
+
+                progressData.Add(data);
+            }
+
+            dataManager.GameData.questProgress = progressData;
+            dataManager.ArchiveGameData();
+        }
+
+        public void LoadQuestProgress(List<Quest> quests)
+        {
+            foreach (var progress in dataManager.GameData.questProgress)
+            {
+                Quest quest = quests.Find(q => q.questID == progress.questID);
+                if (quest != null)
+                {
+                    quest.status = progress.status;
+
+                    foreach (var objectiveProgress in progress.objectives)
+                    {
+                        QuestObjective objective = quest.objectives.Find(o =>
+                            o.objectiveDescription == objectiveProgress.objectiveDescription);
+                        if (objective != null)
+                        {
+                            objective.currentAmount = objectiveProgress.currentAmount;
+                        }
+                    }
+                }
+            }
         }
     }
 }

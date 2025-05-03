@@ -15,6 +15,7 @@ namespace KLTNLongKhoi
         public PlayerData player = new PlayerData();
         public List<ItemData> worldItems = new List<ItemData>();
         public List<MonsterData> monsters = new List<MonsterData>();
+        public List<QuestProgressData> questProgress = new List<QuestProgressData>();
     }
 
     [Serializable]
@@ -96,5 +97,20 @@ namespace KLTNLongKhoi
         Resource,
         Consumable,
         Quest
+    }
+
+    [Serializable]
+    public class QuestProgressData
+    {
+        public string questID;
+        public QuestStatus status;
+        public List<ObjectiveProgressData> objectives;
+    }
+
+    [Serializable]
+    public class ObjectiveProgressData
+    {
+        public string objectiveDescription;
+        public int currentAmount;
     }
 }
