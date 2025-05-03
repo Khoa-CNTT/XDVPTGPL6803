@@ -30,12 +30,17 @@ namespace KLTNLongKhoi
         {
             base.Awake();
             SetDontDestroyOnLoad(true);
+            GetPath();
+            ImportFileGameData();
+        }
+
+        private void GetPath()
+        {
 #if UNITY_EDITOR
             filePath = Application.dataPath + "/" + fileSaveName;
 #else
             filePath = Application.persistentDataPath + "/" + fileSaveName;
 #endif
-            ImportFileGameData();
         }
 
         public void DeleteFileSave()
@@ -44,7 +49,8 @@ namespace KLTNLongKhoi
         }
 
         public void ArchiveGameData()
-        {
+        { 
+            GetPath();
             File.WriteAllText(filePath, SerializeAndEncrypt(GameData));
             // Debug.Log("Game data saved to: " + filePath);
         }

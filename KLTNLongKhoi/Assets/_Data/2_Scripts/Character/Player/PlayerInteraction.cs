@@ -1,18 +1,29 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using StarterAssets;
 
 namespace KLTNLongKhoi
 {
     public class PlayerInteraction : MonoBehaviour
     {
         [SerializeField] private GameObject interactionIcon;
-
+        private StarterAssetsInputs starterAssetsInputs;
         private IInteractable currentInteractable;
 
-        private void Update()
+        private void Awake()
         {
-            HandleInteraction();
+            starterAssetsInputs = FindFirstObjectByType<StarterAssetsInputs>();
+        }
+
+        private void OnEnable()
+        {
+            starterAssetsInputs.Interact += HandleInteraction;
+        }
+
+        private void OnDisable()
+        {
+            starterAssetsInputs.Interact -= HandleInteraction;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -38,7 +49,7 @@ namespace KLTNLongKhoi
 
         private void HandleInteraction()
         {
-            if (currentInteractable != null && Input.GetKeyDown(KeyCode.E) && currentInteractable.CanInteract())
+            if (currentInteractable != null && currentInteractable.CanInteract())
             {
                 currentInteractable.Interact();
             }

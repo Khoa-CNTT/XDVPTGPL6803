@@ -4,14 +4,16 @@ using UnityEngine;
 namespace KLTNLongKhoi
 {
     public class NPC : MonoBehaviour, IInteractable
-    { 
+    {
         [SerializeField] private Transform cameraView;
         [SerializeField] private bool isInteractable = true;
         [SerializeField] private string interactionText = "Press E to interact";
         [SerializeField] private DialogContent dialogContent; // Reference to the dialog content
+        [SerializeField] private Checkpoint checkPoint;
         DialogCtrl dialogCtrl;
 
         public DialogContent DialogContent { get => dialogContent; set => dialogContent = value; }
+        public Checkpoint CheckPoint { get => checkPoint; set => checkPoint = value; } 
 
         public string GetInteractionText()
         {
@@ -37,7 +39,7 @@ namespace KLTNLongKhoi
         }
 
         public void OnCloseDialog()
-        {  
+        {
             if (cameraView != null)
             {
                 cameraView.gameObject.SetActive(false);

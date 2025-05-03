@@ -5,14 +5,18 @@ TagManager:
   serializedVersion: 3
   tags:
   - CinemachineTarget
+  - Enemy
+  - Item
+  - NPC
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - World
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 

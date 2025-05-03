@@ -16,6 +16,7 @@ namespace StarterAssets
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
+		public event Action Interact;
 		public event Action Attack;
 		public event Action Escape;
 		public event Action openInventory;
@@ -133,6 +134,16 @@ namespace StarterAssets
 			if (value.isPressed)
 			{
 				Roll?.Invoke();
+			}
+		}
+
+		public void OnInteract(InputValue value)
+		{
+			if (pauseManager.IsPaused) return;
+
+			if (value.isPressed)
+			{
+				Interact?.Invoke();
 			}
 		}
 

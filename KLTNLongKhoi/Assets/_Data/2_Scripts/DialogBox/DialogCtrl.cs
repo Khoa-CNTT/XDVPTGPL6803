@@ -21,13 +21,15 @@ namespace KLTNLongKhoi
         public void OpenDialogBox(NPC npc)
         {
             this.npc = npc;
-            dialogBox.gameObject.SetActive(true); 
+            dialogBox.gameObject.SetActive(true);
             dialogBox.SetDialogLines(npc.DialogContent);
+            dialogBox.CheckPoint = npc.CheckPoint; 
             pauseManager.PauseGame();
         }
 
         public void CloseDialogBox()
-        {
+        {   
+            Debug.Log("Close Dialog Box");
             pauseManager.ResumeGame();
             npc.OnCloseDialog();
         }

@@ -18,24 +18,30 @@ namespace KLTNLongKhoi
                 playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
                 if (playerStatus != null && !hasBeenActivated)
                 {
-                    // Lưu vị trí checkpoint
-                    playerStatsManager.SetCheckpoint(transform.position);
-
-                    // Phát hiệu ứng
-                    if (activateEffect != null)
-                    {
-                        activateEffect.Play();
-                    }
-
-                    // Phát âm thanh
-                    if (activateSound != null)
-                    {
-                        AudioSource.PlayClipAtPoint(activateSound, transform.position);
-                    }
-
-                    hasBeenActivated = true;
+                    SaveCheckPoint();
                 }
             }
+        }
+
+        public void SaveCheckPoint()
+        {
+            playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
+            // Lưu vị trí checkpoint
+            playerStatsManager.SetCheckpoint(transform.position);
+
+            // Phát hiệu ứng
+            if (activateEffect != null)
+            {
+                activateEffect.Play();
+            }
+
+            // Phát âm thanh
+            if (activateSound != null)
+            {
+                AudioSource.PlayClipAtPoint(activateSound, transform.position);
+            }
+
+            hasBeenActivated = true;
         }
     }
 }

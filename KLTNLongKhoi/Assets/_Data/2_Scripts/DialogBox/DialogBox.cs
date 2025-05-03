@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.Events;
+using StarterAssets;
+using Unity.VisualScripting;
 
 namespace KLTNLongKhoi
 {
@@ -19,18 +21,22 @@ namespace KLTNLongKhoi
         private int currentLineIndex = 0;
         private AudioSource audioSource;
         private DialogCtrl dialogCtrl;
+        private Checkpoint checkPoint;
+        private StarterAssetsInputs starterAssetsInputs;
 
         public bool AutoPlayMode { get => autoPlayMode; set => autoPlayMode = value; }
+        public Checkpoint CheckPoint { get => checkPoint; set => checkPoint = value; }
 
-        void Start()
+        void Awake()
         {
             audioSource = GetComponent<AudioSource>();
             dialogCtrl = FindFirstObjectByType<DialogCtrl>();
-        }
+            starterAssetsInputs = FindFirstObjectByType<StarterAssetsInputs>();
+        } 
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(1)) // Right mouse button
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 ShowNextLine();
             }
@@ -41,22 +47,16 @@ namespace KLTNLongKhoi
             autoPlayMode = !autoPlayMode;
         }
 
-        // Tắt thoại lun
-        public void SkipDialog()
-        {
-            CloseDialog();
-        }
-
         public void SetDialogLines(DialogContent dialogContent)
         {
             gameObject.SetActive(true);
-            this.dialogContent = dialogContent;
+            this.dialogContent = dialogContent; 
             ShowNextLine();
         }
 
         // Phương thức để hiển thị dòng hội thoại tiếp theo
         public void ShowNextLine()
-        {
+        { 
             List<DialogLine> dialogLines = dialogContent.dialogLines;
             if (currentLineIndex < dialogLines.Count)
             {
@@ -84,6 +84,7 @@ namespace KLTNLongKhoi
             isTyping = false;
             currentLineIndex = 0;
             dialogCtrl.CloseDialogBox();
+            CheckPoint?.SaveCheckPoint();
         }
 
         // Coroutine để hiển thị từng ký tự của nội dung hội thoại

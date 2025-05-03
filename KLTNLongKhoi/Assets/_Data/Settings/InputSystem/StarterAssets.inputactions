@@ -87,7 +87,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PickupItem",
+                    "name": "Interact",
                     "type": "Button",
                     "id": "29d42e6b-976c-42b4-b377-f1e0bd20091d",
                     "expectedControlType": "",
@@ -335,7 +335,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "PickupItem",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
