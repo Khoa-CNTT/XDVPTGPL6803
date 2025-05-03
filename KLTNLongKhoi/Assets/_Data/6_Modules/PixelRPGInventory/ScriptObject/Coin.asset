@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b0eac67f7215547aabd70b0ae1d807, type: 3}
+  m_Name: Coin
+  m_EditorClassIdentifier: 
+  Id: 2
+  ItemName: Money
+  Value: 1
+  MaxStack: 3
+  Image: {fileID: 608649485472153096, guid: bf76e71552364aa43b64869826a833d8, type: 3}
+  ItemTag: 1
+  ScriptEffect: 1
+  Describe: Get 10 coin
+  StatsValue:
+  - statType: 1
+    value: 10
