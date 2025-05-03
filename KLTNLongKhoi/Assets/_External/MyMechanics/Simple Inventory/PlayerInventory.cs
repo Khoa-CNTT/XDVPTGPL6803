@@ -1,29 +1,32 @@
 using UnityEngine;
 
-public class PlayerInventory : Inventory
+namespace HieuDev
 {
-    public ItemPool itemPool;
-
-    void Start()
+    public class PlayerInventory : Inventory
     {
-        itemPool = FindObjectOfType<ItemPool>();
-    }
+        public ItemPool itemPool;
 
-    void Update()
-    {
-        XuLyThemItem();
-    }
-
-    private void XuLyThemItem()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
+        void Start()
         {
-            Item newItem = itemPool.CreateItemByEntityLabel(EntityLabel.Object_1);
-            if (newItem != null)
+            itemPool = FindObjectOfType<ItemPool>();
+        }
+
+        void Update()
+        {
+            XuLyThemItem();
+        }
+
+        private void XuLyThemItem()
+        {
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                AddItem(newItem);
+                Item newItem = itemPool.CreateItemByEntityLabel(EntityLabel.Object_1);
+                if (newItem != null)
+                {
+                    AddItem(newItem);
+                }
             }
         }
     }
-}
 
+}

@@ -18,6 +18,5 @@ namespace HieuDev
             Vector2 moveDir = _moveAction.action.ReadValue<Vector2>();
             transform.Translate(moveDir * speed * Time.deltaTime);
         }
-
     }
 }

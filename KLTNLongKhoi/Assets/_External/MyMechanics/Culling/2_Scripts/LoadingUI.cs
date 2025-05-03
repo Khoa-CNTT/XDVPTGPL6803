@@ -11,11 +11,11 @@ namespace HieuDev
     {
         [SerializeField] private TextMeshProUGUI m_loadingCountingTxt;
         [SerializeField] private Image m_loadingFilled;
-        LoadingScene m_loadingScene;
+        LoadingProgress m_loadingScene;
 
         void Start()
         {
-            m_loadingScene = FindFirstObjectByType<LoadingScene>();
+            m_loadingScene = FindFirstObjectByType<LoadingProgress>();
         }
 
         void FixedUpdate()

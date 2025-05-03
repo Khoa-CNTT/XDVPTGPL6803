@@ -371,8 +371,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75c2530781b794e40afaa8e4b7b1e23e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneNext: 
-  transEffect: {fileID: 0}
 --- !u!1 &1655998085
 GameObject:
   m_ObjectHideFlags: 0

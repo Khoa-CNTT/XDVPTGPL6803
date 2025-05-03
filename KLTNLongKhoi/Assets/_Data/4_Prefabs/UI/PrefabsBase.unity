@@ -2062,6 +2062,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpenPanel: 1
+  objectActive: {fileID: 0}
   popupScale: {fileID: 3876950642597131910}
 --- !u!114 &3876950642597131910
 MonoBehaviour:

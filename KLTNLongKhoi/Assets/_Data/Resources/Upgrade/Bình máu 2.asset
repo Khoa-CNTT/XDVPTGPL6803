@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d23f20b23eea8842bfc05a396f4fa58, type: 3}
+  m_Name: "B\xECnh m\xE1u 2"
+  m_EditorClassIdentifier: 
+  targetItem: {fileID: 11400000, guid: c7ac1878eeefe1844a8b5f4b93866cf7, type: 2}
+  requiredLevel: 1
+  item: {fileID: 11400000, guid: c7ac1878eeefe1844a8b5f4b93866cf7, type: 2}
+  amount: 0
+  resultItem: {fileID: 11400000, guid: cf22a890a8178314f80d69f06a8f24fa, type: 2}
+  resultAmount: 1
+  successRate: 0.621
+  destroyOnFailure: 0
+  consumeMaterialsOnFailure: 0
