@@ -12,10 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91b41895ce3556d47abd009255bb1f5c, type: 3}
   m_Name: New Quest
   m_EditorClassIdentifier: 
-  questID: 
+  questID: 1
   questName: 
   description: 
   requiredAmount: 0
   prerequisiteQuests: []
   goldReward: 0
-  itemRewards: []
+  itemRewards:
+  - id: 
+    name: 
+    description: 
+    itemType: 0
+    itemCount: 0
+    maxStack: 0
+    price: 0
+    physicalDamage: 0
+    magicDamage: 0
+    defensePoints: 0
+    resistance: 0
+    attackSpeed: 0
+    healthRecovery: 0
+    manaRecovery: 0
+    criticalChance: 0
+    successRate: 0

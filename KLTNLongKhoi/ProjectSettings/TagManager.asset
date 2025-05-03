@@ -7,6 +7,7 @@ TagManager:
   - CinemachineTarget
   - Enemy
   - Item
+  - NPC
   layers:
   - Default
   - TransparentFX
@@ -14,7 +15,7 @@ TagManager:
   - World
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 

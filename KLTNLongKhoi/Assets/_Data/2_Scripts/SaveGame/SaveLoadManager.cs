@@ -17,12 +17,17 @@ namespace KLTNLongKhoi
         {
             base.Awake();
             SetDontDestroyOnLoad(true);
-            dataManager = GetComponent<DataManager>();
+            Init();
         }
 
         private void Start()
         {
             OnLoaded?.Invoke();
+        }
+
+        public void Init()
+        {
+            dataManager = FindFirstObjectByType<DataManager>();
         }
 
         // kiểm tra xem đây có phải là gameplay mới hay không
@@ -38,8 +43,10 @@ namespace KLTNLongKhoi
         }
 
         // Method để reset toàn bộ game state
+        [ContextMenu("Reset Game Data")]
         public void ResetGameData()
         {
+            Init();
             dataManager.GameData.player = new PlayerData();
             dataManager.GameData.worldItems = new List<ItemData>();
             dataManager.GameData.monsters = new List<MonsterData>();

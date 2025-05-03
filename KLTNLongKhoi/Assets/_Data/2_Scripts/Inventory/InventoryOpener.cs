@@ -2,6 +2,7 @@ using System.Collections;
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.Events;
+using System;
 
 namespace KLTNLongKhoi
 {
@@ -17,7 +18,7 @@ namespace KLTNLongKhoi
         private void Start()
         {
             inputs = FindFirstObjectByType<StarterAssetsInputs>();
-            inputs.openInventory.AddListener(OpenInventory);
+            inputs.openInventory += OpenInventory;
             inventoryDragNDrop = FindFirstObjectByType<InventoryDragNDrop>();
             pauseManager = FindFirstObjectByType<PauseManager>();
         }

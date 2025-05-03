@@ -55,72 +55,28 @@ MonoBehaviour:
     _srBackground: {fileID: 0}
     _srPrimaryBar: {fileID: 0}
     _srGhostBar: {fileID: 0}
-    _uiBackground: {fileID: 8615194741368719036}
-    _uiPrimaryBar: {fileID: 6770988671081973103}
-    _uiGhostBar: {fileID: 8352476598200506573}
-    _adaptiveColor: 0
-    _barPrimaryColor: {r: 1, g: 0.2, b: 0.20831451, a: 1}
+    _uiBackground: {fileID: 0}
+    _uiPrimaryBar: {fileID: 0}
+    _uiGhostBar: {fileID: 0}
+    _adaptiveColor: 1
+    _barPrimaryColor: {r: 1, g: 1, b: 1, a: 1}
     _barAdaptiveColor: {r: 1, g: 0, b: 0, a: 1}
     _useGhostBar: 1
     _dualGhostBars: 0
-    _ghostBarDamageColor: {r: 1, g: 0.759434, b: 0.759434, a: 1}
-    _ghostBarHealColor: {r: 0.6404338, g: 1, b: 0.3537736, a: 1}
-    _damageAnim: 2
+    _ghostBarDamageColor: {r: 1, g: 0, b: 0, a: 1}
+    _ghostBarHealColor: {r: 1, g: 1, b: 1, a: 1}
+    _damageAnim: 0
     _damageAnimDuration: 0.5
-    _damageAnimDelay: 0.1
+    _damageAnimDelay: 0
     _damageFlashColor: {r: 1, g: 1, b: 1, a: 1}
-    _damageAnimStrength: 1
-    _healAnim: 2
+    _damageAnimStrength: 0.5
+    _healAnim: 0
     _healAnimDuration: 0.5
-    _healAnimDelay: 0.1
+    _healAnimDelay: 0
     _healFlashColor: {r: 1, g: 1, b: 1, a: 1}
-    _healAnimStrength: 0
-  editorMode: 1
-  animations:
-  - animationType: 0
-    renderType: 0
-    targetImage: {fileID: 0}
-    targetSprite: {fileID: 0}
-    notBar: 0
-    commands:
-    - execution: 0
-      effect: 2
-      duration: 0.3
-      delay: 0
-      valueMode: 4
-      floatValue: 5
-      intValue: 0
-      boolValue: 0
-      vector2Value: {x: 0, y: 0}
-      vector3Value: {x: 0, y: 0, z: 0}
-      colorValue: {r: 1, g: 1, b: 1, a: 1}
-      percentValue: 1
-      frequency: 10
-      ease: 8
-      animAxis: 0
-      transformProperty: 0
-  - animationType: 1
-    renderType: 0
-    targetImage: {fileID: 0}
-    targetSprite: {fileID: 0}
-    notBar: 0
-    commands:
-    - execution: 0
-      effect: 2
-      duration: 0.3
-      delay: 0
-      valueMode: 0
-      floatValue: 5
-      intValue: 0
-      boolValue: 0
-      vector2Value: {x: 0, y: 0}
-      vector3Value: {x: 0, y: 0, z: 0}
-      colorValue: {r: 1, g: 1, b: 1, a: 1}
-      percentValue: 1
-      frequency: 10
-      ease: 8
-      animAxis: 0
-      transformProperty: 0
+    _healAnimStrength: 0.5
+  editorMode: 0
+  animations: []
 --- !u!1 &5314912042434630427
 GameObject:
   m_ObjectHideFlags: 0

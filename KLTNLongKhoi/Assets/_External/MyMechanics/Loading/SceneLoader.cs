@@ -29,6 +29,12 @@ public class SceneLoader : MonoBehaviour
         LoadSceneName("MainMenu");
     }
 
+    // Load lại scene này
+    public void ReloadScene()
+    {
+        LoadSceneName(SceneManager.GetActiveScene().name);
+    }
+
     public void LoadSceneName(string nextSceneName)
     {
         m_async = SceneManager.LoadSceneAsync(GameScene.DataHolder.ToString(), LoadSceneMode.Additive);

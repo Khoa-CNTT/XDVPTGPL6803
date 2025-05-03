@@ -6,7 +6,7 @@ namespace KLTNLongKhoi
 {
     public class PlayerAttackCombo : MonoBehaviour
     {
-        [Header("Combo Settings")]
+        [SerializeField] private PlayerAnimationEvents playerAnimationEvents;
         [SerializeField] private float nextAttackPressTime = 1f;
         [SerializeField] private int maxAttackAnimation = 3;
 
@@ -14,28 +14,21 @@ namespace KLTNLongKhoi
         private StarterAssetsInputs input;
         private ThirdPersonController controller;
         private ActorHitbox actorHitbox;
+        [SerializeField] float timeAttack = 1f;
+        private float countdownTimeAttack;
 
         private int currentAnimationAttack = 0;
         private bool isAttacking = false;
-        private float lastAttackTime = 0f;
-
-        private static readonly int AttackParam = Animator.StringToHash("Attack");
-
-        public bool IsAttacking
-        {
-            get => isAttacking;
-            private set
-            {
-                isAttacking = value;
-                controller.CanMove = !value;
-            }
-        }
+        private float lastAttackTime = 0f; 
 
         private void Start()
         {
             InitializeComponents();
             RegisterInputEvents();
-            IsAttacking = false;
+            playerAnimationEvents = GetComponentInChildren<PlayerAnimationEvents>();
+
+            playerAnimationEvents.onAttackComplete += OnAttackComplete;
+            playerAnimationEvents.onSendDamage += OnSendDamage;
         }
 
         private void OnDestroy()
@@ -43,9 +36,21 @@ namespace KLTNLongKhoi
             UnregisterInputEvents();
         }
 
+        private void Update()
+        {
+            if (isAttacking)
+            {
+                countdownTimeAttack -= Time.deltaTime;
+                if (countdownTimeAttack <= 0f)
+                {
+                    OnAttackComplete();
+                }
+            }
+        }
+
         private void InitializeComponents()
         {
-            animator = GetComponent<Animator>();
+            animator = GetComponentInChildren<Animator>();
             input = GetComponent<StarterAssetsInputs>();
             controller = GetComponent<ThirdPersonController>();
             actorHitbox = GetComponentInChildren<ActorHitbox>();
@@ -55,7 +60,7 @@ namespace KLTNLongKhoi
         {
             if (input != null)
             {
-                input.Attack.AddListener(OnPlayerAttack);
+                input.Attack += OnPlayerAttack;
             }
         }
 
@@ -63,7 +68,7 @@ namespace KLTNLongKhoi
         {
             if (input != null)
             {
-                input.Attack.RemoveListener(OnPlayerAttack);
+                input.Attack -= OnPlayerAttack;
             }
         }
 
@@ -75,45 +80,33 @@ namespace KLTNLongKhoi
             }
             else
             {
-                currentAnimationAttack++; 
+                currentAnimationAttack++;
             }
 
-            if (CanPerformAttack())
+            if (controller.CanMove && !isAttacking && controller.Grounded)
             {
-                ExecuteAttack();
+                isAttacking = true;
+                controller.CanMove = false;
+                animator.SetInteger("Attack", currentAnimationAttack);
+                countdownTimeAttack = timeAttack;
             }
-        }
-
-        private bool CanPerformAttack()
-        {
-            return controller.Grounded &&
-                   !controller.IsDead &&
-                   !controller.IsHurt &&
-                   !IsAttacking;
-        }
-
-        private void ExecuteAttack()
-        {
-            
-            IsAttacking = true;
-            animator.SetInteger(AttackParam, currentAnimationAttack);
         }
 
         // Animation Event Handlers
-        private void OnAttackComplete(AnimationEvent animationEvent)
+        private void OnAttackComplete()
         {
             if (actorHitbox != null)
             {
                 actorHitbox.IsAttacking = false;
             }
-            IsAttacking = false;
+            isAttacking = false;
+            controller.CanMove = true;
 
-            animator.SetInteger(AttackParam, 0);
-            IsAttacking = false;
+            animator.SetInteger("Attack", 0);
             lastAttackTime = Time.time;
         }
 
-        private void OnSendDamage(AnimationEvent animationEvent)
+        private void OnSendDamage()
         {
             if (actorHitbox != null)
             {

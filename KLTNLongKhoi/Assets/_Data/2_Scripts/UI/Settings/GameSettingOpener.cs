@@ -18,7 +18,7 @@ namespace KLTNLongKhoi
             gameManager = FindFirstObjectByType<GameManager>();
             inputs = FindFirstObjectByType<StarterAssetsInputs>();
 
-            inputs.Escape.AddListener(OpenPopupPanelSetting);
+            inputs.Escape += OpenPopupPanelSetting;
         }
 
         public void OpenPopupPanelSetting()

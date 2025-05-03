@@ -14,7 +14,7 @@ public class BtnSwitchItems : MonoBehaviour
     [SerializeField] private int _minSlotIndex = 0; // Số lượng slot tối thiểu
     [SerializeField] private float _animationDuration = 0.3f; // Thời gian hoàn thành animation
     [SerializeField] private Ease _easeType = Ease.OutQuad; // Kiểu ease cho animation
-    
+
     private Vector2 _initialPosition; // Vị trí ban đầu của slot parent
     private Tweener _currentTween; // Tween hiện tại
 
@@ -29,7 +29,7 @@ public class BtnSwitchItems : MonoBehaviour
     public void MoveToNextSlot()
     {
         if (_currentSlotIndex >= _maxSlotIndex) return;
-        
+
         _currentSlotIndex++;
         MoveToCurrentIndex();
         UpdateButtonsInteractable();
@@ -38,12 +38,12 @@ public class BtnSwitchItems : MonoBehaviour
     public void MoveToPreviousSlot()
     {
         if (_currentSlotIndex <= _minSlotIndex) return;
-        
+
         _currentSlotIndex--;
         MoveToCurrentIndex();
         UpdateButtonsInteractable();
     }
-    
+
     private void MoveToCurrentIndex()
     {
         // Hủy animation hiện tại nếu có
@@ -51,15 +51,15 @@ public class BtnSwitchItems : MonoBehaviour
         {
             _currentTween.Kill();
         }
-        
+
         // Tính toán vị trí mới dựa trên index hiện tại
         Vector2 targetPosition = _initialPosition + new Vector2(-_moveDistance * _currentSlotIndex, 0f);
-        
+
         // Tạo animation mới
         _currentTween = _slotParent.DOAnchorPos(targetPosition, _animationDuration)
             .SetEase(_easeType);
     }
-    
+
     private void UpdateButtonsInteractable()
     {
         _leftButton.interactable = _currentSlotIndex > _minSlotIndex;
@@ -76,15 +76,16 @@ public class BtnSwitchItems : MonoBehaviour
         {
             _currentTween.Kill();
         }
-        
+
         // Reset index về 0
         _currentSlotIndex = 0;
-        
+
         // Di chuyển về vị trí ban đầu
         _currentTween = _slotParent.DOAnchorPos(_initialPosition, _animationDuration)
             .SetEase(_easeType);
-            
+
         // Cập nhật trạng thái các nút
         UpdateButtonsInteractable();
     }
+
 }

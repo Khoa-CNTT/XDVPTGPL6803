@@ -45,7 +45,6 @@ namespace KLTNLongKhoi
             }
             else
             {
-                playerController?.TakeHit(hitDirection, finalDamage);
                 ccBePushedBack?.PushBack(hitDirection, finalDamage);
             }
         }
@@ -81,7 +80,7 @@ namespace KLTNLongKhoi
             if (isDead) return;
             isDead = true;
 
-            playerController.Die();
+            playerController.OnDead();
             ragdollAnimator.EnableRagdoll();
         }
 

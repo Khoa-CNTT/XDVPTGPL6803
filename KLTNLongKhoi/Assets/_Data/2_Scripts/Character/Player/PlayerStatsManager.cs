@@ -78,6 +78,7 @@ namespace KLTNLongKhoi
 
         public void Init()
         {
+            if (saveLoadManager.IsNewGameplay()) return;
             CurrentHP = playerData.baseHP;
             CurrentSP = playerData.baseSP;
             CurrentMP = playerData.baseMP;

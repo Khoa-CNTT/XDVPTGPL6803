@@ -1,23 +1,25 @@
 using UnityEngine;
-using UnityEngine.Events;
 using System.Collections.Generic;
-using UnityEditorInternal.VersionControl;
 using UnityEngine.UI;
 using System.Linq;
+using TMPro;
 
 namespace KLTNLongKhoi
 {
     public class BagController : MonoBehaviour
     {
-        public UnityEvent openPanel;
-        public UnityEvent closePanel;
-        PauseManager pauseManager;
+        [SerializeField] TMP_Text notifySell;
+        [SerializeField] GameObject bagPanel;
         [SerializeField] Button btnOpenItemResource;
         [SerializeField] Button btnOpenItemWeapon;
+        [SerializeField] Button sellItem;
         [SerializeField] Button btnOpenItemConsumable;
         [SerializeField] bool isOpen = false;
+        [SerializeField] InventoryItemInfo inventoryItemInfo; // inventoryItemInfo của Bag
         private SaveLoadManager saveLoadManager;
+        private PauseManager pauseManager;
         private ContainerBase containerBase;
+        private InventoryDataContact inventoryDataContact;
         private ItemType itemTypeOpening;
 
         private void Awake()
@@ -28,6 +30,12 @@ namespace KLTNLongKhoi
             btnOpenItemResource.onClick.AddListener(AddItemResourceToBag);
             btnOpenItemWeapon.onClick.AddListener(AddItemWeaponToBag);
             btnOpenItemConsumable.onClick.AddListener(AddItemConsumableToBag);
+            inventoryDataContact = FindFirstObjectByType<InventoryDataContact>();
+        }
+
+        void Start()
+        {
+            sellItem.onClick.AddListener(SellItem);
         }
 
         private void Update()
@@ -86,7 +94,7 @@ namespace KLTNLongKhoi
                 resourceItems.Add(itemDataSO);
             }
 
-            return resourceItems;   
+            return resourceItems;
         }
 
         public void AddItemResourceToBag()
@@ -113,7 +121,7 @@ namespace KLTNLongKhoi
 
         public void OpenStorage()
         {
-            openPanel.Invoke();
+            bagPanel.SetActive(true);
             pauseManager?.PauseGame();
             isOpen = true;
 
@@ -137,9 +145,52 @@ namespace KLTNLongKhoi
 
         public void CloseStorage()
         {
-            closePanel.Invoke();
+            bagPanel.SetActive(false);
             pauseManager?.ResumeGame();
             isOpen = false;
+        }
+
+        private void SellItem()
+        {
+            if (inventoryItemInfo.ItemDataSO == null)
+            {
+                OnSellFail("Chọn vật phẩm để bán");
+                return;
+            }
+            ItemData itemSelecting = inventoryItemInfo.ItemDataSO.itemData;
+
+            bool isSell = inventoryDataContact.TrySellItem(itemSelecting);
+
+            if (isSell)
+            {
+                OnSellScuccess("Bán thành công");
+                OpenStorage();
+            }
+            else
+            {
+                OnSellFail("Xóa không thành công");
+            }
+        }
+
+        private void OnSellScuccess(string message)
+        {
+            notifySell.gameObject.SetActive(true);
+            notifySell.text = message;
+            notifySell.color = Color.green;
+            Invoke("HideNotify", 1f);
+        }
+
+        private void OnSellFail(string message)
+        {
+            notifySell.gameObject.SetActive(true);
+            notifySell.text = message;
+            notifySell.color = Color.red;
+            Invoke("HideNotify", 1f);
+        }
+
+        private void HideNotify()
+        {
+            notifySell.gameObject.SetActive(false);
         }
     }
 }
