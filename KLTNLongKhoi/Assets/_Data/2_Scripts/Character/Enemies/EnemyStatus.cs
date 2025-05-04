@@ -6,6 +6,7 @@ namespace KLTNLongKhoi
     public class EnemyStatus : CharacterStatus
     {
         CharacterVision characterVision;
+        [SerializeField] MonsterData monsterData;
         [Header("Reward Settings")]
         [SerializeField] private float moneyReward = 100f; // Số tiền thưởng khi giết enemy
         private PlayerStatsManager playerStatsManager;
@@ -29,12 +30,12 @@ namespace KLTNLongKhoi
             base.TakeDamage(damage, hitDirection, attacker);
             // Additional logic for enemy damage handling if needed
             characterVision.Target = attacker;
-
         }
 
-        protected override void HandleReward()
+        protected override void OnDie()
         {
             playerStatsManager.AddMoney(moneyReward);
-        }
+            GameEvents.Notify(GameEventType.EnemyDefeated, monsterData.id);
+        } 
     }
 }

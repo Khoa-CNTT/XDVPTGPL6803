@@ -81,21 +81,20 @@ namespace KLTNLongKhoi
         protected virtual void Die(Vector3 hitDirection)
         {
             if (isDead) return;
-            HandleReward();
+            OnDie();
             isDead = true;
 
             ccBePushedBack.IsDead = true; // Không cho push back nữa khi chết
             ragdollAnimator?.EnableRagdoll();
         }
 
-        protected virtual void HandleReward() { } // Override this method to handle reward logic for specific characters (e.g., enemies)
+        protected virtual void OnDie() { } // Override this method to handle reward logic for specific characters (e.g., enemies)
 
         // Public getters for stats
         public float GetCurrentHealth() => currentHealth;
         public float GetMaxHealth() => maxHealth;
         public bool IsDead() => isDead;
         public int GetStrength() => baseStrength;
-
 
     }
 }

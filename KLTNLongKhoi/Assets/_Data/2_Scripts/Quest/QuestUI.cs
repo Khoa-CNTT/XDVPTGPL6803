@@ -9,67 +9,85 @@ namespace KLTNLongKhoi
     {
         [Header("UI References")]
         [SerializeField] private GameObject questPanel;
-        [SerializeField] private Transform activeQuestsContainer;
-        [SerializeField] private Transform completedQuestsContainer;
         [SerializeField] private GameObject questPrefab;
-        [SerializeField] private Button toggleButton;
-        [SerializeField] private TMP_Text toggleButtonText; 
+        [SerializeField] private Transform questsContainer;
+        [SerializeField] private Button btnOpenPanel;
+        [SerializeField] private Button btnClosePanel;
+        [SerializeField] private Button btnShowMainQuest;
+        [SerializeField] private Button btnShowSideQuest;
 
         private bool isPanelOpen = false;
 
-        private void Start()
+        private void OnEnable()
         {
-            toggleButton.onClick.AddListener(ToggleQuestPanel);
-            UpdateQuestUI();
-
-            // Đăng ký sự kiện khi nhiệm vụ được cập nhật
-            QuestManager.Instance.OnQuestUpdated += UpdateQuestUI;
+            btnOpenPanel.onClick.AddListener(OpenQuestPanel);
+            btnClosePanel.onClick.AddListener(CloseQuestPanel);
+            btnShowMainQuest.onClick.AddListener(ShowMainQuest);
+            btnShowSideQuest.onClick.AddListener(ShowSideQuest);
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
-            if (QuestManager.Instance != null)
-            {
-                QuestManager.Instance.OnQuestUpdated -= UpdateQuestUI;
-            }
+            btnOpenPanel.onClick.RemoveListener(OpenQuestPanel);
+            btnClosePanel.onClick.RemoveListener(CloseQuestPanel);
+            btnShowMainQuest.onClick.RemoveListener(ShowMainQuest);
+            btnShowSideQuest.onClick.RemoveListener(ShowSideQuest);
         }
 
-        public void ToggleQuestPanel()
+        public void OpenQuestPanel()
         {
-            isPanelOpen = !isPanelOpen;
+            isPanelOpen = true;
             questPanel.SetActive(isPanelOpen);
-            toggleButtonText.text = isPanelOpen ? "Đóng Nhiệm Vụ" : "Mở Nhiệm Vụ";
-
-            if (isPanelOpen)
-            {
-                UpdateQuestUI();
-            }
+            ShowMainQuest();
         }
 
-        public void UpdateQuestUI()
+        public void CloseQuestPanel()
+        {
+            isPanelOpen = false;
+            questPanel.SetActive(isPanelOpen);
+        }
+
+        private void ShowMainQuest()
         {
             // Xóa các quest UI cũ
-            foreach (Transform child in activeQuestsContainer)
+            foreach (Transform child in questsContainer)
             {
                 Destroy(child.gameObject);
             }
 
-            foreach (Transform child in completedQuestsContainer)
+            // Tạo UI cho các nhiệm vụ chính
+            foreach (var quest in GetQuestsByType(QuestType.Main))
+            {
+                CreateQuestUI(quest);
+            }
+        }
+
+        private void ShowSideQuest()
+        {
+            // Xóa các quest UI cũ
+            foreach (Transform child in questsContainer)
             {
                 Destroy(child.gameObject);
             }
 
-            // Tạo UI cho các nhiệm vụ đang thực hiện
-            foreach (var quest in QuestManager.Instance.GetActiveQuests())
+            // Tạo UI cho các nhiệm vụ支线任务
+            foreach (var quest in GetQuestsByType(QuestType.Side))
             {
-                // CreateQuestUI(quest, activeQuestsContainer);
+                CreateQuestUI(quest);
             }
+        }
 
-            // Tạo UI cho các nhiệm vụ đã hoàn thành
-            foreach (var quest in QuestManager.Instance.GetCompletedQuests())
-            {
-                // CreateQuestUI(quest, completedQuestsContainer);
-            }
+        private void CreateQuestUI(Quest quest)
+        {
+            GameObject questUI = Instantiate(questPrefab, questsContainer);
+            questUI.GetComponent<QuestUIElement>().Initialize(quest);
+        }
+
+        private List<Quest> GetQuests() => QuestManager.Instance.GetQuests();
+
+        private List<Quest> GetQuestsByType(QuestType questType)
+        {
+            return QuestManager.Instance.GetQuests().FindAll(q => q.questType == questType);
         }
 
 

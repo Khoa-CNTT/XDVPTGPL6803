@@ -20,7 +20,7 @@ namespace KLTNLongKhoi
         {
             base.Start();
             LoadInventory();
-            saveLoadManager.OnLoaded.AddListener(LoadInventory);
+            saveLoadManager.OnLoaded += LoadInventory;
         }
 
         protected override void SaveInventory()

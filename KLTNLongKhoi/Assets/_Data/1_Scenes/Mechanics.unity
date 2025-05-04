@@ -580,8 +580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b222a0bdcd42a6841a2a76f0f0a04c34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  availableQuests:
-  - {fileID: 11400000, guid: 31d4d6eb473a0e14eb3ffeb6104b13d8, type: 2}
+  _dontDestroyOnLoad: 0
 --- !u!4 &37932590
 Transform:
   m_ObjectHideFlags: 0
@@ -1835,6 +1834,14 @@ MonoBehaviour:
   currentHealth: 0
   healthBar: {fileID: 0}
   barHpCtrl: {fileID: 0}
+  monsterData:
+    id: 
+    name: 
+    description: 
+    level: 0
+    health: 0
+    isDefeated: 0
+    position: {x: 0, y: 0, z: 0}
   moneyReward: 100
 --- !u!95 &182919765
 Animator:
@@ -14203,6 +14210,14 @@ MonoBehaviour:
   currentHealth: 0
   healthBar: {fileID: 0}
   barHpCtrl: {fileID: 0}
+  monsterData:
+    id: 
+    name: 
+    description: 
+    level: 0
+    health: 0
+    isDefeated: 0
+    position: {x: 0, y: 0, z: 0}
   moneyReward: 100
 --- !u!143 &1108325752
 CharacterController:
@@ -16513,6 +16528,14 @@ MonoBehaviour:
   currentHealth: 0
   healthBar: {fileID: 0}
   barHpCtrl: {fileID: 0}
+  monsterData:
+    id: 
+    name: 
+    description: 
+    level: 0
+    health: 0
+    isDefeated: 0
+    position: {x: 0, y: 0, z: 0}
   moneyReward: 100
 --- !u!143 &1299804412
 CharacterController:
@@ -35632,6 +35655,14 @@ PrefabInstance:
     - target: {fileID: 2645931591979852237, guid: 15c17fb70bae1434a8c96001b12ca804, type: 3}
       propertyPath: gravity
       value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2749302134240319698, guid: 15c17fb70bae1434a8c96001b12ca804, type: 3}
+      propertyPath: monsterData.id
+      value: monster1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2749302134240319698, guid: 15c17fb70bae1434a8c96001b12ca804, type: 3}
+      propertyPath: monsterData.name
+      value: monster1
       objectReference: {fileID: 0}
     - target: {fileID: 6438023989174414242, guid: 15c17fb70bae1434a8c96001b12ca804, type: 3}
       propertyPath: m_Name

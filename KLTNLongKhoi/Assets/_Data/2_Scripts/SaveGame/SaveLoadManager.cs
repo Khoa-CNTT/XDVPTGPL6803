@@ -11,7 +11,7 @@ namespace KLTNLongKhoi
     {
         private DataManager dataManager;
 
-        public UnityEvent OnLoaded;
+        public event Action OnLoaded;
 
         protected override void Awake()
         {
@@ -51,6 +51,15 @@ namespace KLTNLongKhoi
             dataManager.GameData.worldItems = new List<ItemData>();
             dataManager.GameData.monsters = new List<MonsterData>();
             dataManager.ArchiveGameData();
+
+            dataManager.GameData.questProgress = new List<QuestProgressData>(); // Reset progress nhiệm vụ
+            dataManager.ArchiveGameData();
+
+            // Reset QuestManager
+            if (QuestManager.Instance != null)
+            {
+                QuestManager.Instance.ResetQuests();
+            }
         }
 
         public GameData GetGameData()
@@ -76,9 +85,9 @@ namespace KLTNLongKhoi
             {
                 return (T)(object)dataManager.GameData.monsters;
             }
-            else if (typeof(T) == typeof(List<QuestProgressData>))
+            else if (typeof(T) == typeof(List<Quest>))
             {
-                return (T)(object)dataManager.GameData.questProgress;
+                return (T)(object)GetQuests();
             }
             else
             {
@@ -119,6 +128,18 @@ namespace KLTNLongKhoi
                 }
                 dataManager.GameData.monsters.Add(monsterData);
             }
+            else if (data is List<MonsterData> monstersData)
+            {
+                dataManager.GameData.monsters = monstersData;
+            }
+            else if (data is List<Quest> questsData)
+            {
+                SaveQuestProgress(questsData);
+            }
+            else
+            {
+                Debug.LogError("Type not supported for saving: " + typeof(D));
+            }
 
             dataManager.ArchiveGameData();
         }
@@ -152,26 +173,34 @@ namespace KLTNLongKhoi
             dataManager.ArchiveGameData();
         }
 
-        public void LoadQuestProgress(List<Quest> quests)
+        public List<Quest> GetQuests()
         {
-            foreach (var progress in dataManager.GameData.questProgress)
+            return dataManager.GameData.questProgress.Select(p =>
             {
-                Quest quest = quests.Find(q => q.questID == progress.questID);
-                if (quest != null)
-                {
-                    quest.status = progress.status;
+                Quest quest = null;
+                // Tìm tất cả Quest trong thư mục Resources/Quests
+                Quest[] allQuests = Resources.LoadAll<Quest>("Quests");
+                // Tìm Quest có questID trùng khớp
+                quest = allQuests.FirstOrDefault(q => q.questID == p.questID);
 
-                    foreach (var objectiveProgress in progress.objectives)
+                if (quest == null)
+                {
+                    Debug.LogWarning($"Không tìm thấy Quest với ID: {p.questID}");
+                    return null;
+                }
+
+                quest.status = p.status;
+                foreach (var objectiveProgress in p.objectives)
+                {
+                    QuestObjective objective = quest.objectives.Find(o =>
+                        o.objectiveDescription == objectiveProgress.objectiveDescription);
+                    if (objective != null)
                     {
-                        QuestObjective objective = quest.objectives.Find(o =>
-                            o.objectiveDescription == objectiveProgress.objectiveDescription);
-                        if (objective != null)
-                        {
-                            objective.currentAmount = objectiveProgress.currentAmount;
-                        }
+                        objective.currentAmount = objectiveProgress.currentAmount;
                     }
                 }
-            }
+                return quest;
+            }).ToList();
         }
     }
 }

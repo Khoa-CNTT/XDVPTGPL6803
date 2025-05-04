@@ -16,7 +16,7 @@ namespace KLTNLongKhoi
         Completed
     }
 
-    [CreateAssetMenu(fileName = "NewQuest", menuName = "Quest System/Quest")]
+    [CreateAssetMenu(fileName = "NewQuest", menuName = "KLTNLongKhoi/Quest")]
     public class Quest : ScriptableObject
     {
         public string questID;
@@ -29,7 +29,7 @@ namespace KLTNLongKhoi
         [Header("Rewards")]
         public int experienceReward;
         public int moneyReward;
-        public List<ItemData> itemRewards;
+        public List<ItemDataSO> itemRewards;
 
         public void Initialize()
         {

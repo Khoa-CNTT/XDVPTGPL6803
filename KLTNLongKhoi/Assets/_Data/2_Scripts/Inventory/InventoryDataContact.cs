@@ -19,7 +19,7 @@ namespace KLTNLongKhoi
         private void Start()
         {
             PlayerData = saveLoadManager.GetGameData().player;
-            saveLoadManager.OnLoaded.AddListener(() => PlayerData = saveLoadManager.GetGameData().player);
+            saveLoadManager.OnLoaded += () => PlayerData = saveLoadManager.GetGameData().player;
         }
 
         public bool TrySellItem(ItemData itemData, int count = 1)
