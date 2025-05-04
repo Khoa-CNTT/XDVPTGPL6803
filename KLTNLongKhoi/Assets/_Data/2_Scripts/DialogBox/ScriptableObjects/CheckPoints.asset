@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogLines:
   - actorName: 
-    dialogText: "\u0110\xE2y l\xE0 \u0111i\u1EC3m h\u1ED3i sinh"
+    dialogText: "\u0110\xE2y l\xE0 \u0111i\u1EC3m h\u1ED3i sinh. Nh\u1EA5n space
+      \u0111\u1EC3 next"
+  - actorName: 
+    dialogText: "\u0110i\u1EC3m m\u1ED1c \u0111\xE3 \u0111\u01B0\u1EE3c l\u01B0u "

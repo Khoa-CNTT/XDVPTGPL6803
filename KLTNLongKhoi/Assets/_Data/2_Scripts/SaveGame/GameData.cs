@@ -31,7 +31,10 @@ namespace KLTNLongKhoi
         public float level = 1;
         public float experience = 0;
         public Vector3 position;
-        public const int maxInventorySize = 16;
+        public int levelSkillC = 1;
+        public int levelSkillE = 1;
+        public int levelSkillQ = 1;
+        public const int maxInventorySize = 19;
         public List<ItemData> inventory;
     }
 
@@ -45,6 +48,7 @@ namespace KLTNLongKhoi
         public int itemCount = 1;
         public int maxStack = 1;
         public int price;
+        public int cellIndex; // vị trí trong túi
 
         // Bonus stats
         public int physicalDamage;

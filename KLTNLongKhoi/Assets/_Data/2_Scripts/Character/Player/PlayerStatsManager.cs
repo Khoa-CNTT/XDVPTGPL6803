@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
+using System;
 
 namespace KLTNLongKhoi
 {
     public class PlayerStatsManager : MonoBehaviour
     {
-        [Header("Base Stats")]
         [SerializeField] PlayerData playerData;
         [SerializeField] private float currentHP;
         [SerializeField] private float currentSP;
@@ -18,21 +18,18 @@ namespace KLTNLongKhoi
         private SaveLoadManager saveLoadManager;
         private PlayerStatus playerStatus;
 
-        public UnityEvent StatsUpdatedEvent;
+        public event Action StatsUpdatedEvent;
 
         // Public Properties
-        public float GetPhysicsDamage => playerData.baseStr * GetCriticalChance;
-        public float GetMagicDamage => playerData.baseInt * GetCriticalChance;
-        public float GetCriticalChance => Random.Range(playerData.baseInt * 0.5f, playerData.baseInt * 1.5f) / 100f;
-        public float BaseHP => playerData.baseHP;
-        public float BaseSP => playerData.baseSP;
-        public float BaseMP => playerData.baseMP;
+        public float GetPhysicsDamage => PlayerData.baseStr * GetCriticalChance;
+        public float GetMagicDamage => PlayerData.baseInt * GetCriticalChance;
+        public float GetCriticalChance => UnityEngine.Random.Range(PlayerData.baseInt * 0.5f, PlayerData.baseInt * 1.5f) / 100f;
         public float CurrentHP
         {
             get => currentHP;
             set
             {
-                currentHP = Mathf.Clamp(value, 0, playerData.baseHP);
+                currentHP = Mathf.Clamp(value, 0, PlayerData.baseHP);
                 OnStatsUpdated();
             }
         }
@@ -41,7 +38,7 @@ namespace KLTNLongKhoi
             get => currentSP;
             set
             {
-                currentSP = Mathf.Clamp(value, 0, playerData.baseSP);
+                currentSP = Mathf.Clamp(value, 0, PlayerData.baseSP);
                 OnStatsUpdated();
             }
         }
@@ -50,59 +47,65 @@ namespace KLTNLongKhoi
             get => currentMP;
             set
             {
-                currentMP = Mathf.Clamp(value, 0, playerData.baseMP);
+                currentMP = Mathf.Clamp(value, 0, PlayerData.baseMP);
                 OnStatsUpdated();
             }
         }
         public float CurrentMoney
         {
-            get => playerData.money;
+            get => PlayerData.money;
             set
             {
-                playerData.money = value;
+                PlayerData.money = value;
                 OnStatsUpdated();
             }
         }
+        public PlayerData PlayerData { get => playerData; set => playerData = value; }
 
         private void Awake()
         {
             saveLoadManager = FindFirstObjectByType<SaveLoadManager>();
             playerStatus = FindFirstObjectByType<PlayerStatus>();
+
         }
 
         private void Start()
         {
-            playerData = saveLoadManager.GetGameData().player;
-            Init();
+            PlayerData = saveLoadManager.GetGameData().player;
+            saveLoadManager.OnLoaded += () =>
+            {
+                PlayerData = saveLoadManager.GetGameData().player;
+                Init();
+            };
         }
 
         public void Init()
         {
             if (saveLoadManager.IsNewGameplay()) return;
-            CurrentHP = playerData.baseHP;
-            CurrentSP = playerData.baseSP;
-            CurrentMP = playerData.baseMP;
-            CurrentMoney = playerData.money;
+            CurrentHP = PlayerData.baseHP;
+            CurrentSP = PlayerData.baseSP;
+            CurrentMP = PlayerData.baseMP;
+            CurrentMoney = PlayerData.money;
 
-            playerStatus.transform.position = playerData.position;
+            playerStatus.transform.position = PlayerData.position;
             OnStatsUpdated();
         }
 
         private void OnDestroy()
         {
-            saveLoadManager.SaveData(playerData);
+            saveLoadManager.SaveData(PlayerData);
         }
 
         public void SetCheckpoint(Vector3 position)
         {
-            playerData.position = position;
+            PlayerData.position = position;
         }
 
-        public Vector3 LastCheckpointPosition() => playerData.position;
+        public Vector3 LastCheckpointPosition() => PlayerData.position;
 
         public void AddExperience(int amount)
         {
-            playerData.experience += amount;
+            PlayerData.experience += amount;
             LevelUp();
             OnStatsUpdated();
         }
@@ -110,19 +113,19 @@ namespace KLTNLongKhoi
         public void AddMoney(float amount)
         {
             Debug.Log($"Add money: {amount}");
-            playerData.money += amount;
+            PlayerData.money += amount;
             OnStatsUpdated();
         }
 
         private void LevelUp()
         {
-            if (playerData.experience < experienceRequirements[(int)playerData.level - 1]) return;
-            playerData.level++;
-            playerData.baseHP += 5;
-            playerData.baseSP += 5;
-            playerData.baseStr += 2;
-            playerData.baseCri += 5;
-            playerData.baseInt += 2;
+            if (PlayerData.experience < experienceRequirements[(int)PlayerData.level - 1]) return;
+            PlayerData.level++;
+            PlayerData.baseHP += 5;
+            PlayerData.baseSP += 5;
+            PlayerData.baseStr += 2;
+            PlayerData.baseCri += 5;
+            PlayerData.baseInt += 2;
 
             Init();
             OnStatsUpdated();
@@ -130,6 +133,7 @@ namespace KLTNLongKhoi
 
         private void OnStatsUpdated()
         {
+            saveLoadManager.SaveData(PlayerData);
             StatsUpdatedEvent?.Invoke();
         }
     }

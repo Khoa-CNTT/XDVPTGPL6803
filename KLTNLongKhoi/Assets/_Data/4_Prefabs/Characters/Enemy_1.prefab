@@ -2757,10 +2757,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a484742be4699499c7c6ec1cab422d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 1
-  damageForceMultiplier: 0.5
+  pushForce: 7
+  damageForceMultiplier: 0
   recoveryTime: 0.5
-  gravity: -9.81
+  gravity: -10
 --- !u!95 &542220249773917410
 Animator:
   serializedVersion: 7
@@ -2916,10 +2916,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f26790f3ee5aaeb4f90729fe1435ca90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 1000
   currentHealth: 0
   healthBar: {fileID: 0}
   barHpCtrl: {fileID: 0}
+  monsterData:
+    id: monster1
+    name: monster1
+    description: 
+    level: 0
+    health: 0
+    isDefeated: 0
+    position: {x: 0, y: 0, z: 0}
   moneyReward: 100
 --- !u!1 &6568016166478666576
 GameObject:

@@ -40,8 +40,10 @@ namespace KLTNLongKhoi
 
             if (playerStatsManager.CurrentHP <= 0)
             {
+                isDead = true; 
                 playerStatsManager.CurrentHP = 0;
-                Die(hitDirection);
+                playerController.OnDead();
+                ragdollAnimator.EnableRagdoll();
             }
             else
             {
@@ -53,7 +55,7 @@ namespace KLTNLongKhoi
         {
             if (isDead) return;
 
-            float newHealth = Mathf.Min(playerStatsManager.CurrentHP + amount, playerStatsManager.BaseHP);
+            float newHealth = Mathf.Min(playerStatsManager.CurrentHP + amount, playerStatsManager.PlayerData.baseHP);
             playerStatsManager.CurrentHP = newHealth;
         }
 
@@ -62,7 +64,7 @@ namespace KLTNLongKhoi
         {
             if (isDead) return;
 
-            float newMana = Mathf.Min(playerStatsManager.CurrentMP + amount, playerStatsManager.BaseMP);
+            float newMana = Mathf.Min(playerStatsManager.CurrentMP + amount, playerStatsManager.PlayerData.baseMP);
             playerStatsManager.CurrentMP = newMana;
         }
 
@@ -71,17 +73,8 @@ namespace KLTNLongKhoi
         {
             if (isDead) return;
 
-            float newStamina = Mathf.Min(playerStatsManager.CurrentSP + amount, playerStatsManager.BaseSP);
+            float newStamina = Mathf.Min(playerStatsManager.CurrentSP + amount, playerStatsManager.PlayerData.baseSP);
             playerStatsManager.CurrentSP = newStamina;
-        }
-
-        private void Die(Vector3 hitDirection)
-        {
-            if (isDead) return;
-            isDead = true;
-
-            playerController.OnDead();
-            ragdollAnimator.EnableRagdoll();
         }
 
     }

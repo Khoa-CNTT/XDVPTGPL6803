@@ -27,14 +27,14 @@ namespace KLTNLongKhoi
         void Awake()
         {
             playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
-            playerStatsManager.StatsUpdatedEvent.AddListener(UpdateAllStats);
+            playerStatsManager.StatsUpdatedEvent += UpdateAllStats;
         }
 
         private void Start()
         {
-            healthBar.Initialize(playerStatsManager.BaseHP);
-            staminaBar.Initialize(playerStatsManager.BaseSP);
-            manaBar.Initialize(playerStatsManager.BaseMP);
+            healthBar.Initialize(playerStatsManager.PlayerData.baseHP);
+            staminaBar.Initialize(playerStatsManager.PlayerData.baseSP);
+            manaBar.Initialize(playerStatsManager.PlayerData.baseMP);
         }
 
         public void UpdateAllStats()

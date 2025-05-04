@@ -24,6 +24,7 @@ namespace StarterAssets
 		public event Action SkillE;
 		public event Action SkillC;
 		public event Action Roll;
+		public event Action SkillPanel;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -95,7 +96,7 @@ namespace StarterAssets
 
 		public void OnOpenInventory(InputValue value)
 		{
-			openInventory.Invoke();
+			openInventory?.Invoke();
 		}
 
 		public void OnSkillQ(InputValue value)
@@ -144,6 +145,14 @@ namespace StarterAssets
 			if (value.isPressed)
 			{
 				Interact?.Invoke();
+			}
+		}
+
+		public void OnSkillPanel(InputValue value)
+		{
+			if (value.isPressed)
+			{
+				SkillPanel?.Invoke();
 			}
 		}
 

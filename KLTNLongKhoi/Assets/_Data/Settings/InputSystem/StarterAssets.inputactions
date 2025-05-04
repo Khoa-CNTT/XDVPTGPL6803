@@ -34,7 +34,7 @@
                 },
                 {
                     "name": "Sprint",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "980e881e-182c-404c-8cbf-3d09fdb48fef",
                     "expectedControlType": "",
                     "processors": "",
@@ -264,17 +264,6 @@
                 },
                 {
                     "name": "",
-                    "id": "c8fcd86e-dcfd-4f88-8e93-b638cdbf3320",
-                    "path": "<Gamepad>/leftTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "208aa5b0-467a-43de-955b-da0071710de5",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
@@ -430,6 +419,15 @@
                     "name": "OpenInventory",
                     "type": "Button",
                     "id": "3959a117-89ea-4e53-9b6f-e519d52f03a8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SkillPanel",
+                    "type": "Button",
+                    "id": "92b77d6b-0fcc-4a47-bef4-a26380f743b5",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -852,6 +850,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "OpenInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7b51c671-a3c3-453f-b6a0-3036e56bdde6",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkillPanel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

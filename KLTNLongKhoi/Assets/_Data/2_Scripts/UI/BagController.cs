@@ -9,7 +9,7 @@ namespace KLTNLongKhoi
     public class BagController : MonoBehaviour
     {
         [SerializeField] TMP_Text notifySell;
-        [SerializeField] GameObject bagPanel;
+        [SerializeField] OnTriggerThis openPanel;
         [SerializeField] Button btnOpenItemResource;
         [SerializeField] Button btnOpenItemWeapon;
         [SerializeField] Button sellItem;
@@ -121,7 +121,7 @@ namespace KLTNLongKhoi
 
         public void OpenStorage()
         {
-            bagPanel.SetActive(true);
+            openPanel.ActiveObjects();
             pauseManager?.PauseGame();
             isOpen = true;
 
@@ -145,7 +145,7 @@ namespace KLTNLongKhoi
 
         public void CloseStorage()
         {
-            bagPanel.SetActive(false);
+            openPanel.UnActiveObjects();
             pauseManager?.ResumeGame();
             isOpen = false;
         }
