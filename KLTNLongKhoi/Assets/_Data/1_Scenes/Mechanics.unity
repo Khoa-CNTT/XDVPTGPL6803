@@ -11468,6 +11468,8 @@ MonoBehaviour:
   m_sharedMaterial: {fileID: 188309556180032878, guid: 015d9d749211139478d47ed9eb38b605, type: 2}
   m_fontSharedMaterials:
   - {fileID: 188309556180032878, guid: 015d9d749211139478d47ed9eb38b605, type: 2}
+  - {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  - {fileID: 0}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
