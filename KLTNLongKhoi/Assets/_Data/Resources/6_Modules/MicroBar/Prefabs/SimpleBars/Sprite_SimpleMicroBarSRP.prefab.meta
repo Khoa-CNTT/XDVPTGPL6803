@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c6c27f2d48c96d846a0ee38907d03f3e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 239154
+  packageName: MicroBar - Animated Health Bar Framework
+  packageVersion: 2.5.2
+  assetPath: Assets/Microlight/MicroBar/Prefabs/SimpleBars/Sprite_SimpleMicroBarSRP.prefab
+  uploadId: 736164

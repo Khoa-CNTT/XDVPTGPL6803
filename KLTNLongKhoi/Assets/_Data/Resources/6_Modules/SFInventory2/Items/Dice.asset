@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51f3433b374801146ac2ffe3d57e1724, type: 3}
+  m_Name: Dice
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: ced55a00928feff4d95d8ac4fb47000c, type: 3}
+  itemName: Dice
+  itemDescription: A dice is a popular source of randomness in board games.
+  maxItemsCount: 16

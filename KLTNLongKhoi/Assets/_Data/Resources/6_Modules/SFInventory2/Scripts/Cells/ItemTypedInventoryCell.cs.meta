@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: ebfc26dee230e45469ee8eb63536465f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 285665
+  packageName: SFInventory 2
+  packageVersion: 1.0
+  assetPath: Assets/SFInventory2/Scripts/Cells/ItemTypedInventoryCell.cs
+  uploadId: 665894

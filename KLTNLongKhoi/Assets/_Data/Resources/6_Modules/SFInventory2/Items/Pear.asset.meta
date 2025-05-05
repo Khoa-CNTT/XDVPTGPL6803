@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 65fced3ac8b348c498e63a75426dde06
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 285665
+  packageName: SFInventory 2
+  packageVersion: 1.0
+  assetPath: Assets/SFInventory2/Items/Pear.asset
+  uploadId: 665894

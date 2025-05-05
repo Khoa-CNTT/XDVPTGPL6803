@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39203e3b2850e1441b35257af7f69e71, type: 3}
+  m_Name: Boots
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 977cd0954a0019e4bbb259e5339bb9ef, type: 3}
+  itemName: Boots
+  itemDescription: Sturdy boots
+  maxItemsCount: 1
+  defensePoints: 5

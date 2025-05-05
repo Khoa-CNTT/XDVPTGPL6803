@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: dcfa24a4802119445a696f86bb6fd4b1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 285665
+  packageName: SFInventory 2
+  packageVersion: 1.0
+  assetPath: Assets/SFInventory2/Prefabs/ItemTypedInventoryCell.prefab
+  uploadId: 665894
