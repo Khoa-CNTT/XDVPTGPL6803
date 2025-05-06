@@ -5,37 +5,44 @@ namespace KLTNLongKhoi
 {
     public class EnemyStatus : CharacterStatus
     {
-        CharacterVision characterVision;
         [SerializeField] MonsterData monsterData;
-        [Header("Reward Settings")]
-        [SerializeField] private float moneyReward = 100f; // Số tiền thưởng khi giết enemy
+        [SerializeField] private float moneyReward = 100f;
+        [SerializeField] private float timeHurt = 2f;
+
         private PlayerStatsManager playerStatsManager;
+        private CharacterVision characterVision;
+        private EnemyCtrl enemyCtrl;
+        private Animator animator;
 
         protected override void Awake()
         {
             base.Awake();
-            // Initialize enemy-specific properties if needed
             characterVision = GetComponentInChildren<CharacterVision>();
             playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
-        }
-
-        protected override void Start()
-        {
-            base.Start();
-            // Additional enemy initialization if needed
+            enemyCtrl = GetComponent<EnemyCtrl>();
+            animator = GetComponent<Animator>();
         }
 
         public override void TakeDamage(float damage, Vector3 hitDirection, Transform attacker)
         {
             base.TakeDamage(damage, hitDirection, attacker);
-            // Additional logic for enemy damage handling if needed
             characterVision.Target = attacker;
+            if (!IsDead() && enemyCtrl.CanMove)
+            {
+                animator.SetTrigger("Hurt");
+                Invoke("CanMove", timeHurt);
+            }
         }
 
         protected override void OnDie()
         {
             playerStatsManager.AddMoney(moneyReward);
             GameEvents.Notify(GameEventType.EnemyDefeated, monsterData.id);
-        } 
+        }
+
+        private void CanMove()
+        {
+            enemyCtrl.CanMove = true;
+        }
     }
 }

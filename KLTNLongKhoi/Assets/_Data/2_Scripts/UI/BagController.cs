@@ -11,13 +11,13 @@ namespace KLTNLongKhoi
         [SerializeField] TMP_Text notifySell;
         [SerializeField] Button btnClosePanel;
         [SerializeField] Button btnOpenBag;
-        [SerializeField] OnTriggerThis openPanel;
         [SerializeField] Button btnOpenItemResource;
         [SerializeField] Button btnOpenItemWeapon;
         [SerializeField] Button sellItem;
         [SerializeField] Button btnOpenItemConsumable;
         [SerializeField] bool isOpen = false;
         [SerializeField] InventoryItemInfo inventoryItemInfo; // inventoryItemInfo của Bag
+        private OnTriggerThis openPanel;
         private SaveLoadManager saveLoadManager;
         private PauseManager pauseManager;
         private ContainerBase containerBase;

@@ -34,7 +34,7 @@
                 },
                 {
                     "name": "Sprint",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "980e881e-182c-404c-8cbf-3d09fdb48fef",
                     "expectedControlType": "",
                     "processors": "",
@@ -90,6 +90,15 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "29d42e6b-976c-42b4-b377-f1e0bd20091d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UseItem",
+                    "type": "Button",
+                    "id": "bf3753d7-9c28-444c-9fda-6738840c96ce",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -325,6 +334,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d088b8b3-abc3-45ca-a25b-49d950e2bf0a",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UseItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -7,34 +7,36 @@ namespace KLTNLongKhoi
 {
     public class EnemyCtrl : MonoBehaviour
     {
-        [SerializeField] List<Transform> waypoints;
-        [SerializeField] float hitRange; // Khoảng cách để tấn công
+        [SerializeField] private float hitRange; // Khoảng cách để tấn công
+        [SerializeField] private float movementSpeed = 3f;
+        [SerializeField] private float idleTimeAtWaypoint = 2f; // Time to wait at each waypoint
+        [SerializeField] private float pathCheckTimeout = 1f; // Thời gian chờ trước khi skip waypoint không đến được
+        [SerializeField] private ActorHitbox actorHitbox;
+        [SerializeField] private List<Transform> waypoints;
+
         private CharacterStatus characterStatus;
         private CharacterVision characterVision;
         private NavMeshAgent agent;
         private Animator animator;
-        [SerializeField] ActorHitbox actorHitbox;
-        private bool isAttacking = false;
-        private PlayerStatsManager playerStatsManager; 
-        [SerializeField] private float movementSpeed = 3f;
-        [SerializeField] private float idleTimeAtWaypoint = 2f; // Time to wait at each waypoint
-        private float idleTimer = 0f;
+        private PlayerStatsManager playerStatsManager;
+        private CharacterController characterController;
+        private bool canMove = true;
         private bool isWaitingAtWaypoint = false;
-
-        [SerializeField] private float pathCheckTimeout = 1f; // Thời gian chờ trước khi skip waypoint không đến được
+        private float idleTimer = 0f; 
         private float pathCheckTimer = 0f;
 
-        public bool IsAttacking { get => isAttacking; set => isAttacking = value; }
+        public bool CanMove { get => canMove; set => canMove = value; }
 
         private void Awake()
-        { 
+        {
             characterStatus = GetComponent<CharacterStatus>();
             characterVision = GetComponentInChildren<CharacterVision>();
             agent = GetComponent<NavMeshAgent>();
-            animator = GetComponent<Animator>();  
+            animator = GetComponent<Animator>();
             playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
+            characterController = GetComponent<CharacterController>();
         }
-        
+
         private void Start()
         {
             agent.speed = movementSpeed;
@@ -42,9 +44,8 @@ namespace KLTNLongKhoi
 
         private void FixedUpdate()
         {
-            if (characterStatus.IsDead()) return;
-
-            if (IsAttacking) return;
+            if (characterStatus.IsDead()) return; 
+            if (CanMove == false) return;
 
             bool isSeePlayer = characterVision.Target != null;
 
@@ -88,7 +89,7 @@ namespace KLTNLongKhoi
 
         private void OnAttackComplete(AnimationEvent animationEvent)
         {
-            IsAttacking = false;
+            CanMove = true;
         }
 
         private void Patrol()
@@ -171,9 +172,8 @@ namespace KLTNLongKhoi
         // Animation
         public void SetStateAttack()
         {
-            if (IsAttacking) return; // Prevent attack animation interruption
-
-            IsAttacking = true;
+            if (!CanMove) return; 
+            CanMove = false;
             animator.SetTrigger("Attack");
         }
 

@@ -185,8 +185,8 @@ namespace StarterAssets
                 // Reset animation speed khi không di chuyển
                 animator.SetFloat("Speed", 0);
                 return;
-            }
-
+            } 
+            
             // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = input.sprint ? SprintSpeed : MoveSpeed;
 

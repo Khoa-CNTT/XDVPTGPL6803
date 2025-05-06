@@ -36,18 +36,6 @@ namespace KLTNLongKhoi
             }
         }
 
-        public List<ItemDataSO> GetInventoryItems()
-        {
-            return inventoryCells.Select(s => s.ItemDataSO)
-                                .Where(item => item != null)
-                                .ToList();
-        }
-
-        public void AddInventoryCell(InventoryCell cell)
-        {
-            inventoryCells.Add(cell);
-        }
-
         public bool TryGetEmptyCell(out InventoryCell cell)
         {
             for (int i = 0; i < inventoryCells.Count; i++)
@@ -120,6 +108,48 @@ namespace KLTNLongKhoi
             }
             countLeft = count;
             SaveInventory();
+        }
+
+        public void AddInventoryCell(InventoryCell cell)
+        {
+            inventoryCells.Add(cell);
+        }
+
+        public void RemoveInventoryCell(ItemDataSO item, int count, out int countLeft)
+        {
+            int remainingCount = count;
+            bool itemFound = false;
+            
+            while (remainingCount > 0)
+            {
+                itemFound = false;
+                for (int i = 0; i < inventoryCells.Count; i++)
+                {
+                    if (inventoryCells[i].ItemDataSO == item)
+                    {
+                        itemFound = true;
+                        if (inventoryCells[i].ItemsCount > remainingCount)
+                        {
+                            inventoryCells[i].ItemsCount -= remainingCount;
+                            remainingCount = 0;
+                        }
+                        else
+                        {
+                            remainingCount -= inventoryCells[i].ItemsCount;
+                            inventoryCells[i].ItemsCount = 0;
+                            inventoryCells[i].SetInventoryItem(null);
+                        }
+                        inventoryCells[i].UpdateCellUI();
+                        break; // Xử lý một cell rồi thoát vòng lặp for
+                    }
+                }
+                
+                // Nếu không tìm thấy item nào trong inventory, thoát vòng lặp
+                if (!itemFound) break;
+            }
+            
+            SaveInventory();
+            countLeft = remainingCount;
         }
 
         protected virtual void SaveInventory() { }

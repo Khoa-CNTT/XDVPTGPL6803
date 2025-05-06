@@ -16,6 +16,7 @@ namespace StarterAssets
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
+		public event Action UseItem;
 		public event Action Interact;
 		public event Action Attack;
 		public event Action Escape;
@@ -156,6 +157,13 @@ namespace StarterAssets
 			}
 		}
 
+		public void OnUseItem(InputValue value)
+		{
+			if (value.isPressed)
+			{
+				UseItem?.Invoke();
+			}
+		}
 #endif
 
 		#region UI Input

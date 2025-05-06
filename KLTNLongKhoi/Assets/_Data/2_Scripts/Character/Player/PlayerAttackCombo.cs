@@ -9,17 +9,20 @@ namespace KLTNLongKhoi
         [SerializeField] private PlayerAnimationEvents playerAnimationEvents;
         [SerializeField] private float nextAttackPressTime = 1f;
         [SerializeField] private int maxAttackAnimation = 3;
+        [SerializeField] float timeAttack = 1f;
+
+        [Header("Sound Effects")]
+        [SerializeField] private AudioClip[] attackSounds;
 
         private Animator animator;
         private StarterAssetsInputs input;
         private ThirdPersonController controller;
         private ActorHitbox actorHitbox;
-        [SerializeField] float timeAttack = 1f;
         private float countdownTimeAttack;
 
         private int currentAnimationAttack = 0;
         private bool isAttacking = false;
-        private float lastAttackTime = 0f; 
+        private float lastAttackTime = 0f;
 
         private void Start()
         {
@@ -89,6 +92,24 @@ namespace KLTNLongKhoi
                 controller.CanMove = false;
                 animator.SetInteger("Attack", currentAnimationAttack);
                 countdownTimeAttack = timeAttack;
+
+                // Play attack sound
+                PlayAttackSound();
+            }
+        }
+
+        private void PlayAttackSound()
+        {
+            if (attackSounds != null && attackSounds.Length > 0)
+            {
+                // Chọn ngẫu nhiên một âm thanh từ mảng
+                int soundIndex = Random.Range(0, attackSounds.Length);
+                AudioClip soundToPlay = attackSounds[soundIndex];
+
+                if (soundToPlay != null)
+                {
+                    AudioSource.PlayClipAtPoint(soundToPlay, transform.position);
+                }
             }
         }
 

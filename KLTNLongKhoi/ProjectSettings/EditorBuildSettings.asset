@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/_Data/1_Scenes/DataHolder.unity
     guid: b174c052ae2a6094991c866f83cdfd24
   - enabled: 1
+    path: Assets/_Data/1_Scenes/GamePlay.unity
+    guid: b63b1784e755eae45aaa3d4d4010abbb
+  - enabled: 1
     path: Assets/_Data/1_Scenes/Mechanics.unity
     guid: 376a62a095eeb6944ad34bafc0134a9f
   - enabled: 1

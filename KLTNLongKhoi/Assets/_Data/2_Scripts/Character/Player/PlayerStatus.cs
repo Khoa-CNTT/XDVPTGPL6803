@@ -7,7 +7,14 @@ using System;
 namespace KLTNLongKhoi
 {
     public class PlayerStatus : MonoBehaviour, IDamageable
-    {
+    {   
+        [Header("Sounds Effects")]
+        [SerializeField] private AudioClip damageSound;
+        [SerializeField] private AudioClip healSound;
+        [SerializeField] private AudioClip deathSound;
+        [SerializeField] private AudioClip manaRestoreSound;
+        [SerializeField] private AudioClip staminaRestoreSound;
+
         private PlayerStatsManager playerStatsManager;
         private ThirdPersonController playerController;
         private RagdollAnimator ragdollAnimator;
@@ -38,12 +45,24 @@ namespace KLTNLongKhoi
             float finalDamage = damage;
             playerStatsManager.CurrentHP -= finalDamage;
 
+            // Play damage sound
+            if (damageSound != null)
+            {
+                AudioSource.PlayClipAtPoint(damageSound, transform.position);
+            }
+
             if (playerStatsManager.CurrentHP <= 0)
             {
                 isDead = true; 
                 playerStatsManager.CurrentHP = 0;
                 playerController.OnDead();
                 ragdollAnimator.EnableRagdoll();
+
+                // Play death sound
+                if (deathSound != null)
+                {
+                    AudioSource.PlayClipAtPoint(deathSound, transform.position);
+                }
             }
             else
             {
@@ -57,6 +76,12 @@ namespace KLTNLongKhoi
 
             float newHealth = Mathf.Min(playerStatsManager.CurrentHP + amount, playerStatsManager.PlayerData.baseHP);
             playerStatsManager.CurrentHP = newHealth;
+
+            // Play heal sound
+            if (healSound != null)
+            {
+                AudioSource.PlayClipAtPoint(healSound, transform.position);
+            }
         }
 
         // hồi mana
@@ -66,6 +91,12 @@ namespace KLTNLongKhoi
 
             float newMana = Mathf.Min(playerStatsManager.CurrentMP + amount, playerStatsManager.PlayerData.baseMP);
             playerStatsManager.CurrentMP = newMana;
+            
+            // Play mana restore sound
+            if (manaRestoreSound != null)
+            {
+                AudioSource.PlayClipAtPoint(manaRestoreSound, transform.position);
+            }
         }
 
         // hồi stamina
@@ -75,7 +106,12 @@ namespace KLTNLongKhoi
 
             float newStamina = Mathf.Min(playerStatsManager.CurrentSP + amount, playerStatsManager.PlayerData.baseSP);
             playerStatsManager.CurrentSP = newStamina;
+            
+            // Play stamina restore sound
+            if (staminaRestoreSound != null)
+            {
+                AudioSource.PlayClipAtPoint(staminaRestoreSound, transform.position);
+            }
         }
-
     }
 }

@@ -5,24 +5,27 @@ namespace KLTNLongKhoi
 {
     public class EnemyJumpAttack : MonoBehaviour
     {
-        [SerializeField] private float jumpForce = 3f;
-        [SerializeField] private float jumpHeight = 8f;
-        [SerializeField][Tooltip("Thời gian delay để nhân vật bay")] private float delayBeforeJump = 1.5f;
-        [SerializeField] private float maxDistanceToJump = 10f;
-        [SerializeField] private float minDistanceToJump = 5f;
-        [SerializeField] private float jumpCooldown = 10f; // thời gian hồi chiêu 
-        [SerializeField] private float gravity = 10f;
-        [SerializeField] private bool isJumping = false;
+        [SerializeField] float jumpForce = 3f;
+        [SerializeField] float jumpHeight = 5f;
+        [SerializeField] float maxDistanceToJump = 10f;
+        [SerializeField] float minDistanceToJump = 5f;
+        [SerializeField] float jumpCooldown = 10f; // thời gian hồi chiêu 
         [SerializeField] ActorHitbox actorHitbox2;
+
+        private float nextJumpTime = 10f;
+        private float gravity = 10f;
+        private bool isJumping = false;
+        private float verticalVelocity = 0f;
         private CharacterVision characterVision;
         private Animator animator;
         private CharacterController characterController;
         private EnemyCtrl enemyCtrl;
         private NavMeshAgent agent;
-        private float nextJumpTime = 0f; 
         private Vector3 jumpDirection;
-        private float verticalVelocity = 0f;
         private Vector3 targetPosition;
+        private bool hasJustJumped = false;
+        private float jumpStartTime = 0f;
+        private float jumpOffet = 1;
 
         private void Start()
         {
@@ -43,7 +46,7 @@ namespace KLTNLongKhoi
 
             if (Time.time >= nextJumpTime)
             {
-                if (IsPlayerInRange() && enemyCtrl.IsAttacking == false)
+                if (IsPlayerInRange() && enemyCtrl.CanMove)
                 {
                     ReadyToJump();
                 }
@@ -55,53 +58,63 @@ namespace KLTNLongKhoi
             // Apply gravity
             verticalVelocity -= gravity * Time.deltaTime;
 
-            // Create movement vector (horizontal movement)
+            // Create movement vector
             Vector3 moveDirection = jumpDirection * jumpForce;
             moveDirection.y = verticalVelocity;
 
             // Move the character
-            characterController.Move(moveDirection * Time.deltaTime);
+            characterController.Move(moveDirection * Time.deltaTime * jumpOffet);
 
-            // Check if landed
-            if (characterController.isGrounded && isJumping)
+            // Đánh dấu khi vừa nhảy và đặt thời gian bắt đầu nhảy
+            if (hasJustJumped == false && verticalVelocity > 0)
             {
-                CompleteJumpAttack();
+                hasJustJumped = true;
+                jumpStartTime = Time.time;
+                jumpOffet = 1;
+                animator.SetBool("FreeFall", true);
+                animator.SetBool("Grounded", false);
+            }
+
+            if (hasJustJumped && Time.time - jumpStartTime > 0.5f)
+            {
+                if (characterController.isGrounded && verticalVelocity < 0)
+                {
+                    // dừng lại ngay lập tức khi mới chạm đất 
+                    jumpOffet = 0;
+                    animator.SetBool("FreeFall", false);
+                    animator.SetBool("Grounded", true);
+                    Invoke("CompleteJumpAttack", 1f);
+                }
             }
         }
 
         private void ReadyToJump()
         {
+            if (isJumping) return;
             isJumping = true;
-            enemyCtrl.IsAttacking = true;
+            enemyCtrl.CanMove = false;
             nextJumpTime = Time.time + jumpCooldown;
-            animator.SetTrigger("JumpAttack");
+            animator.SetBool("JumpAttack", true);
             agent.enabled = false;
             targetPosition = characterVision.Target.position;
-            Invoke("ApplyJumpForce", delayBeforeJump);
+            Invoke("ApplyJumpForce", 1f);
         }
 
         private void ApplyJumpForce()
         {
-            // Calculate jump direction
-
-            if (characterVision.Target == null)
-            {
-                CompleteJumpAttack();
-                return;
-            }
             Vector3 directionToPlayer = (targetPosition - transform.position).normalized;
             jumpDirection = directionToPlayer;
             verticalVelocity = Mathf.Sqrt(2 * gravity * jumpHeight);
+            hasJustJumped = false;
         }
 
         private void CompleteJumpAttack()
         {
-            verticalVelocity = 0f;
             isJumping = false;
-            enemyCtrl.IsAttacking = false;
-
-            // Re-enable NavMeshAgent
+            hasJustJumped = false;
+            enemyCtrl.CanMove = true;
             agent.enabled = true;
+            animator.SetBool("JumpAttack", false);
         }
 
         private void OnJumpAttackSendDamage(AnimationEvent animationEvent)

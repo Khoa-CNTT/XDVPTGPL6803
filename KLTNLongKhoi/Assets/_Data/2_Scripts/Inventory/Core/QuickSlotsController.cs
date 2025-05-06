@@ -7,6 +7,8 @@ namespace KLTNLongKhoi
     {
         [SerializeField] InventoryCell inventoryCellSelected;
 
+        public InventoryCell InventoryCellSelected { get => inventoryCellSelected; set => inventoryCellSelected = value; }
+
         void Update()
         {
             if (Input.anyKeyDown)
@@ -20,15 +22,15 @@ namespace KLTNLongKhoi
                             num -= 1;
                             if (num >= 0 && num < inventoryCells.Count)
                             {
-                                if (inventoryCellSelected != null)
+                                if (InventoryCellSelected != null)
                                 {
-                                    inventoryCellSelected.Highlight.enabled = false;
+                                    InventoryCellSelected.Highlight.enabled = false;
                                 }
                                 if (inventoryCells[num].ItemDataSO != null)
                                 {
                                     Debug.Log("Item Selected: " + inventoryCells[num].ItemDataSO.itemData.name);
-                                    inventoryCellSelected = inventoryCells[num];
-                                    inventoryCellSelected.Highlight.enabled = true;
+                                    InventoryCellSelected = inventoryCells[num];
+                                    InventoryCellSelected.Highlight.enabled = true;
                                 }
                             }
                         }

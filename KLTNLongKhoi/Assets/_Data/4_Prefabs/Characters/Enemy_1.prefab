@@ -2795,12 +2795,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3621921ef2f82114dbe57686bd42f5a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 3
-  jumpHeight: 8
+  jumpForce: 2
+  jumpHeight: 4
   delayBeforeJump: 1.5
   maxDistanceToJump: 12
-  minDistanceToJump: 5
-  jumpCooldown: 10
+  minDistanceToJump: 7
+  jumpCooldown: 7
   gravity: 10
   isJumping: 0
   actorHitbox2: {fileID: 5231584953526456951}

@@ -48,7 +48,6 @@ namespace KLTNLongKhoi
 
         public void ResumeGame()
         {
-            Debug.Log("Resume Game");
             isPaused = false;
             onGameResumed?.Invoke();
         }

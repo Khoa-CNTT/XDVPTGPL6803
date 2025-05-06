@@ -8,7 +8,7 @@ namespace HieuDev
 
         void Start()
         {
-            itemPool = FindObjectOfType<ItemPool>();
+            itemPool = FindFirstObjectByType<ItemPool>();
         }
 
         void Update()
