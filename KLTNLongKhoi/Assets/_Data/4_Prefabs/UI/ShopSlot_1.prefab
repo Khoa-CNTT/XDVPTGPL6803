@@ -90,8 +90,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2d6ec81f6c1cc643a832fd54b634017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _icon: {fileID: 5454984363178473867}
-  _itemsCountText: {fileID: 2939533489050866982}
+  isDraggable: 1
+  icon: {fileID: 5454984363178473867}
+  highlight: {fileID: 0}
+  itemsCountText: {fileID: 2939533489050866982}
 --- !u!1 &2299565382881588947
 GameObject:
   m_ObjectHideFlags: 0

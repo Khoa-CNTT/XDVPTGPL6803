@@ -2535,6 +2535,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notifySell: {fileID: 179674470}
+  btnClosePanel: {fileID: 0}
+  btnOpenBag: {fileID: 0}
   openPanel: {fileID: 1968191479}
   btnOpenItemResource: {fileID: 835557551}
   btnOpenItemWeapon: {fileID: 1060793298}
@@ -4620,6 +4622,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InventoryCell_1
       objectReference: {fileID: 0}
+    - target: {fileID: 7089681216776080519, guid: d696e18477544a6429feb3082a33e197, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5738,7 +5744,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &481996227
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8641,8 +8647,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDraggable: 1
-  _icon: {fileID: 239638173}
-  _itemsCountText: {fileID: 893757782}
+  icon: {fileID: 239638173}
+  highlight: {fileID: 0}
+  itemsCountText: {fileID: 893757782}
 --- !u!114 &574989045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10696,8 +10703,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDraggable: 1
-  _icon: {fileID: 1396646579}
-  _itemsCountText: {fileID: 1955356510}
+  icon: {fileID: 1396646579}
+  highlight: {fileID: 0}
+  itemsCountText: {fileID: 1955356510}
 --- !u!114 &719981801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13347,8 +13355,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDraggable: 1
-  _icon: {fileID: 1379053700}
-  _itemsCountText: {fileID: 455012532}
+  icon: {fileID: 1379053700}
+  highlight: {fileID: 0}
+  itemsCountText: {fileID: 455012532}
 --- !u!114 &933146688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13471,8 +13480,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDraggable: 1
-  _icon: {fileID: 218375334}
-  _itemsCountText: {fileID: 1976160234}
+  icon: {fileID: 218375334}
+  highlight: {fileID: 0}
+  itemsCountText: {fileID: 1976160234}
 --- !u!114 &945481674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13627,7 +13637,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48.2
+  m_fontSize: 23.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -21265,8 +21275,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDraggable: 1
-  _icon: {fileID: 2043274786}
-  _itemsCountText: {fileID: 1786513252}
+  icon: {fileID: 2043274786}
+  highlight: {fileID: 0}
+  itemsCountText: {fileID: 1786513252}
 --- !u!114 &1623298045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21603,7 +21614,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30.59
+  m_fontSize: 19.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -24219,7 +24230,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 18
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -30823,6 +30834,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryCells: []
   cellsContainer: {fileID: 6681822394564683139}
+  inventoryCellSelected: {fileID: 0}
 --- !u!114 &2534165071700171921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33711,8 +33723,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDraggable: 1
-  _icon: {fileID: 5176224995316834511}
-  _itemsCountText: {fileID: 3270481069753318478}
+  icon: {fileID: 5176224995316834511}
+  highlight: {fileID: 0}
+  itemsCountText: {fileID: 3270481069753318478}
 --- !u!1 &5423976338819064509
 GameObject:
   m_ObjectHideFlags: 0

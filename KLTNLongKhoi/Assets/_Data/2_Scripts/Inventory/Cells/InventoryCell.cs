@@ -10,14 +10,15 @@ namespace KLTNLongKhoi
     public class InventoryCell : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerClickHandler
     {
         [SerializeField] private bool isDraggable = true;
-        [SerializeField] private Image _icon;
-        [SerializeField] private TextMeshProUGUI _itemsCountText;
+        [SerializeField] private Image icon;
+        [SerializeField] private Image highlight; // Hightlight when selected
+        [SerializeField] private TextMeshProUGUI itemsCountText;
 
         public Image Icon
         {
             get
             {
-                return _icon;
+                return icon;
             }
         }
         public ItemDataSO ItemDataSO
@@ -39,6 +40,8 @@ namespace KLTNLongKhoi
             }
         }
 
+        public Image Highlight { get => highlight; set => highlight = value; }
+
         private int _itemsCount;
         private ItemDataSO _item;
         private ContainerBase _container;
@@ -58,19 +61,19 @@ namespace KLTNLongKhoi
         {
             if (_item != null)
             {
-                _icon.color = Color.white;
-                _icon.sprite = _item.icon;
+                icon.color = Color.white;
+                icon.sprite = _item.icon;
             }
             else
             {
                 _itemsCount = 0;
-                _icon.color = Color.clear;
-                _icon.sprite = null;
+                icon.color = Color.clear;
+                icon.sprite = null;
             }
             if (_itemsCount > 1)
-                _itemsCountText.text = "x" + ItemsCount;
+                itemsCountText.text = "x" + ItemsCount;
             else
-                _itemsCountText.text = string.Empty;
+                itemsCountText.text = string.Empty;
         }
 
         public void OnBeginDrag(PointerEventData eventData)

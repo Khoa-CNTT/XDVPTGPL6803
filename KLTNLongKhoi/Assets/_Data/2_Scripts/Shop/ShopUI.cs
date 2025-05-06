@@ -17,6 +17,8 @@ namespace KLTNLongKhoi
         [SerializeField] private Button btnBuyMaterial;
         [SerializeField] private Button btnBuy;
         [SerializeField] private Button btnOpenShop;
+        [SerializeField] private Button btnCloseShop;
+        [SerializeField] private OnTriggerThis openShop;
         [SerializeField] private InventoryItemInfo inventoryItemInfo;
         private InventoryDataContact inventoryDataContact;
         private ItemType itemTypeOpening;
@@ -29,6 +31,8 @@ namespace KLTNLongKhoi
             btnBuyPotion.onClick.AddListener(OnClickBuyPotion);
             btnBuyEquipment.onClick.AddListener(OnClickBuyEquipment);
             btnOpenShop.onClick.AddListener(OnClickOpenShop);
+            btnCloseShop.onClick.AddListener(CloseStorage);
+            openShop = GetComponentInChildren<OnTriggerThis>();
         }
 
         public void OnClickOpenShop()
@@ -49,6 +53,13 @@ namespace KLTNLongKhoi
             {
                 OnClickBuyPotion();
             }
+
+            openShop.ActiveObjects();
+        }
+
+        public void CloseStorage()
+        {
+            openShop.UnActiveObjects();
         }
 
         private void OnClickBuyEquipment()

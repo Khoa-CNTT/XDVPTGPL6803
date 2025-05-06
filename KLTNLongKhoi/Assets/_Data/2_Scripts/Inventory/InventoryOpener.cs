@@ -8,9 +8,8 @@ namespace KLTNLongKhoi
 {
     public class InventoryOpener : MonoBehaviour
     {
-        [SerializeField] private OnTriggerThis onTriggerThis;
-        private bool isOpen = false;
-
+        [SerializeField] private bool isOpen = false;
+        OnTriggerThis onTriggerThis;
         StarterAssetsInputs inputs;
         InventoryDragNDrop inventoryDragNDrop;
         PauseManager pauseManager;
@@ -21,6 +20,7 @@ namespace KLTNLongKhoi
             inputs.openInventory += OpenInventory;
             inventoryDragNDrop = FindFirstObjectByType<InventoryDragNDrop>();
             pauseManager = FindFirstObjectByType<PauseManager>();
+            onTriggerThis = GetComponentInChildren<OnTriggerThis>();
         }
 
         private void OpenInventory()
@@ -29,7 +29,7 @@ namespace KLTNLongKhoi
             {
                 return;
             }
-            
+
             isOpen = !isOpen;
             inventoryDragNDrop.StopDragging();
 
@@ -49,7 +49,7 @@ namespace KLTNLongKhoi
         {
             this.isOpen = isOpen;
             inventoryDragNDrop.StopDragging();
-            
+
             if (isOpen)
             {
                 onTriggerThis.ActiveObjects();

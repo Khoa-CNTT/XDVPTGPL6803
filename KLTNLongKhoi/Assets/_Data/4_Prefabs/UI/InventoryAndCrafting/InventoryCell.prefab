@@ -301,5 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2d6ec81f6c1cc643a832fd54b634017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _icon: {fileID: 6925320622557908325}
-  _itemsCountText: {fileID: 769304559805977060}
+  isDraggable: 1
+  icon: {fileID: 6925320622557908325}
+  highlight: {fileID: 0}
+  itemsCountText: {fileID: 769304559805977060}

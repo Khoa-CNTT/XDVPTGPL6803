@@ -1670,6 +1670,7 @@ GameObject:
   - component: {fileID: 605157577}
   - component: {fileID: 605157576}
   - component: {fileID: 605157574}
+  - component: {fileID: 605157578}
   m_Layer: 0
   m_Name: BagManager
   m_TagString: Untagged
@@ -1704,6 +1705,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notifySell: {fileID: 838240695}
+  btnClosePanel: {fileID: 1368871053}
+  btnOpenBag: {fileID: 6583995580536581139}
   openPanel: {fileID: 0}
   btnOpenItemResource: {fileID: 8103283248208677507}
   btnOpenItemWeapon: {fileID: 2617385795228928584}
@@ -1726,6 +1729,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 684966308}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &605157578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605157573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfea8f75ecabf0478288bbdac5f2ce6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectActive:
+  - {fileID: 1496813782}
+  objectUnActive:
+  - {fileID: 259670064}
 --- !u!1001 &617657301
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2434,6 +2453,7 @@ GameObject:
   m_Component:
   - component: {fileID: 846763492}
   - component: {fileID: 846763493}
+  - component: {fileID: 846763494}
   m_Layer: 0
   m_Name: ShopManager
   m_TagString: Untagged
@@ -2497,7 +2517,25 @@ MonoBehaviour:
   btnBuyMaterial: {fileID: 747499003}
   btnBuy: {fileID: 27378114}
   btnOpenShop: {fileID: 5459840364120599293}
+  btnCloseShop: {fileID: 1422984137}
+  openShop: {fileID: 0}
   inventoryItemInfo: {fileID: 8813388706510973690}
+--- !u!114 &846763494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846763490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfea8f75ecabf0478288bbdac5f2ce6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectActive:
+  - {fileID: 8813388706510973688}
+  objectUnActive:
+  - {fileID: 259670064}
 --- !u!1 &903512868
 GameObject:
   m_ObjectHideFlags: 0
@@ -4010,6 +4048,17 @@ MonoBehaviour:
   - {fileID: 259670064}
   objectUnActive:
   - {fileID: 3336214018529581668}
+--- !u!114 &1368871053 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 46153619752479602, guid: c932e48de420a42419cfa983eb220b01, type: 3}
+  m_PrefabInstance: {fileID: 3622970009469761966}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1371893169
 GameObject:
   m_ObjectHideFlags: 0
@@ -4327,7 +4376,7 @@ GameObject:
   - component: {fileID: 1422984135}
   - component: {fileID: 1422984136}
   m_Layer: 5
-  m_Name: btnExit
+  m_Name: btnCloseShop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4805,6 +4854,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1496813782 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7223664976081608876, guid: c932e48de420a42419cfa983eb220b01, type: 3}
+  m_PrefabInstance: {fileID: 3622970009469761966}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1530451174
 GameObject:
   m_ObjectHideFlags: 0
@@ -5843,7 +5897,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6867994338971407524, guid: c932e48de420a42419cfa983eb220b01, type: 3}
   m_PrefabInstance: {fileID: 3622970009469761966}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1496813782}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8cdb1b2ebc15bdd4fb2e3f6b04b34f07, type: 3}
@@ -6369,10 +6423,8 @@ GameObject:
   - component: {fileID: 1774147063005645528}
   - component: {fileID: 4757508140757205949}
   - component: {fileID: 5459840364120599293}
-  - component: {fileID: 8783298964802928384}
-  - component: {fileID: 8783298964802928385}
   m_Layer: 5
-  m_Name: btnCuaHang
+  m_Name: btnOpenShop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6937,7 +6989,7 @@ GameObject:
   - component: {fileID: 5155631129721669705}
   - component: {fileID: 6620106893233250210}
   m_Layer: 5
-  m_Name: btnTuDo
+  m_Name: btnOpenBag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6953,7 +7005,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6049429708275225311}
   m_Layer: 5
-  m_Name: NhiemVu
+  m_Name: Misson
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7245,6 +7297,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -320
       objectReference: {fileID: 0}
+    - target: {fileID: 6334318242439528565, guid: c932e48de420a42419cfa983eb220b01, type: 3}
+      propertyPath: m_Name
+      value: btnCloseBag
+      objectReference: {fileID: 0}
     - target: {fileID: 6676461695327867977, guid: c932e48de420a42419cfa983eb220b01, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -7271,7 +7327,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7223664976081608876, guid: c932e48de420a42419cfa983eb220b01, type: 3}
       propertyPath: m_Name
-      value: TuDo
+      value: Bag
       objectReference: {fileID: 0}
     - target: {fileID: 7223664976081608876, guid: c932e48de420a42419cfa983eb220b01, type: 3}
       propertyPath: m_IsActive
@@ -7863,7 +7919,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7441609089364399175, guid: d923792bc2001df40adc757872f57fec, type: 3}
       propertyPath: m_Name
-      value: CaiDat
+      value: Settings
       objectReference: {fileID: 0}
     - target: {fileID: 7441609089364399175, guid: d923792bc2001df40adc757872f57fec, type: 3}
       propertyPath: m_IsActive
@@ -8017,7 +8073,7 @@ GameObject:
   - component: {fileID: 1317545549350270501}
   - component: {fileID: 5913728348321359132}
   m_Layer: 5
-  m_Name: btnNhiemVu
+  m_Name: btnOpenMission
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8566,7 +8622,7 @@ GameObject:
   - component: {fileID: 3913876424205049500}
   - component: {fileID: 6103732716629497983}
   m_Layer: 5
-  m_Name: Image_1
+  m_Name: logo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8717,7 +8773,7 @@ GameObject:
   - component: {fileID: 8382530962039378568}
   - component: {fileID: 8382530962039378569}
   m_Layer: 5
-  m_Name: btnCaiDat
+  m_Name: btnOpenSettings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9051,36 +9107,6 @@ RectTransform:
   m_AnchoredPosition: {x: -142.43, y: 80.117}
   m_SizeDelta: {x: 1635.1396, y: 919.766}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8783298964802928384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1418362394117754273}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bdbffb95d36ff64ab215c85c8708e54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isOpenPanel: 1
-  objectActive: {fileID: 5028179899278601527}
-  popupScale: {fileID: 0}
---- !u!114 &8783298964802928385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1418362394117754273}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bdbffb95d36ff64ab215c85c8708e54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isOpenPanel: 0
-  objectActive: {fileID: 259670065}
-  popupScale: {fileID: 0}
 --- !u!224 &8787302377913196048
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9205,7 +9231,7 @@ GameObject:
   - component: {fileID: 8813388706510973690}
   - component: {fileID: 8813388706510973691}
   m_Layer: 5
-  m_Name: CuaHang
+  m_Name: Shop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

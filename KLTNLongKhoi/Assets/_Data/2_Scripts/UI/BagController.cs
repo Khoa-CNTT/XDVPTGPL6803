@@ -9,6 +9,8 @@ namespace KLTNLongKhoi
     public class BagController : MonoBehaviour
     {
         [SerializeField] TMP_Text notifySell;
+        [SerializeField] Button btnClosePanel;
+        [SerializeField] Button btnOpenBag;
         [SerializeField] OnTriggerThis openPanel;
         [SerializeField] Button btnOpenItemResource;
         [SerializeField] Button btnOpenItemWeapon;
@@ -31,11 +33,14 @@ namespace KLTNLongKhoi
             btnOpenItemWeapon.onClick.AddListener(AddItemWeaponToBag);
             btnOpenItemConsumable.onClick.AddListener(AddItemConsumableToBag);
             inventoryDataContact = FindFirstObjectByType<InventoryDataContact>();
+            openPanel = GetComponentInChildren<OnTriggerThis>();
         }
 
         void Start()
         {
             sellItem.onClick.AddListener(SellItem);
+            btnClosePanel?.onClick.AddListener(CloseStorage);
+            btnOpenBag?.onClick.AddListener(OpenStorage);
         }
 
         private void Update()

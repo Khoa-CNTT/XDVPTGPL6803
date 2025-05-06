@@ -5,6 +5,7 @@ namespace KLTNLongKhoi
     //just an example of quick slots for your game
     public class QuickSlotsController : ContainerBase
     {
+        [SerializeField] InventoryCell inventoryCellSelected;
 
         void Update()
         {
@@ -18,11 +19,18 @@ namespace KLTNLongKhoi
                         {
                             num -= 1;
                             if (num >= 0 && num < inventoryCells.Count)
-
+                            {
+                                if (inventoryCellSelected != null)
+                                {
+                                    inventoryCellSelected.Highlight.enabled = false;
+                                }
                                 if (inventoryCells[num].ItemDataSO != null)
                                 {
                                     Debug.Log("Item Selected: " + inventoryCells[num].ItemDataSO.itemData.name);
+                                    inventoryCellSelected = inventoryCells[num];
+                                    inventoryCellSelected.Highlight.enabled = true;
                                 }
+                            }
                         }
                     }
                 }
