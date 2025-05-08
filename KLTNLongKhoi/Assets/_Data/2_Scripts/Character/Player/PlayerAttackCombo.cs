@@ -6,37 +6,42 @@ namespace KLTNLongKhoi
 {
     public class PlayerAttackCombo : MonoBehaviour
     {
-        [SerializeField] private PlayerAnimationEvents playerAnimationEvents;
         [SerializeField] private float nextAttackPressTime = 1f;
         [SerializeField] private int maxAttackAnimation = 3;
         [SerializeField] float timeAttack = 1f;
-
-        [Header("Sound Effects")]
         [SerializeField] private AudioClip[] attackSounds;
 
+        private CharacterAnimationEvents characterAnimEvents;
+        private ActorHitbox actorHitbox;
         private Animator animator;
         private StarterAssetsInputs input;
         private ThirdPersonController controller;
-        private ActorHitbox actorHitbox;
         private float countdownTimeAttack;
-
         private int currentAnimationAttack = 0;
         private bool isAttacking = false;
         private float lastAttackTime = 0f;
+        private PlayerStatsManager playerStatsManager;
 
-        private void Start()
+        private void Awake()
         {
-            InitializeComponents();
-            RegisterInputEvents();
-            playerAnimationEvents = GetComponentInChildren<PlayerAnimationEvents>();
-
-            playerAnimationEvents.onAttackComplete += OnAttackComplete;
-            playerAnimationEvents.onSendDamage += OnSendDamage;
+            animator = GetComponentInChildren<Animator>();
+            input = GetComponent<StarterAssetsInputs>();
+            controller = GetComponent<ThirdPersonController>();
+            actorHitbox = GetComponentInChildren<ActorHitbox>();
+            playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
+            characterAnimEvents = GetComponentInChildren<CharacterAnimationEvents>();
         }
 
-        private void OnDestroy()
+        void OnEnable()
         {
-            UnregisterInputEvents();
+            input.Attack += OnPlayerAttack;
+            characterAnimEvents.onAttackComplete += OnAttackComplete;
+        }
+
+        void OnDisable()
+        {
+            input.Attack -= OnPlayerAttack;
+            characterAnimEvents.onAttackComplete -= OnAttackComplete;
         }
 
         private void Update()
@@ -48,30 +53,6 @@ namespace KLTNLongKhoi
                 {
                     OnAttackComplete();
                 }
-            }
-        }
-
-        private void InitializeComponents()
-        {
-            animator = GetComponentInChildren<Animator>();
-            input = GetComponent<StarterAssetsInputs>();
-            controller = GetComponent<ThirdPersonController>();
-            actorHitbox = GetComponentInChildren<ActorHitbox>();
-        }
-
-        private void RegisterInputEvents()
-        {
-            if (input != null)
-            {
-                input.Attack += OnPlayerAttack;
-            }
-        }
-
-        private void UnregisterInputEvents()
-        {
-            if (input != null)
-            {
-                input.Attack -= OnPlayerAttack;
             }
         }
 
@@ -92,6 +73,7 @@ namespace KLTNLongKhoi
                 controller.CanMove = false;
                 animator.SetInteger("Attack", currentAnimationAttack);
                 countdownTimeAttack = timeAttack;
+                actorHitbox.damage = playerStatsManager.GetPhysicsDamage;
 
                 // Play attack sound
                 PlayAttackSound();
@@ -116,23 +98,10 @@ namespace KLTNLongKhoi
         // Animation Event Handlers
         private void OnAttackComplete()
         {
-            if (actorHitbox != null)
-            {
-                actorHitbox.IsAttacking = false;
-            }
             isAttacking = false;
             controller.CanMove = true;
-
             animator.SetInteger("Attack", 0);
             lastAttackTime = Time.time;
-        }
-
-        private void OnSendDamage()
-        {
-            if (actorHitbox != null)
-            {
-                actorHitbox.IsAttacking = true;
-            }
         }
     }
 }

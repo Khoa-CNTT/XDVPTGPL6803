@@ -27,7 +27,6 @@ namespace KLTNLongKhoi
         void Awake()
         {
             playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
-            playerStatsManager.StatsUpdatedEvent += UpdateAllStats;
         }
 
         private void Start()
@@ -35,12 +34,12 @@ namespace KLTNLongKhoi
             healthBar.Initialize(playerStatsManager.PlayerData.baseHP);
             staminaBar.Initialize(playerStatsManager.PlayerData.baseSP);
             manaBar.Initialize(playerStatsManager.PlayerData.baseMP);
+            playerStatsManager.StatsUpdatedEvent += UpdateAllStats;
+            UpdateAllStats();
         }
 
         public void UpdateAllStats()
-        {  
-            
-
+        {
             healthBar.UpdateBar(playerStatsManager.CurrentHP);
             staminaBar.UpdateBar(playerStatsManager.CurrentSP);
             manaBar.UpdateBar(playerStatsManager.CurrentMP);

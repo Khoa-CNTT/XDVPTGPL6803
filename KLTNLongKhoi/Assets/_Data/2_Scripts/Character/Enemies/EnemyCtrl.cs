@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Playables;
 using UnityEngine.Serialization;
 
 namespace KLTNLongKhoi
@@ -13,16 +14,21 @@ namespace KLTNLongKhoi
         [SerializeField] private float pathCheckTimeout = 1f; // Thời gian chờ trước khi skip waypoint không đến được
         [SerializeField] private ActorHitbox actorHitbox;
         [SerializeField] private List<Transform> waypoints;
+        [SerializeField] private float timeEndAnimAttack = 2f;
+        [SerializeField] private float damageOnAttack = 100f;
+        [SerializeField] private AudioClip[] attackSounds;
+        [SerializeField] private AudioClip[] footStepSounds;
 
+        private CharacterAnimationEvents playerAnimationEvents;
         private CharacterStatus characterStatus;
         private CharacterVision characterVision;
-        private NavMeshAgent agent;
         private Animator animator;
+        private NavMeshAgent agent;
         private PlayerStatsManager playerStatsManager;
         private CharacterController characterController;
         private bool canMove = true;
         private bool isWaitingAtWaypoint = false;
-        private float idleTimer = 0f; 
+        private float idleTimer = 0f;
         private float pathCheckTimer = 0f;
 
         public bool CanMove { get => canMove; set => canMove = value; }
@@ -32,27 +38,33 @@ namespace KLTNLongKhoi
             characterStatus = GetComponent<CharacterStatus>();
             characterVision = GetComponentInChildren<CharacterVision>();
             agent = GetComponent<NavMeshAgent>();
-            animator = GetComponent<Animator>();
+            animator = GetComponentInChildren<Animator>();
             playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
             characterController = GetComponent<CharacterController>();
+            playerAnimationEvents = GetComponentInChildren<CharacterAnimationEvents>();
         }
 
         private void Start()
         {
             agent.speed = movementSpeed;
+            playerAnimationEvents.onFootstep += OnFootStep;
         }
 
         private void FixedUpdate()
         {
-            if (characterStatus.IsDead()) return; 
+            if (characterStatus.IsDead()) return;
             if (CanMove == false) return;
 
             bool isSeePlayer = characterVision.Target != null;
 
             // Check if the enemy is within hit range of the player
-            if (isSeePlayer && Vector3.Distance(transform.position, characterVision.Target.position) <= hitRange)
+            if (isSeePlayer && Vector3.Distance(transform.position, characterVision.Target.position) <= hitRange && CanMove)
             {
-                SetStateAttack();
+                CanMove = false;
+                animator.SetTrigger("Attack");
+                actorHitbox.damage = damageOnAttack;
+                PlayAttackSound();
+                Invoke("OnEndAttack", timeEndAnimAttack);
                 return;
             }
 
@@ -70,26 +82,16 @@ namespace KLTNLongKhoi
             }
         }
 
+
+        // Animation
+        public void OnEndAttack()
+        {
+            CanMove = true;
+        }
+
         public bool IsSeePlayer()
         {
             return characterVision.Target;
-        }
-
-        private void OnSendDamage(AnimationEvent animationEvent)
-        {
-            if (animationEvent.intParameter == 1)
-            {
-                actorHitbox.IsAttacking = true;
-            }
-            else
-            {
-                actorHitbox.IsAttacking = false;
-            }
-        }
-
-        private void OnAttackComplete(AnimationEvent animationEvent)
-        {
-            CanMove = true;
         }
 
         private void Patrol()
@@ -169,14 +171,6 @@ namespace KLTNLongKhoi
             SetStateIdle();
         }
 
-        // Animation
-        public void SetStateAttack()
-        {
-            if (!CanMove) return; 
-            CanMove = false;
-            animator.SetTrigger("Attack");
-        }
-
         public void SetStateMove()
         {
             animator.SetFloat("Speed", movementSpeed);
@@ -188,5 +182,36 @@ namespace KLTNLongKhoi
             animator.SetFloat("Speed", 0f);
             animator.SetFloat("MotionSpeed", 1f);
         }
+
+        private void OnFootStep()
+        {
+            if (footStepSounds != null && footStepSounds.Length > 0)
+            {
+                // Chọn ngẫu nhiên một âm thanh từ mảng
+                int soundIndex = Random.Range(0, footStepSounds.Length);
+                AudioClip soundToPlay = footStepSounds[soundIndex];
+
+                if (soundToPlay != null)
+                {
+                    AudioSource.PlayClipAtPoint(soundToPlay, transform.position);
+                }
+            }
+        }
+
+        private void PlayAttackSound()
+        {
+            if (attackSounds != null && attackSounds.Length > 0)
+            {
+                // Chọn ngẫu nhiên một âm thanh từ mảng
+                int soundIndex = Random.Range(0, attackSounds.Length);
+                AudioClip soundToPlay = attackSounds[soundIndex];
+
+                if (soundToPlay != null)
+                {
+                    AudioSource.PlayClipAtPoint(soundToPlay, transform.position);
+                }
+            }
+        }
+
     }
 }

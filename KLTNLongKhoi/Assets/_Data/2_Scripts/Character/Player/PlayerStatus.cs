@@ -39,7 +39,7 @@ namespace KLTNLongKhoi
 
         public void TakeDamage(float damage, Vector3 hitDirection, Transform attacker)
         {
-            if (isDead) return;
+            if (isDead) return; 
 
             // trừ cho giáp và sức chống chịu tính damage cuối
             float finalDamage = damage;

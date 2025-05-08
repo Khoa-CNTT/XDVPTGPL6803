@@ -73,7 +73,7 @@ namespace StarterAssets
         private CharacterController controller;
         private StarterAssetsInputs input;
         private GameObject mainCamera;
-        private PlayerAnimationEvents playerAnimationEvents;
+        private CharacterAnimationEvents playerAnimationEvents;
         private PlayerStatus playerStatus;
         private const float threshold = 0.01f;
         private bool IsCurrentDeviceMouse
@@ -121,7 +121,7 @@ namespace StarterAssets
             fallTimeoutDelta = FallTimeout;
 
             // Thêm event listener cho animation
-            playerAnimationEvents = GetComponentInChildren<PlayerAnimationEvents>();
+            playerAnimationEvents = GetComponentInChildren<CharacterAnimationEvents>();
             playerAnimationEvents.onJumpLand += OnLand;
             playerAnimationEvents.onFootstep += OnFootstep;
 

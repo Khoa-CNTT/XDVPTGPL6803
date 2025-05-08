@@ -1,4 +1,5 @@
 using KLTNLongKhoi;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ActorHitbox : MonoBehaviour
@@ -7,29 +8,27 @@ public class ActorHitbox : MonoBehaviour
     [SerializeField] bool isAttacking;
     [SerializeField] string EnemyTag;
     [SerializeField] Transform attacker;
-    private Collider colliderBoxHit;
-    private float damage = 100f;
+    public float damage = 100f;
+    private CharacterAnimationEvents characterAnimationEvents;
+    private BoxCollider boxCollider;
 
-    public float Damage
+    private void Awake()
     {
-        get => damage;
-        set => damage = value;
+        characterAnimationEvents = GetComponentInParent<CharacterAnimationEvents>();
+        boxCollider = GetComponent<BoxCollider>();
+        characterAnimationEvents.onSendDamage += OnSendDamage;
     }
 
-    public bool IsAttacking
+    private void OnSendDamage(int sendDamage)
     {
-        get => isAttacking;
-        set
+        if (sendDamage == 1)
         {
-            isAttacking = value;
-            colliderBoxHit.enabled = isAttacking;
+            boxCollider.enabled = true;
         }
-    }
-
-    private void Start()
-    {
-        colliderBoxHit = GetComponent<Collider>();
-        IsAttacking = false;
+        else
+        {
+            boxCollider.enabled = false;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -43,9 +42,8 @@ public class ActorHitbox : MonoBehaviour
                 Vector3 hitDirection = (other.transform.position - transform.position).normalized;
                 damageable.TakeDamage(damage, hitDirection, attacker);
                 Instantiate(hitParticle, new Vector3(transform.position.x, transform.position.y, transform.position.z), other.transform.rotation);
+                boxCollider.enabled = false;
             }
         }
     }
-    
-
 }

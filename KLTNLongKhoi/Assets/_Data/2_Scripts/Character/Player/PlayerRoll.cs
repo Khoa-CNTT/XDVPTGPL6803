@@ -23,7 +23,7 @@ namespace KLTNLongKhoi
         private float gravity = -9.81f;
         
         private Animator animator;
-        private PlayerAnimationEvents playerAnimationEvents;
+        private CharacterAnimationEvents playerAnimationEvents;
         private StarterAssetsInputs starterAssetsInputs;
         private ThirdPersonController thirdPersonController;
         private CharacterController characterController;
@@ -34,7 +34,7 @@ namespace KLTNLongKhoi
         private void Awake()
         {
             animator = GetComponentInChildren<Animator>();
-            playerAnimationEvents = GetComponentInChildren<PlayerAnimationEvents>();
+            playerAnimationEvents = GetComponentInChildren<CharacterAnimationEvents>();
             starterAssetsInputs = GetComponent<StarterAssetsInputs>();
             thirdPersonController = GetComponent<ThirdPersonController>();
             characterController = GetComponent<CharacterController>();

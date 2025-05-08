@@ -8,22 +8,18 @@ namespace KLTNLongKhoi
         [SerializeField] float skillCooldownQ = 5f, skillCooldownE = 5f, skillCooldownC = 5f;
         private float skillCooldownTimerQ = 0f, skillCooldownTimerE = 0f, skillCooldownTimerC = 0f;
         private bool isSkillQActive = false, isSkillEActive = false, isSkillCActive = false;
+        private ActorHitbox hitboxSkillQ, hitboxSkillE, hitboxSkillC;
         private PlayerStatsManager playerStatsManager;
         private PauseManager pauseManager;
         private StarterAssetsInputs starterAssetsInputs;
-        private PlayerAnimationEvents playerAnimationEvents;
+        private ThirdPersonController thirdPersonController;
+        private Animator animator;
 
         private void Awake()
         {
             playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
             pauseManager = FindFirstObjectByType<PauseManager>();
             starterAssetsInputs = FindFirstObjectByType<StarterAssetsInputs>();
-            playerAnimationEvents = GetComponentInChildren<PlayerAnimationEvents>();
-        }
-
-        private void Start()
-        { 
-            playerAnimationEvents.onEndAnimation += OnEndAnimation;
         }
 
         private void OnEnable()
@@ -80,36 +76,58 @@ namespace KLTNLongKhoi
             }
         }
 
-        private void OnEndAnimation()
-        {
-            if (isSkillQActive)
-            {
-                isSkillQActive = false;
-            }
-            else if (isSkillEActive)
-            {
-                isSkillEActive = false;
-            }
-            else if (isSkillCActive)
-            {
-                isSkillCActive = false;
-            }
-        }
-
         private void ActivateSkillQ()
         {
+            if (thirdPersonController.canMove == false) return;
+            if (isSkillQActive) return;
             Debug.Log("Skill Q");
-            
+
+            animator.SetTrigger("SkillQ");
+            isSkillQActive = true;
+            thirdPersonController.canMove = false;
+            Invoke("OnEndSkillQ", 1f);
+        }
+
+        private void OnEndSkillQ()
+        {
+            isSkillQActive = false;
+            thirdPersonController.canMove = true;
         }
 
         private void ActivateSkillE()
         {
+            if (thirdPersonController.canMove == false) return;
+            if (isSkillEActive) return;
             Debug.Log("Skill E");
+
+            animator.SetTrigger("SkillE");
+            isSkillEActive = true;
+            thirdPersonController.canMove = false;
+            Invoke("OnEndSkillE", 1f);
+        }
+
+        private void OnEndSkillE()
+        {
+            isSkillEActive = false;
+            thirdPersonController.canMove = true;
         }
 
         private void ActivateSkillC()
         {
+            if (thirdPersonController.canMove == false) return;
+            if (isSkillCActive) return;
             Debug.Log("Skill C");
+
+            animator.SetTrigger("SkillC");
+            isSkillCActive = true;
+            thirdPersonController.canMove = false;
+            Invoke("OnEndSkillC", 1f);
+        }
+
+        private void OnEndSkillC()
+        {
+            isSkillCActive = false;
+            thirdPersonController.canMove = true;
         }
     }
 }

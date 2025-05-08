@@ -9,8 +9,7 @@ namespace KLTNLongKhoi
         [SerializeField] float jumpHeight = 5f;
         [SerializeField] float maxDistanceToJump = 10f;
         [SerializeField] float minDistanceToJump = 5f;
-        [SerializeField] float jumpCooldown = 10f; // thời gian hồi chiêu 
-        [SerializeField] ActorHitbox actorHitbox2;
+        [SerializeField] float jumpCooldown = 10f; // thời gian hồi chiêu
 
         private float nextJumpTime = 10f;
         private float gravity = 10f;
@@ -115,14 +114,6 @@ namespace KLTNLongKhoi
             enemyCtrl.CanMove = true;
             agent.enabled = true;
             animator.SetBool("JumpAttack", false);
-        }
-
-        private void OnJumpAttackSendDamage(AnimationEvent animationEvent)
-        {
-            if (animationEvent.intParameter == 1)
-            {
-                actorHitbox2.IsAttacking = true;
-            }
         }
 
         private bool IsPlayerInRange()

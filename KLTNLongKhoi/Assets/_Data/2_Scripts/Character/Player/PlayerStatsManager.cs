@@ -72,6 +72,7 @@ namespace KLTNLongKhoi
         private void Start()
         {
             PlayerData = saveLoadManager.GetGameData().player;
+            Init();
             saveLoadManager.OnLoaded += () =>
             {
                 PlayerData = saveLoadManager.GetGameData().player;
@@ -81,7 +82,9 @@ namespace KLTNLongKhoi
 
         public void Init()
         {
+            Debug.Log("Is new gameplay: " + saveLoadManager.IsNewGameplay());
             if (saveLoadManager.IsNewGameplay()) return;
+            Debug.Log("Init player stats" + CurrentHP   + " " + CurrentSP + " " + CurrentMP + " " + CurrentMoney);
             CurrentHP = PlayerData.baseHP;
             CurrentSP = PlayerData.baseSP;
             CurrentMP = PlayerData.baseMP;
