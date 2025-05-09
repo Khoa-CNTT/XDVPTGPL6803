@@ -951,7 +951,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b222a0bdcd42a6841a2a76f0f0a04c34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dontDestroyOnLoad: 0
 --- !u!4 &344066751
 Transform:
   m_ObjectHideFlags: 0
@@ -979,13 +978,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 578050174b07d764ab43968fb345fe30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questPanel: {fileID: 3336214018529581668}
   questPrefab: {fileID: 4190804172426459299, guid: 6ade30efa753f084a92db35698454cc3, type: 3}
   questsContainer: {fileID: 1157992364}
   btnOpenPanel: {fileID: 1317545549350270501}
   btnClosePanel: {fileID: 1323304610}
   btnShowMainQuest: {fileID: 1025090961}
   btnShowSideQuest: {fileID: 1235809181}
+  onTriggerThis: {fileID: 0}
 --- !u!1001 &368238275
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1502,7 +1501,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46
+  m_fontSize: 32
   m_fontSizeBase: 46
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5811,6 +5810,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 470529827188232901, guid: b82d711f43c2db340934de8dfae86ae9, type: 3}
+      propertyPath: _dontDestroyOnLoad
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 611453963266016947, guid: b82d711f43c2db340934de8dfae86ae9, type: 3}
+      propertyPath: gameData.player.baseHP
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 1699679964207355566, guid: b82d711f43c2db340934de8dfae86ae9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -6143,7 +6150,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3ee5ef4dbbd5b7747bc249a565b41bc6, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7274,7 +7281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6049429708275225311}
   m_Layer: 5
-  m_Name: Misson
+  m_Name: Quest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

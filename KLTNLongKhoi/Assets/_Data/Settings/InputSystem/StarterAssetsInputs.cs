@@ -26,6 +26,7 @@ namespace StarterAssets
 		public event Action SkillC;
 		public event Action Roll;
 		public event Action SkillPanel;
+		public event Action QuestPanel;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -34,7 +35,7 @@ namespace StarterAssets
 		public bool cursorLocked = true; // ẩn con trỏ chuột
 		public bool cursorInputForLook = true; // không cho phép xoay cam theo trỏ chuột
 
-		PauseManager pauseManager;
+		private PauseManager pauseManager;
 
 		void Awake()
 		{
@@ -162,6 +163,14 @@ namespace StarterAssets
 			if (value.isPressed)
 			{
 				UseItem?.Invoke();
+			}
+		}
+
+		public void OnQuestPanel(InputValue value)
+		{
+			if (value.isPressed)
+			{
+				QuestPanel?.Invoke();
 			}
 		}
 #endif

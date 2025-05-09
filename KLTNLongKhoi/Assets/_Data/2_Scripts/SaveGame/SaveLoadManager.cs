@@ -33,7 +33,7 @@ namespace KLTNLongKhoi
         // kiểm tra xem đây có phải là gameplay mới hay không
         public bool IsNewGameplay()
         {
-            return dataManager.GameData.player.position == Vector3.zero;
+            return dataManager.GameData.player.IsNewGameplay;
         }
 
         public void ResetGameSettings()
@@ -48,18 +48,13 @@ namespace KLTNLongKhoi
         {
             Init();
             dataManager.GameData.player = new PlayerData();
+            dataManager.GameData.player.IsNewGameplay = true;
             dataManager.GameData.worldItems = new List<ItemData>();
             dataManager.GameData.monsters = new List<MonsterData>();
             dataManager.ArchiveGameData();
 
             dataManager.GameData.questProgress = new List<QuestProgressData>(); // Reset progress nhiệm vụ
             dataManager.ArchiveGameData();
-
-            // Reset QuestManager
-            if (QuestManager.Instance != null)
-            {
-                QuestManager.Instance.ResetQuests();
-            }
         }
 
         public GameData GetGameData()
@@ -97,10 +92,11 @@ namespace KLTNLongKhoi
         }
 
         public void SaveData<D>(D data)
-        {
+        { 
             if (data is PlayerData playerData)
-            {
+            { 
                 dataManager.GameData.player = playerData;
+                dataManager.GameData.player.IsNewGameplay = false;
             }
             else if (data is GameSettingsData gameSettingsData)
             {
@@ -143,7 +139,7 @@ namespace KLTNLongKhoi
 
             dataManager.ArchiveGameData();
         }
-
+ 
         public void SaveQuestProgress(List<Quest> quests)
         {
             List<QuestProgressData> progressData = new List<QuestProgressData>();

@@ -4,22 +4,16 @@ using System;
 
 namespace KLTNLongKhoi
 {
-    public class QuestManager : Singleton<QuestManager>
+    public class QuestManager : MonoBehaviour
     {
         private List<Quest> quests = new List<Quest>();
         private SaveLoadManager saveLoadManager;
         public event Action OnQuestUpdated;
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-            LoadQuests();
             saveLoadManager = FindFirstObjectByType<SaveLoadManager>();
-        }
-
-        void Start()
-        { 
-
-        }
+            LoadQuests();
+        } 
 
         private void OnEnable()
         {
@@ -53,7 +47,7 @@ namespace KLTNLongKhoi
                 case GameEventType.ItemUpgraded:
                     UpdateQuestProgress("side_quest3", "Nâng cấp vật phẩm", 1);
                     break;
-                // ...
+                    // ...
             }
         }
 
@@ -120,7 +114,7 @@ namespace KLTNLongKhoi
             quests.Clear();
             LoadQuests(); // Reload all quests
         }
-        
+
         public void LoadQuestProgress()
         {
             List<Quest> questsData = saveLoadManager.GetQuests();

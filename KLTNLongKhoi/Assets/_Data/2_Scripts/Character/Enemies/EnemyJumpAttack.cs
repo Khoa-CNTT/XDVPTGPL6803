@@ -29,7 +29,7 @@ namespace KLTNLongKhoi
         private void Start()
         {
             characterVision = GetComponentInChildren<CharacterVision>();
-            animator = GetComponent<Animator>();
+            animator = GetComponentInChildren<Animator>();
             enemyCtrl = GetComponent<EnemyCtrl>();
             characterController = GetComponent<CharacterController>();
             agent = GetComponent<NavMeshAgent>();

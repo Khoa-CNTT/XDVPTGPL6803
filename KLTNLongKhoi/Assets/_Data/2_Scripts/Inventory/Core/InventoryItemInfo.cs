@@ -41,6 +41,7 @@ namespace KLTNLongKhoi
             if (cell != null && cell.ItemDataSO != null)
             {
                 ItemDataSO = cell.ItemDataSO;
+                _icon.color = Color.white; // chỉnh alpha màu icon về 1
                 _icon.sprite = cell.ItemDataSO.icon;
                 _itemName.text = cell.ItemDataSO.itemData.name;
                 string description = cell.ItemDataSO.itemData.description;
@@ -75,6 +76,9 @@ namespace KLTNLongKhoi
             _icon.sprite = null;
             _itemName.text = "";
             _itemDescription.text = "";
+
+            // chỉnh alpha màu icon về 0
+            _icon.color = new Color(1, 1, 1, 0);
         }
     }
 }

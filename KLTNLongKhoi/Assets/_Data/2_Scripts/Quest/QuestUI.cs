@@ -2,49 +2,78 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
+using StarterAssets;
 
 namespace KLTNLongKhoi
 {
     public class QuestUI : MonoBehaviour
     {
         [Header("UI References")]
-        [SerializeField] private GameObject questPanel;
         [SerializeField] private GameObject questPrefab;
         [SerializeField] private Transform questsContainer;
         [SerializeField] private Button btnOpenPanel;
         [SerializeField] private Button btnClosePanel;
         [SerializeField] private Button btnShowMainQuest;
         [SerializeField] private Button btnShowSideQuest;
+        [SerializeField] private OnTriggerThis onTriggerThis;
+        private QuestManager questManager;
+        private PauseManager pauseManager;
+        private StarterAssetsInputs starterAssetsInputs;
 
         private bool isPanelOpen = false;
 
+        private void Awake()
+        {
+            pauseManager = FindFirstObjectByType<PauseManager>();
+            starterAssetsInputs = FindFirstObjectByType<StarterAssetsInputs>();
+            questManager = FindFirstObjectByType<QuestManager>();
+        }
+
         private void OnEnable()
         {
-            btnOpenPanel.onClick.AddListener(OpenQuestPanel);
-            btnClosePanel.onClick.AddListener(CloseQuestPanel);
+            btnOpenPanel?.onClick.AddListener(OpenQuestPanel);
+            btnClosePanel?.onClick.AddListener(CloseQuestPanel);
             btnShowMainQuest.onClick.AddListener(ShowMainQuest);
             btnShowSideQuest.onClick.AddListener(ShowSideQuest);
+            if (starterAssetsInputs) starterAssetsInputs.QuestPanel += OnToggleQuestPanel;
         }
 
         private void OnDisable()
         {
-            btnOpenPanel.onClick.RemoveListener(OpenQuestPanel);
-            btnClosePanel.onClick.RemoveListener(CloseQuestPanel);
+            btnOpenPanel?.onClick.RemoveListener(OpenQuestPanel);
+            btnClosePanel?.onClick.RemoveListener(CloseQuestPanel);
             btnShowMainQuest.onClick.RemoveListener(ShowMainQuest);
             btnShowSideQuest.onClick.RemoveListener(ShowSideQuest);
+            if (starterAssetsInputs) starterAssetsInputs.QuestPanel -= OnToggleQuestPanel;
+        }
+
+        private void OnToggleQuestPanel()
+        {
+            isPanelOpen = !isPanelOpen;
+
+            if (isPanelOpen)
+            {
+                OpenQuestPanel();
+            }
+            else
+            {
+                CloseQuestPanel();
+            }
         }
 
         public void OpenQuestPanel()
         {
             isPanelOpen = true;
-            questPanel.SetActive(isPanelOpen);
             ShowMainQuest();
+            pauseManager.PauseGame();
+            onTriggerThis.ActiveObjects();
         }
 
         public void CloseQuestPanel()
         {
             isPanelOpen = false;
-            questPanel.SetActive(isPanelOpen);
+            pauseManager.ResumeGame();
+            onTriggerThis.UnActiveObjects();
         }
 
         private void ShowMainQuest()
@@ -64,13 +93,11 @@ namespace KLTNLongKhoi
 
         private void ShowSideQuest()
         {
-            // Xóa các quest UI cũ
             foreach (Transform child in questsContainer)
             {
                 Destroy(child.gameObject);
             }
 
-            // Tạo UI cho các nhiệm vụ支线任务
             foreach (var quest in GetQuestsByType(QuestType.Side))
             {
                 CreateQuestUI(quest);
@@ -83,11 +110,11 @@ namespace KLTNLongKhoi
             questUI.GetComponent<QuestUIElement>().Initialize(quest);
         }
 
-        private List<Quest> GetQuests() => QuestManager.Instance.GetQuests();
+        private List<Quest> GetQuests() => questManager.GetQuests();
 
         private List<Quest> GetQuestsByType(QuestType questType)
         {
-            return QuestManager.Instance.GetQuests().FindAll(q => q.questType == questType);
+            return questManager.GetQuests().FindAll(q => q.questType == questType);
         }
 
 

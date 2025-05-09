@@ -30,7 +30,6 @@ namespace KLTNLongKhoi
             set
             {
                 currentHP = Mathf.Clamp(value, 0, PlayerData.baseHP);
-                OnStatsUpdated();
             }
         }
         public float CurrentSP
@@ -39,7 +38,6 @@ namespace KLTNLongKhoi
             set
             {
                 currentSP = Mathf.Clamp(value, 0, PlayerData.baseSP);
-                OnStatsUpdated();
             }
         }
         public float CurrentMP
@@ -48,7 +46,6 @@ namespace KLTNLongKhoi
             set
             {
                 currentMP = Mathf.Clamp(value, 0, PlayerData.baseMP);
-                OnStatsUpdated();
             }
         }
         public float CurrentMoney
@@ -60,38 +57,43 @@ namespace KLTNLongKhoi
                 OnStatsUpdated();
             }
         }
+
         public PlayerData PlayerData { get => playerData; set => playerData = value; }
 
         private void Awake()
-        {
-            saveLoadManager = FindFirstObjectByType<SaveLoadManager>();
+        { 
+            saveLoadManager = SaveLoadManager.Instance;
             playerStatus = FindFirstObjectByType<PlayerStatus>();
-
         }
 
+        // Note: Cách load save
         private void Start()
         {
-            PlayerData = saveLoadManager.GetGameData().player;
             Init();
-            saveLoadManager.OnLoaded += () =>
-            {
-                PlayerData = saveLoadManager.GetGameData().player;
-                Init();
-            };
+        }
+
+        private void OnEnable()
+        {
+            saveLoadManager.OnLoaded += Init;
+        }
+
+        private void OnDisable()
+        {
+            saveLoadManager.OnLoaded -= Init;
         }
 
         public void Init()
         {
-            Debug.Log("Is new gameplay: " + saveLoadManager.IsNewGameplay());
-            if (saveLoadManager.IsNewGameplay()) return;
-            Debug.Log("Init player stats" + CurrentHP   + " " + CurrentSP + " " + CurrentMP + " " + CurrentMoney);
+            if (saveLoadManager.IsNewGameplay() == false)
+            {
+                PlayerData = saveLoadManager.GetGameData().player;
+                playerStatus.transform.position = PlayerData.position;
+            }
+
             CurrentHP = PlayerData.baseHP;
             CurrentSP = PlayerData.baseSP;
             CurrentMP = PlayerData.baseMP;
             CurrentMoney = PlayerData.money;
-
-            playerStatus.transform.position = PlayerData.position;
-            OnStatsUpdated();
         }
 
         private void OnDestroy()

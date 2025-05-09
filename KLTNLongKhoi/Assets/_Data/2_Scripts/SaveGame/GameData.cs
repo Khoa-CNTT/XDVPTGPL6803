@@ -21,19 +21,20 @@ namespace KLTNLongKhoi
     [Serializable]
     public class PlayerData
     {
-        public float baseHP = 5;
-        public float baseSP = 5;
-        public float baseMP = 5;
-        public float baseStr = 5;
-        public float baseCri = 5;
-        public float baseInt = 5;
-        public float money = 0;
+        public float baseHP = 500;
+        public float baseSP = 50;
+        public float baseMP = 50;
+        public float baseStr = 200;
+        public float baseCri = 100;
+        public float baseInt = 200;
+        public float money = 500;
         public float level = 1;
         public float experience = 0;
         public Vector3 position;
         public int levelSkillC = 1;
         public int levelSkillE = 1;
         public int levelSkillQ = 1;
+        public bool IsNewGameplay = true;
         public const int maxInventorySize = 19;
         public List<ItemData> inventory;
     }
