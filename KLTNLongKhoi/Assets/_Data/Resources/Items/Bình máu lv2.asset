@@ -15,17 +15,18 @@ MonoBehaviour:
   itemData:
     id: "B\xECnh m\xE1u lv2"
     name: "B\xECnh m\xE1u lv2"
-    description: 
+    description: "B\xECnh m\xE1u LV2 HP h\u1ED3i: 250"
     itemType: 5
     itemCount: 1
     maxStack: 1
-    price: 100
+    price: 10
+    cellIndex: 0
     physicalDamage: 0
     magicDamage: 0
     defensePoints: 0
     resistance: 0
     attackSpeed: 0
-    healthRecovery: 200
+    healthRecovery: 250
     manaRecovery: 0
     criticalChance: 0
     successRate: 0

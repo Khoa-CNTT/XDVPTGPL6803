@@ -1,18 +1,18 @@
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.Events;
+using System;
 
 namespace KLTNLongKhoi
 {
-
     public class PauseManager : MonoBehaviour
     {
         private bool isPaused = false;
 
-        public UnityEvent onGamePaused;
-        public UnityEvent onGameResumed;
+        public event Action onGamePaused = delegate { };
+        public event Action onGameResumed = delegate { };
 
-        public bool IsPaused => isPaused;
+        public bool IsPaused => isPaused; 
 
         public void TogglePause()
         {
@@ -42,13 +42,13 @@ namespace KLTNLongKhoi
 
         public void PauseGame()
         {
-            isPaused = true;
-            onGamePaused?.Invoke();
+            isPaused = true; 
+            onGamePaused.Invoke();
         }
 
         public void ResumeGame()
         {
-            isPaused = false;
+            isPaused = false; 
             onGameResumed?.Invoke();
         }
     }

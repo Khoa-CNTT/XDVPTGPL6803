@@ -27,6 +27,7 @@ namespace KLTNLongKhoi
             pauseManager = FindFirstObjectByType<PauseManager>();
             starterAssetsInputs = FindFirstObjectByType<StarterAssetsInputs>();
             questManager = FindFirstObjectByType<QuestManager>();
+            onTriggerThis = GetComponentInChildren<OnTriggerThis>();
         }
 
         private void OnEnable()
@@ -61,18 +62,19 @@ namespace KLTNLongKhoi
             }
         }
 
+        // Study: Nên để pauseManager ở singleton nếu không phải bỏ vào từng map rất mệt tương tự với nhiều đối tượng xuyên xuốt trò chơi
         public void OpenQuestPanel()
         {
             isPanelOpen = true;
             ShowMainQuest();
-            pauseManager.PauseGame();
+            pauseManager?.PauseGame();
             onTriggerThis.ActiveObjects();
         }
 
         public void CloseQuestPanel()
         {
             isPanelOpen = false;
-            pauseManager.ResumeGame();
+            pauseManager?.ResumeGame();
             onTriggerThis.UnActiveObjects();
         }
 

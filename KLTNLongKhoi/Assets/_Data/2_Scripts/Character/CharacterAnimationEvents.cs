@@ -11,24 +11,17 @@ namespace KLTNLongKhoi
         public event Action<float> onJumpLand;
         public event Action onEndAnimation;
         public event Action onFootstep;
+        public event Action onDrinkBottle;
         Animator animator;
-        
+
         private void Awake()
         {
             animator = GetComponent<Animator>();
         }
 
-        private void Update()
+        private void CheckAnimationEnd(AnimationEvent animationEvent)
         {
-            CheckAnimationEnd();
-        }
-
-        private void CheckAnimationEnd()
-        {
-            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.98f)
-            {
-                onEndAnimation?.Invoke();
-            }
+            onEndAnimation?.Invoke();
         }
 
         private void OnFootstep(AnimationEvent animationEvent)
@@ -50,6 +43,11 @@ namespace KLTNLongKhoi
         private void OnSendDamage(AnimationEvent animationEvent)
         {
             onSendDamage?.Invoke(animationEvent.intParameter);
+        }
+
+        private void OnDrinkBottle(AnimationEvent animationEvent)
+        {
+            onDrinkBottle?.Invoke();
         }
     }
 }

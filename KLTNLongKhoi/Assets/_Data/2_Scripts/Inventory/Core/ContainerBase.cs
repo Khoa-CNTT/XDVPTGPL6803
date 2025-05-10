@@ -57,7 +57,7 @@ namespace KLTNLongKhoi
             {
                 if (inventoryCells[i].ItemDataSO == item)
                 {
-                    if (inventoryCells[i].ItemsCount < item.itemData.maxStack)
+                    if (inventoryCells[i].ItemsCount < item.ItemData.maxStack)
                     {
                         cell = inventoryCells[i];
                         return true;
@@ -74,10 +74,10 @@ namespace KLTNLongKhoi
             {
                 if (TryGetCellWithFreeItemsCount(item, out var cell))
                 {
-                    if ((cell.ItemsCount + count) > item.itemData.maxStack)
+                    if ((cell.ItemsCount + count) > item.ItemData.maxStack)
                     {
-                        count -= (item.itemData.maxStack - cell.ItemsCount);
-                        cell.ItemsCount = item.itemData.maxStack;
+                        count -= (item.ItemData.maxStack - cell.ItemsCount);
+                        cell.ItemsCount = item.ItemData.maxStack;
                     }
                     else
                     {
@@ -89,10 +89,10 @@ namespace KLTNLongKhoi
                 else if (TryGetEmptyCell(out cell))
                 {
                     cell.SetInventoryItem(item);
-                    if (count > item.itemData.maxStack)
+                    if (count > item.ItemData.maxStack)
                     {
-                        cell.ItemsCount = item.itemData.maxStack;
-                        count -= item.itemData.maxStack;
+                        cell.ItemsCount = item.ItemData.maxStack;
+                        count -= item.ItemData.maxStack;
                     }
                     else
                     {
@@ -106,6 +106,8 @@ namespace KLTNLongKhoi
                     break;
                 }
             }
+
+            Debug.Log("Count left: " + count);
             countLeft = count;
             SaveInventory();
         }

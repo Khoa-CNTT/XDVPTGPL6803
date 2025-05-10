@@ -62,7 +62,7 @@ namespace KLTNLongKhoi
             if (_item != null)
             {
                 icon.color = Color.white;
-                icon.sprite = _item.icon;
+                icon.sprite = _item.Icon;
             }
             else
             {
@@ -113,6 +113,7 @@ namespace KLTNLongKhoi
         {
             return true;
         }
-    }
 
+        
+    }
 }

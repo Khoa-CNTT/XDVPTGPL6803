@@ -23,6 +23,11 @@ namespace KLTNLongKhoi
             saveLoadManager.OnLoaded += LoadInventory;
         }
 
+        public void SaveThisInventory()
+        {
+            SaveInventory();
+        }
+
         protected override void SaveInventory()
         {
             if (saveLoadManager != null)
@@ -34,7 +39,7 @@ namespace KLTNLongKhoi
                 {
                     if (cell.ItemDataSO != null)
                     {
-                        gameData.player.inventory.Add(cell.ItemDataSO.itemData);
+                        gameData.player.inventory.Add(cell.ItemDataSO.ItemData);
                     }
                 }
 
@@ -65,7 +70,7 @@ namespace KLTNLongKhoi
                         if (itemData != null)
                         {
                             ItemDataSO item = Resources.LoadAll<ItemDataSO>("Items")
-                                                  .FirstOrDefault(x => x.itemData.name == itemData.name);
+                                                  .FirstOrDefault(x => x.ItemData.name == itemData.name);
                             AddItemsCount(item, itemData.itemCount, out var countLeft);
                         }
                     }

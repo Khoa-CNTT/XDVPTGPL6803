@@ -42,28 +42,28 @@ namespace KLTNLongKhoi
             {
                 ItemDataSO = cell.ItemDataSO;
                 _icon.color = Color.white; // chỉnh alpha màu icon về 1
-                _icon.sprite = cell.ItemDataSO.icon;
-                _itemName.text = cell.ItemDataSO.itemData.name;
-                string description = cell.ItemDataSO.itemData.description;
-                string price = $"Giá: {cell.ItemDataSO.itemData.price}";
+                _icon.sprite = cell.ItemDataSO.Icon;
+                _itemName.text = cell.ItemDataSO.ItemData.name;
+                string description = cell.ItemDataSO.ItemData.description;
+                string price = $"Giá: {cell.ItemDataSO.ItemData.price}";
                 string stats = "";
                 
-                if (cell.ItemDataSO.itemData.physicalDamage > 0)
-                    stats += $"\n+Sát thương vật lý: {cell.ItemDataSO.itemData.physicalDamage}";
-                if (cell.ItemDataSO.itemData.magicDamage > 0)
-                    stats += $"\n+Sát thương phép: {cell.ItemDataSO.itemData.magicDamage}";
-                if (cell.ItemDataSO.itemData.defensePoints > 0)
-                    stats += $"\n+Phòng thủ: {cell.ItemDataSO.itemData.defensePoints}";
-                if (cell.ItemDataSO.itemData.resistance > 0)
-                    stats += $"\n+Kháng phép: {cell.ItemDataSO.itemData.resistance}";
-                if (cell.ItemDataSO.itemData.attackSpeed > 0)
-                    stats += $"\n+Tốc độ đánh: {cell.ItemDataSO.itemData.attackSpeed}";
-                if (cell.ItemDataSO.itemData.healthRecovery > 0)
-                    stats += $"\n+Hồi máu: {cell.ItemDataSO.itemData.healthRecovery}";
-                if (cell.ItemDataSO.itemData.manaRecovery > 0)
-                    stats += $"\n+Hồi năng lượng: {cell.ItemDataSO.itemData.manaRecovery}";
-                if (cell.ItemDataSO.itemData.criticalChance > 0)
-                    stats += $"\n+Tỷ lệ chí mạng: {cell.ItemDataSO.itemData.criticalChance}%";
+                if (cell.ItemDataSO.ItemData.physicalDamage > 0)
+                    stats += $"\n+Sát thương vật lý: {cell.ItemDataSO.ItemData.physicalDamage}";
+                if (cell.ItemDataSO.ItemData.magicDamage > 0)
+                    stats += $"\n+Sát thương phép: {cell.ItemDataSO.ItemData.magicDamage}";
+                if (cell.ItemDataSO.ItemData.defensePoints > 0)
+                    stats += $"\n+Phòng thủ: {cell.ItemDataSO.ItemData.defensePoints}";
+                if (cell.ItemDataSO.ItemData.resistance > 0)
+                    stats += $"\n+Kháng phép: {cell.ItemDataSO.ItemData.resistance}";
+                if (cell.ItemDataSO.ItemData.attackSpeed > 0)
+                    stats += $"\n+Tốc độ đánh: {cell.ItemDataSO.ItemData.attackSpeed}";
+                if (cell.ItemDataSO.ItemData.healthRecovery > 0)
+                    stats += $"\n+Hồi máu: {cell.ItemDataSO.ItemData.healthRecovery}";
+                if (cell.ItemDataSO.ItemData.manaRecovery > 0)
+                    stats += $"\n+Hồi năng lượng: {cell.ItemDataSO.ItemData.manaRecovery}";
+                if (cell.ItemDataSO.ItemData.criticalChance > 0)
+                    stats += $"\n+Tỷ lệ chí mạng: {cell.ItemDataSO.ItemData.criticalChance}%";
                 
                 _itemDescription.text = $"{description}\n{price}{stats}";
             }

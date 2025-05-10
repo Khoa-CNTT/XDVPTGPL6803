@@ -24,19 +24,21 @@ namespace KLTNLongKhoi
 
         public bool TrySellItem(ItemData itemData, int count = 1)
         {
-            var item = PlayerData.inventory.FirstOrDefault(i => i.name == itemData.name);
-            if (item != null && item.itemCount >= count)
+            var inventoryItem = PlayerData.inventory.FirstOrDefault(i => i.name == itemData.name);
+            ItemData itemSell = inventoryItem;
+
+            if (inventoryItem == null)
+                return false;
+
+            inventoryItem.itemCount -= count;
+            if (inventoryItem.itemCount <= 0)
             {
-                item.itemCount -= count;
-                if (item.itemCount <= 0)
-                {
-                    PlayerData.inventory.Remove(item);
-                }
-                PlayerData.money += itemData.price * count;
-                SaveInventory();
-                return true;
+                PlayerData.inventory.Remove(inventoryItem);
             }
-            return false;
+
+            PlayerData.money += itemData.price * count;
+            SavePlayerData();
+            return true;
         }
 
         public bool AddItem(ItemData itemData)
@@ -79,27 +81,12 @@ namespace KLTNLongKhoi
             else
             {
                 // Inventory is full
-                SaveInventory();
+                SavePlayerData();
                 return false;
             }
 
-            SaveInventory();
+            SavePlayerData();
             return true;
-        }
-
-        public void RemoveItem(string itemName, int count = 1)
-        {
-            var item = PlayerData.inventory.FirstOrDefault(i => i.name == itemName);
-
-            if (item != null)
-            {
-                item.itemCount -= count;
-                if (item.itemCount <= 0)
-                {
-                    PlayerData.inventory.Remove(item);
-                }
-                SaveInventory();
-            }
         }
 
         public void UpdateItem(ItemData updatedItem)
@@ -110,7 +97,7 @@ namespace KLTNLongKhoi
             {
                 int index = PlayerData.inventory.IndexOf(existingItem);
                 PlayerData.inventory[index] = updatedItem;
-                SaveInventory();
+                SavePlayerData();
             }
         }
 
@@ -124,8 +111,10 @@ namespace KLTNLongKhoi
             return PlayerData.inventory.FirstOrDefault(i => i.name == itemName);
         }
 
-        private void SaveInventory()
+        private void SavePlayerData()
         {
+            Debug.Log("Save Player Data");
+            saveLoadManager = SaveLoadManager.Instance;
             saveLoadManager.SaveData(PlayerData);
         }
 

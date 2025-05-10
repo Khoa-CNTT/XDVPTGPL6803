@@ -44,9 +44,10 @@ namespace KLTNLongKhoi
     {
         public string id;
         public string name;
+        [TextArea(5, 10)]
         public string description;
         public ItemType itemType;
-        public int itemCount = 1;
+        public int itemCount = 1; // dùng để lưu số lượng item trong túi chứ không vì mục đích nào khác
         public int maxStack = 1;
         public int price;
         public int cellIndex; // vị trí trong túi

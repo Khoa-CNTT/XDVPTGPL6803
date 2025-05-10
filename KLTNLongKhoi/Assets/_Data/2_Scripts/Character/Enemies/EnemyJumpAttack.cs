@@ -5,6 +5,7 @@ namespace KLTNLongKhoi
 {
     public class EnemyJumpAttack : MonoBehaviour
     {
+        [SerializeField] float damageOnAttack = 100f;
         [SerializeField] float jumpForce = 3f;
         [SerializeField] float jumpHeight = 5f;
         [SerializeField] float maxDistanceToJump = 10f;
@@ -25,6 +26,7 @@ namespace KLTNLongKhoi
         private bool hasJustJumped = false;
         private float jumpStartTime = 0f;
         private float jumpOffet = 1;
+        private ActorHitbox actorHitbox;
 
         private void Start()
         {
@@ -33,6 +35,7 @@ namespace KLTNLongKhoi
             enemyCtrl = GetComponent<EnemyCtrl>();
             characterController = GetComponent<CharacterController>();
             agent = GetComponent<NavMeshAgent>();
+            actorHitbox = GetComponentInChildren<ActorHitbox>();
         }
 
         private void Update()
@@ -62,7 +65,17 @@ namespace KLTNLongKhoi
             moveDirection.y = verticalVelocity;
 
             // Move the character
-            characterController.Move(moveDirection * Time.deltaTime * jumpOffet);
+            if (characterController == null) characterController = GetComponentInChildren<CharacterController>();
+            if (characterController != null && characterController.enabled && characterController.gameObject.activeInHierarchy)
+            {
+                characterController.Move(moveDirection * Time.deltaTime * jumpOffet);
+            }
+            else
+            {
+                // Handle the case when controller is inactive
+                isJumping = false;
+                CompleteJumpAttack();
+            }
 
             // Đánh dấu khi vừa nhảy và đặt thời gian bắt đầu nhảy
             if (hasJustJumped == false && verticalVelocity > 0)
@@ -95,8 +108,8 @@ namespace KLTNLongKhoi
             nextJumpTime = Time.time + jumpCooldown;
             animator.SetBool("JumpAttack", true);
             agent.enabled = false;
-            targetPosition = characterVision.Target.position;
-            Invoke("ApplyJumpForce", 1f);
+            targetPosition = characterVision.GetPlayer().transform.position;
+            Invoke("ApplyJumpForce", 0.3f);
         }
 
         private void ApplyJumpForce()
@@ -105,6 +118,7 @@ namespace KLTNLongKhoi
             jumpDirection = directionToPlayer;
             verticalVelocity = Mathf.Sqrt(2 * gravity * jumpHeight);
             hasJustJumped = false;
+            actorHitbox.damage = damageOnAttack;
         }
 
         private void CompleteJumpAttack()
@@ -113,13 +127,13 @@ namespace KLTNLongKhoi
             hasJustJumped = false;
             enemyCtrl.CanMove = true;
             agent.enabled = true;
-            animator.SetBool("JumpAttack", false);
+            animator.SetBool("JumpAttack", false); 
         }
 
         private bool IsPlayerInRange()
         {
-            if (characterVision.Target == null) return false;
-            float distanceToPlayer = Vector3.Distance(transform.position, characterVision.Target.position);
+            if (characterVision.GetPlayer() == null) return false;
+            float distanceToPlayer = Vector3.Distance(transform.position, characterVision.GetPlayer().transform.position);
             return enemyCtrl.IsSeePlayer() && distanceToPlayer <= maxDistanceToJump && distanceToPlayer >= minDistanceToJump;
         }
     }

@@ -15,11 +15,12 @@ MonoBehaviour:
   itemData:
     id: "B\xECnh m\xE1u lv1"
     name: "B\xECnh m\xE1u lv1"
-    description: 
+    description: "B\xECnh m\xE1u LV1 HP h\u1ED3i: 80"
     itemType: 5
     itemCount: 1
     maxStack: 1
-    price: 100
+    price: 10
+    cellIndex: 0
     physicalDamage: 0
     magicDamage: 0
     defensePoints: 0

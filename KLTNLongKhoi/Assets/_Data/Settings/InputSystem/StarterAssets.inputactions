@@ -105,9 +105,27 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "DrinkBottle",
+                    "type": "Button",
+                    "id": "81e0267d-6c72-4577-9368-852f4642b150",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "QuestPanel",
                     "type": "Button",
                     "id": "5682fd8a-3d57-490a-88b6-c6d8e5f03f34",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DrinkBottle1",
+                    "type": "Button",
+                    "id": "f3df0f77-525e-4634-b693-2af31f113100",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -359,12 +377,34 @@
                 },
                 {
                     "name": "",
+                    "id": "79e56116-0803-410f-b0f9-4d61346b4ab2",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DrinkBottle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "8589d53f-1f22-4867-aa48-7df8467d2b60",
                     "path": "<Keyboard>/t",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "QuestPanel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "60fdd73a-9fd5-42cd-80ce-f37c1220f74a",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DrinkBottle1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

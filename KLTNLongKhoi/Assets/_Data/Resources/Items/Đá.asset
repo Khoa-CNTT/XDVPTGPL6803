@@ -15,11 +15,12 @@ MonoBehaviour:
   itemData:
     id: "\u0110\xE1"
     name: "\u0110\xE1"
-    description: 
+    description: "V\u1EADt ph\u1EA9m d\xF9ng n\xE2ng c\u1EA5p ch\u1EBF t\u1EA1o"
     itemType: 4
     itemCount: 1
     maxStack: 1
     price: 100
+    cellIndex: 0
     physicalDamage: 0
     magicDamage: 0
     defensePoints: 0

@@ -7,7 +7,7 @@ namespace KLTNLongKhoi
 {
     public class PlayerStatsManager : MonoBehaviour
     {
-        [SerializeField] PlayerData playerData;
+        [SerializeField] private PlayerData playerData;
         [SerializeField] private float currentHP;
         [SerializeField] private float currentSP;
         [SerializeField] private float currentMP;
@@ -30,6 +30,7 @@ namespace KLTNLongKhoi
             set
             {
                 currentHP = Mathf.Clamp(value, 0, PlayerData.baseHP);
+                StatsUpdatedEvent?.Invoke();
             }
         }
         public float CurrentSP
@@ -38,6 +39,7 @@ namespace KLTNLongKhoi
             set
             {
                 currentSP = Mathf.Clamp(value, 0, PlayerData.baseSP);
+                StatsUpdatedEvent?.Invoke();
             }
         }
         public float CurrentMP
@@ -46,6 +48,7 @@ namespace KLTNLongKhoi
             set
             {
                 currentMP = Mathf.Clamp(value, 0, PlayerData.baseMP);
+                StatsUpdatedEvent?.Invoke();
             }
         }
         public float CurrentMoney
@@ -54,15 +57,25 @@ namespace KLTNLongKhoi
             set
             {
                 PlayerData.money = value;
-                OnStatsUpdated();
+                StatsUpdatedEvent?.Invoke();
+                saveLoadManager.SaveData(PlayerData);
             }
         }
 
         public PlayerData PlayerData { get => playerData; set => playerData = value; }
 
         private void Awake()
-        { 
+        {
+            // Sử dụng Instance thay vì FindFirstObjectByType
             saveLoadManager = SaveLoadManager.Instance;
+            
+            if (saveLoadManager == null)
+            {
+                Debug.LogError("PlayerStatsManager: SaveLoadManager.Instance is null");
+                // Thử tìm kiếm một lần nữa
+                saveLoadManager = FindFirstObjectByType<SaveLoadManager>();
+            }
+            
             playerStatus = FindFirstObjectByType<PlayerStatus>();
         }
 
@@ -80,6 +93,7 @@ namespace KLTNLongKhoi
         private void OnDisable()
         {
             saveLoadManager.OnLoaded -= Init;
+            saveLoadManager.SaveData(PlayerData);
         }
 
         public void Init()
@@ -96,14 +110,10 @@ namespace KLTNLongKhoi
             CurrentMoney = PlayerData.money;
         }
 
-        private void OnDestroy()
-        {
-            saveLoadManager.SaveData(PlayerData);
-        }
-
         public void SetCheckpoint(Vector3 position)
         {
             PlayerData.position = position;
+            PlayerData.IsNewGameplay = false;
         }
 
         public Vector3 LastCheckpointPosition() => PlayerData.position;
@@ -112,14 +122,12 @@ namespace KLTNLongKhoi
         {
             PlayerData.experience += amount;
             LevelUp();
-            OnStatsUpdated();
+            saveLoadManager.SaveData(PlayerData);
         }
 
         public void AddMoney(float amount)
-        {
-            Debug.Log($"Add money: {amount}");
-            PlayerData.money += amount;
-            OnStatsUpdated();
+        { 
+            CurrentMoney += amount;
         }
 
         private void LevelUp()
@@ -133,13 +141,8 @@ namespace KLTNLongKhoi
             PlayerData.baseInt += 2;
 
             Init();
-            OnStatsUpdated();
-        }
-
-        private void OnStatsUpdated()
-        {
-            saveLoadManager.SaveData(PlayerData);
             StatsUpdatedEvent?.Invoke();
+            saveLoadManager.SaveData(PlayerData);
         }
     }
 }

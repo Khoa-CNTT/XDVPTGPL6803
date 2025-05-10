@@ -10,14 +10,12 @@ namespace KLTNLongKhoi
         [SerializeField] private float timeHurt = 2f;
 
         private PlayerStatsManager playerStatsManager;
-        private CharacterVision characterVision;
         private EnemyCtrl enemyCtrl;
         private Animator animator;
 
         protected override void Awake()
         {
             base.Awake();
-            characterVision = GetComponentInChildren<CharacterVision>();
             playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
             enemyCtrl = GetComponent<EnemyCtrl>();
             animator = GetComponent<Animator>();
@@ -26,10 +24,9 @@ namespace KLTNLongKhoi
         public override void TakeDamage(float damage, Vector3 hitDirection, Transform attacker)
         {
             base.TakeDamage(damage, hitDirection, attacker);
-            characterVision.Target = attacker;
             if (!IsDead() && enemyCtrl.CanMove)
             {
-                animator.SetTrigger("Hurt");
+                // animator.SetTrigger("Hurt");
                 Invoke("CanMove", timeHurt);
             }
         }

@@ -22,7 +22,7 @@ namespace KLTNLongKhoi
         private PauseManager pauseManager;
         private ContainerBase containerBase;
         private InventoryDataContact inventoryDataContact;
-        private ItemType itemTypeOpening;
+        private ItemType itemTypeOpening = ItemType.Resource; // Kiểu item đang mở ở túi đồ
 
         private void Awake()
         {
@@ -82,9 +82,9 @@ namespace KLTNLongKhoi
             List<ItemDataSO> resourceItems = GetPlayerInventoryItem();
             foreach (var item in resourceItems)
             {
-                if (item.itemData.itemType == itemType)
+                if (item.ItemData.itemType == itemType)
                 {
-                    containerBase.AddItemsCount(item, item.itemData.maxStack, out var countLeft);
+                    containerBase.AddItemsCount(item, item.ItemData.maxStack, out var countLeft);
                 }
             }
         }
@@ -95,7 +95,7 @@ namespace KLTNLongKhoi
             foreach (var item in saveLoadManager.GetGameData().player.inventory)
             {
                 ItemDataSO itemDataSO = Resources.LoadAll<ItemDataSO>("Items")
-                                                .FirstOrDefault(x => x.itemData.name == item.name);
+                                                .FirstOrDefault(x => x.ItemData.name == item.name);
                 resourceItems.Add(itemDataSO);
             }
 
@@ -162,7 +162,7 @@ namespace KLTNLongKhoi
                 OnSellFail("Chọn vật phẩm để bán");
                 return;
             }
-            ItemData itemSelecting = inventoryItemInfo.ItemDataSO.itemData;
+            ItemData itemSelecting = inventoryItemInfo.ItemDataSO.ItemData;
 
             bool isSell = inventoryDataContact.TrySellItem(itemSelecting);
 

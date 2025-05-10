@@ -27,6 +27,7 @@ namespace StarterAssets
 		public event Action Roll;
 		public event Action SkillPanel;
 		public event Action QuestPanel;
+		public event Action DrinkBottle;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -35,13 +36,23 @@ namespace StarterAssets
 		public bool cursorLocked = true; // ẩn con trỏ chuột
 		public bool cursorInputForLook = true; // không cho phép xoay cam theo trỏ chuột
 
-		private PauseManager pauseManager;
+		private PauseManager pauseManager; 
 
-		void Awake()
+		private void Awake()
 		{
-			pauseManager = FindFirstObjectByType<PauseManager>();
-			pauseManager.onGamePaused.AddListener(OnPauseGame);
-			pauseManager.onGameResumed.AddListener(OnResumeGame);
+			pauseManager = FindFirstObjectByType<PauseManager>(); 
+		}
+
+		void OnEnable()
+		{ 
+			pauseManager.onGamePaused += OnPauseGame;
+			pauseManager.onGameResumed += OnResumeGame;
+		}
+
+		void OnDisable()
+		{
+			pauseManager.onGamePaused -= OnPauseGame;
+			pauseManager.onGameResumed -= OnResumeGame;
 		}
 
 		void Start()
@@ -59,6 +70,7 @@ namespace StarterAssets
 
 		public void OnLook(InputValue value)
 		{
+			pauseManager = FindFirstObjectByType<PauseManager>();
 			if (pauseManager.IsPaused) return;
 
 			if (cursorInputForLook)
@@ -171,6 +183,16 @@ namespace StarterAssets
 			if (value.isPressed)
 			{
 				QuestPanel?.Invoke();
+			}
+		}
+
+		public void OnDrinkBottle(InputValue value)
+		{
+			if (pauseManager.IsPaused) return;
+
+			if (value.isPressed)
+			{
+				DrinkBottle?.Invoke();
 			}
 		}
 #endif

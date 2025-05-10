@@ -58,7 +58,7 @@ namespace KLTNLongKhoi
             {
                 if (quickSlotsController.InventoryCellSelected.ItemDataSO != null)
                 {
-                    if (quickSlotsController.InventoryCellSelected.ItemsCount > 0 && quickSlotsController.InventoryCellSelected.ItemDataSO.itemData.itemType == ItemType.Consumable)
+                    if (quickSlotsController.InventoryCellSelected.ItemsCount > 0 && quickSlotsController.InventoryCellSelected.ItemDataSO.ItemData.itemType == ItemType.Consumable)
                     {
                         StartCoroutine(UseItemCoroutine());
                     }
@@ -75,7 +75,7 @@ namespace KLTNLongKhoi
             canUseItem = false;
             thirdPersonController.CanMove = false;
 
-            Debug.Log("Use Item: " + quickSlotsController.InventoryCellSelected.ItemDataSO.itemData.name);
+            Debug.Log("Use Item: " + quickSlotsController.InventoryCellSelected.ItemDataSO.ItemData.name);
             //ItemDataSO itemToRemove = quickSlotsController.InventoryCellSelected.ItemDataSO;
             inventoryController.RemoveInventoryCell(quickSlotsController.InventoryCellSelected.ItemDataSO, 1, out int countLeft);
 

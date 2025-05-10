@@ -33,7 +33,7 @@ namespace KLTNLongKhoi
             }
 
             // Add to inventory first
-            inventoryController.AddItemsCount(inventoryItem, inventoryItem.itemData.maxStack, out var itemsLeft);
+            inventoryController.AddItemsCount(inventoryItem, inventoryItem.ItemData.maxStack, out var itemsLeft);
             if (itemsLeft > 0)
             {
                 Debug.Log($"Not enough space! {itemsLeft} items left!");

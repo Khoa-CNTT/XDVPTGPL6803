@@ -20,6 +20,7 @@ MonoBehaviour:
     itemCount: 1
     maxStack: 1
     price: 100
+    cellIndex: 0
     physicalDamage: 0
     magicDamage: 0
     defensePoints: 0

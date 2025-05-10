@@ -6,8 +6,12 @@ namespace KLTNLongKhoi
     public class ItemDataSO : ScriptableObject
     {
         [Header("Basic Info")]
-        public ItemData itemData;
-        public Sprite icon;
-        public GameObject prefab;
+        [SerializeField] private ItemData itemData;
+        [SerializeField] private Sprite icon;
+        [SerializeField] private GameObject prefab;
+
+        public ItemData ItemData { get => itemData; private set => itemData = value; }
+        public Sprite Icon { get => icon; private set => icon = value; }
+        public GameObject Prefab { get => prefab; private set => prefab = value; }
     }
 }

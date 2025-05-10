@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: "Khi\xEAn 1"
   m_EditorClassIdentifier: 
   itemData:
-    id: 
+    id: "Khi\xEAn 1"
     name: "Khi\xEAn 1"
-    description: 
+    description: "Gi\xE1p: 300\r\nT\u1ED1c \u0111\u1ED9 \u0111\xE1nh: 60%\r\nH\u1ED3i
+      ph\u1EE5c: 10\r\nCh\u1ED1ng ch\u1ECBu: 350\r\n"
     itemType: 1
     itemCount: 1
     maxStack: 1
     price: 100
+    cellIndex: 0
     physicalDamage: 0
     magicDamage: 0
     defensePoints: 100

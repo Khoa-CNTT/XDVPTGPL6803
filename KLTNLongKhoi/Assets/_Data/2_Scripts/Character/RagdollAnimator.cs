@@ -33,8 +33,13 @@ public class RagdollAnimator : MonoBehaviour
             rigidbody.isKinematic = true;
         }
 
+        foreach (var collider in GetComponentsInChildren<Collider>())
+        {
+            if (collider.GetComponent<CharacterJoint>()) collider.enabled = false;
+        }
+
         _animator.enabled = true;
-        if (_characterController != null) _characterController.enabled = true;
+        _characterController.enabled = true;
     }
 
     public void EnableRagdoll()
@@ -44,7 +49,12 @@ public class RagdollAnimator : MonoBehaviour
             rigidbody.isKinematic = false;
         }
 
+        foreach (var collider in GetComponentsInChildren<Collider>())
+        {
+            if (collider.GetComponent<CharacterJoint>()) collider.enabled = true;
+        }
+
         _animator.enabled = false;
-        if (_characterController != null) _characterController.enabled = false;
+        _characterController.enabled = false;
     }
 }

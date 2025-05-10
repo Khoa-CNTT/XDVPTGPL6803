@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: "G\u01B0\u01A1m 3"
   m_EditorClassIdentifier: 
   itemData:
-    id: 
+    id: "G\u01B0\u01A1m 3"
     name: "G\u01B0\u01A1m 3"
-    description: 
+    description: "S\xE1t th\u01B0\u01A1ng v\u1EADt l\xFD: 100\r\nCh\u1ED1ng ch\u1ECBu:
+      40\r\nT\u1ED1c \u0111\u1ED9 \u0111\xE1nh: 40%\r\n"
     itemType: 1
     itemCount: 1
     maxStack: 1
     price: 100
+    cellIndex: 0
     physicalDamage: 70
     magicDamage: 0
     defensePoints: 0

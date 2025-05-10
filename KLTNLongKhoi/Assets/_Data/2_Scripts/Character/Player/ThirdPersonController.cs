@@ -15,6 +15,7 @@ namespace StarterAssets
 #endif
     public class ThirdPersonController : MonoBehaviour
     {
+        public Transform playerPoint;
         [Header("Player")]
         public float MoveSpeed = 2.0f;
         public float SprintSpeed = 5.335f;

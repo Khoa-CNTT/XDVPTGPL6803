@@ -88,14 +88,14 @@ namespace KLTNLongKhoi
             {
 
                 ItemDataSO itemDataSO = Resources.LoadAll<ItemDataSO>("Items")
-                                                .FirstOrDefault(x => x.itemData.name == shopItem.name);
+                                                .FirstOrDefault(x => x.ItemData.name == shopItem.name);
 
                 if (itemDataSO != null)
                 {
-                    AddItemsCount(itemDataSO, itemDataSO.itemData.maxStack, out var countLeft);
+                    AddItemsCount(itemDataSO, itemDataSO.ItemData.maxStack, out var countLeft);
                     if (countLeft > 0)
                     {
-                        Debug.Log($"Not enough space for {itemDataSO.itemData.name}! {countLeft} items left!");
+                        Debug.Log($"Not enough space for {itemDataSO.ItemData.name}! {countLeft} items left!");
                     }
                 }
             }
@@ -117,11 +117,11 @@ namespace KLTNLongKhoi
 
             if (inventoryItemInfo.ItemDataSO != null)
             {
-                if (inventoryDataContact.PlayerData.money >= inventoryItemInfo.ItemDataSO.itemData.price)
+                if (inventoryDataContact.PlayerData.money >= inventoryItemInfo.ItemDataSO.ItemData.price)
                 { 
-                    if (inventoryDataContact.AddItem(inventoryItemInfo.ItemDataSO.itemData))
+                    if (inventoryDataContact.AddItem(inventoryItemInfo.ItemDataSO.ItemData))
                     {
-                        inventoryDataContact.PlayerData.money -= inventoryItemInfo.ItemDataSO.itemData.price;
+                        inventoryDataContact.PlayerData.money -= inventoryItemInfo.ItemDataSO.ItemData.price;
                         OnBuySuccess();
                     }
                     else

@@ -28,7 +28,7 @@ namespace KLTNLongKhoi
             Debug.Log("Open storage");
             SaveToChest();
             currentChest = chest;
-            var cells = currentChest.GetCells();
+            var cells = currentChest.StorageItems;
             if (cells != null)
             {
                 if (cells.Count > 0)
@@ -66,11 +66,11 @@ namespace KLTNLongKhoi
             {
                 if (inventoryCells.Count > 0)
                 {
-                    currentChest.SaveItems(inventoryCells.Select(s => s.ItemDataSO).ToList());
+                    currentChest.StorageItems = inventoryCells.Select(s => s.ItemDataSO).ToList();
                 }
                 else
                 {
-                    currentChest.SaveItems(new List<ItemDataSO>());
+                    currentChest.StorageItems = new List<ItemDataSO>();
                 }
             }
         }

@@ -51,40 +51,28 @@ namespace KLTNLongKhoi
                 if (!cell.CanBeDropped(_dragCell))
                     return;
 
-                bool inventoryChanged = false;
-
                 if (eventData.button == PointerEventData.InputButton.Middle)
                 {
                     if (cell.ItemDataSO == null)
                     {
                         SplitItems(cell, _dragCell);
-                        inventoryChanged = true;
                     }
                     else if (cell.ItemDataSO == _dragCell.ItemDataSO)
                     {
                         MoveItemsCount(cell, _dragCell, _dragCell.ItemsCount / 2);
-                        inventoryChanged = true;
                     }
                 }
                 else if (cell.ItemDataSO != _dragCell.ItemDataSO)
                 {
                     SwapCells(cell, _dragCell);
-                    inventoryChanged = true;
                 }
                 else if (cell.ItemDataSO == _dragCell.ItemDataSO)
                 {
                     MoveItemsCount(cell, _dragCell, _dragCell.ItemsCount);
-                    inventoryChanged = true;
                 }
 
                 cell.UpdateCellUI();
                 _dragCell.UpdateCellUI();
-
-                // Nếu có thay đổi, thông báo để save inventory
-                if (inventoryChanged)
-                {
-                    // callbacksController.onInventoryChanged?.Invoke();
-                }
             }
         }
 
@@ -103,7 +91,7 @@ namespace KLTNLongKhoi
         {
             if (count == 0)
                 return;
-            if (cell1.ItemsCount + count <= cell1.ItemDataSO.itemData.maxStack)
+            if (cell1.ItemsCount + count <= cell1.ItemDataSO.ItemData.maxStack)
             {
                 cell1.ItemsCount += count;
                 cell2.ItemsCount -= count;
@@ -112,10 +100,10 @@ namespace KLTNLongKhoi
             }
             else
             {
-                if (cell1.ItemsCount < cell1.ItemDataSO.itemData.maxStack)
+                if (cell1.ItemsCount < cell1.ItemDataSO.ItemData.maxStack)
                 {
-                    cell2.ItemsCount -= (cell1.ItemDataSO.itemData.maxStack - cell1.ItemsCount);
-                    cell1.ItemsCount += (cell1.ItemDataSO.itemData.maxStack - cell1.ItemsCount);
+                    cell2.ItemsCount -= (cell1.ItemDataSO.ItemData.maxStack - cell1.ItemsCount);
+                    cell1.ItemsCount += (cell1.ItemDataSO.ItemData.maxStack - cell1.ItemsCount);
                 }
             }
         }

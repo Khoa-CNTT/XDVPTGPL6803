@@ -6,8 +6,15 @@ namespace KLTNLongKhoi
     public class QuickSlotsController : ContainerBase
     {
         [SerializeField] InventoryCell inventoryCellSelected;
+        [SerializeField] InventoryController inventoryController;
 
         public InventoryCell InventoryCellSelected { get => inventoryCellSelected; set => inventoryCellSelected = value; }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            inventoryController = FindFirstObjectByType<InventoryController>();
+        }
 
         void Update()
         {
@@ -28,12 +35,36 @@ namespace KLTNLongKhoi
                                 }
                                 if (inventoryCells[num].ItemDataSO != null)
                                 {
-                                    Debug.Log("Item Selected: " + inventoryCells[num].ItemDataSO.itemData.name);
+                                    Debug.Log("Item Selected: " + inventoryCells[num].ItemDataSO.ItemData.name);
                                     InventoryCellSelected = inventoryCells[num];
                                     InventoryCellSelected.Highlight.enabled = true;
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        // Tiêu thụ item đã được chọn
+        public void UseItem()
+        {
+            if (inventoryCellSelected != null)
+            {
+                if (inventoryCellSelected.ItemDataSO != null)
+                {
+                    if (inventoryCellSelected.ItemsCount > 0)
+                    {
+                        inventoryCellSelected.ItemsCount--;
+                        inventoryCellSelected.UpdateCellUI();
+
+                        // nếu số lượng item trong cell = 0 thì xóa item đó khỏi cell
+                        if (inventoryCellSelected.ItemsCount == 0)
+                        {
+                            inventoryCellSelected.SetInventoryItem(null);
+                            inventoryCellSelected.UpdateCellUI();
+                        }
+                        inventoryController.SaveThisInventory();
                     }
                 }
             }

@@ -42,6 +42,7 @@ namespace KLTNLongKhoi
             playerStatsManager = FindFirstObjectByType<PlayerStatsManager>();
             characterController = GetComponent<CharacterController>();
             playerAnimationEvents = GetComponentInChildren<CharacterAnimationEvents>();
+            actorHitbox = GetComponentInChildren<ActorHitbox>();
         }
 
         private void Start()
@@ -55,14 +56,14 @@ namespace KLTNLongKhoi
             if (characterStatus.IsDead()) return;
             if (CanMove == false) return;
 
-            bool isSeePlayer = characterVision.Target != null;
+            bool isSeePlayer = characterVision.GetPlayer() != null;
 
             // Check if the enemy is within hit range of the player
-            if (isSeePlayer && Vector3.Distance(transform.position, characterVision.Target.position) <= hitRange && CanMove)
+            if (isSeePlayer && Vector3.Distance(transform.position, characterVision.GetPlayer().transform.position) <= hitRange && CanMove)
             {
                 CanMove = false;
                 animator.SetTrigger("Attack");
-                actorHitbox.damage = damageOnAttack;
+                actorHitbox.damage = damageOnAttack; 
                 PlayAttackSound();
                 Invoke("OnEndAttack", timeEndAnimAttack);
                 return;
@@ -73,7 +74,7 @@ namespace KLTNLongKhoi
             // If the enemy sees the player, move towards them
             if (isSeePlayer)
             {
-                agent.SetDestination(characterVision.Target.position);
+                agent.SetDestination(characterVision.GetPlayer().transform.position);
                 SetStateMove();
             }
             else
@@ -91,7 +92,7 @@ namespace KLTNLongKhoi
 
         public bool IsSeePlayer()
         {
-            return characterVision.Target;
+            return characterVision.GetPlayer() != null;
         }
 
         private void Patrol()
