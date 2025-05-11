@@ -7,11 +7,12 @@ namespace KLTNLongKhoi
 {
     public class GameSettings : MonoBehaviour
     {
-        // Một event duy nhất cho mọi thay đổi
-        public UnityEvent onSettingsChanged = new UnityEvent();
 
         [SerializeField] private GameSettingsData gameSettingsData;
         [SerializeField] private AudioMixer audioMixer;
+        [SerializeField] private UnityEngine.Rendering.Volume globalVolume; 
+
+        public event Action onSettingsChanged;
 
         public GameSettingsData GameSettingsData { get => gameSettingsData; set => gameSettingsData = value; }
 
@@ -19,37 +20,33 @@ namespace KLTNLongKhoi
 
         void Awake()
         {
-            saveLoadManager = FindFirstObjectByType<SaveLoadManager>();
+            saveLoadManager = SaveLoadManager.Instance;
         }
 
         private void Start()
         {
-            GameSettingsData = saveLoadManager.GetGameData().gameSettings;
-            saveLoadManager.OnLoaded += () => GameSettingsData = saveLoadManager.GetGameData().gameSettings;
             Init();
         }
 
-        void OnDestroy()
+        private void OnEnable()
         {
-            SaveSettings();
+            saveLoadManager.OnLoaded += Init;
         }
 
-        public void SaveSettings()
+        private void OnDisable()
         {
-            saveLoadManager.SaveData(gameSettingsData);
+            saveLoadManager.OnLoaded -= Init;
         }
 
         public void Init()
         {
+            gameSettingsData = saveLoadManager.LoadData<GameSettingsData>();
+
             SetQualityLevel(gameSettingsData.qualityLevel);
             SetResolution(gameSettingsData.resolution);
-            SetTargetFrameRate(gameSettingsData.targetFrameRate);
-            SetBrightness(gameSettingsData.brightness);
-            SetMasterVolume(gameSettingsData.masterVolume);
-            SetMusicVolume(gameSettingsData.musicVolume);
-            SetSFXVolume(gameSettingsData.sfxVolume);
+            SetTargetFrameRate(gameSettingsData.targetFrameRate); 
 
-            onSettingsChanged.Invoke();
+            onSettingsChanged?.Invoke();
         }
 
 
@@ -84,32 +81,48 @@ namespace KLTNLongKhoi
 
         public void SetBrightness(float brightness)
         {
-            gameSettingsData.brightness = Mathf.Clamp(brightness, 0f, 2f);
+            gameSettingsData.brightness = brightness * 5;
+            // Điều chỉnh Post Exposure trong Volume
+            if (globalVolume != null && globalVolume.profile != null)
+            {
+                // Tìm component ColorAdjustments
+                if (globalVolume.profile.TryGet(out UnityEngine.Rendering.Universal.ColorAdjustments colorAdjustments))
+                {
+                    colorAdjustments.postExposure.Override(brightness);
+                }
+            }
 
-            // TODO: Chỉnh ánh sáng lại 
-
+            onSettingsChanged.Invoke();
             SaveSettings();
         }
 
         public void SetMasterVolume(float volume)
         {
-            gameSettingsData.masterVolume = Mathf.Clamp01(volume);
-            audioMixer.SetFloat("Master", Mathf.Log10(gameSettingsData.masterVolume) * 20);
+            gameSettingsData.masterVolume = volume;
+            float volumeValue = -80f + volume * 100f; 
+            audioMixer.SetFloat("Master", volumeValue);
             SaveSettings();
         }
 
         public void SetMusicVolume(float volume)
         {
-            gameSettingsData.musicVolume = Mathf.Clamp01(volume);
-            audioMixer.SetFloat("Music", Mathf.Log10(gameSettingsData.musicVolume) * 20);
+            gameSettingsData.musicVolume = volume;
+            float volumeValue = -80f + volume * 100f;
+            audioMixer.SetFloat("Music", volumeValue);
             SaveSettings();
         }
 
         public void SetSFXVolume(float volume)
         {
-            gameSettingsData.sfxVolume = Mathf.Clamp01(volume);
-            audioMixer.SetFloat("SFX", Mathf.Log10(gameSettingsData.sfxVolume) * 20);
+            gameSettingsData.sfxVolume = volume;
+            float volumeValue = -80f + volume * 100f;
+            audioMixer.SetFloat("SFX", volumeValue);
             SaveSettings();
+        }
+
+        private void SaveSettings()
+        {
+            saveLoadManager.SaveData(gameSettingsData);
         }
     }
 }

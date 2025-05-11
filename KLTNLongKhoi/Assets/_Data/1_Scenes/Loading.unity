@@ -312,6 +312,10 @@ PrefabInstance:
       value: "Nh\u1EA5n n\xFAt \u0111\u1EC3 b\u1EAFt \u0111\u1EA7u"
       objectReference: {fileID: 0}
     - target: {fileID: 9135233585179881986, guid: cf94c0ab966c0c54cac58110873067b0, type: 3}
+      propertyPath: m_fontSize
+      value: 25.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 9135233585179881986, guid: cf94c0ab966c0c54cac58110873067b0, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: 015d9d749211139478d47ed9eb38b605, type: 2}
@@ -332,12 +336,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9135233585179881986, guid: cf94c0ab966c0c54cac58110873067b0, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 25.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 9135233585179881986, guid: cf94c0ab966c0c54cac58110873067b0, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 188309556180032878, guid: 015d9d749211139478d47ed9eb38b605, type: 2}
+    - target: {fileID: 9135233585179881986, guid: cf94c0ab966c0c54cac58110873067b0, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4278190080
       objectReference: {fileID: 0}
     - target: {fileID: 9135233585179881986, guid: cf94c0ab966c0c54cac58110873067b0, type: 3}
       propertyPath: m_hasFontAssetChanged
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

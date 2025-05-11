@@ -78,7 +78,7 @@ namespace KLTNLongKhoi
         public int qualityLevel = 1; // 0: Thấp, 1: Trung bình, 2: Cao
         public string resolution = "1920x1080";
         public int targetFrameRate = 60;
-        public float brightness = 1f;
+        public float brightness = 1f; // từ 0-5
     }
 
     [Serializable]

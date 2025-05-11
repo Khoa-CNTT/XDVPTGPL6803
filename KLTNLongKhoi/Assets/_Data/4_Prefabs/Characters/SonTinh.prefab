@@ -713,8 +713,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageOnAttack: 300
-  jumpForce: 1.5
-  jumpHeight: 3
+  jumpForce: 5
+  jumpHeight: 5
   maxDistanceToJump: 12
   minDistanceToJump: 7
   jumpCooldown: 7

@@ -12,7 +12,7 @@ namespace KLTNLongKhoi
         [SerializeField] private ButtonOptions qualityOptions;
         [SerializeField] private btnNextOptions resolutionOptions;
         [SerializeField] private btnNextOptions fpsOptions;
-        [SerializeField] private btnNextOptions brightnessOptions;
+        [SerializeField] private Slider brightnessOptions; // từ 0-5
 
         [Header("Audio Settings")]
         [SerializeField] private Slider masterVolumeSlider;
@@ -24,75 +24,59 @@ namespace KLTNLongKhoi
         private void Start()
         {
             gameSettings = FindFirstObjectByType<GameSettings>();
-            gameSettings.onSettingsChanged.AddListener(OnSettingsChanged);
+            gameSettings.onSettingsChanged += UpdateUI;
             SetupListeners();
-            OnSettingsChanged();
-        }
-
-        private void OnDestroy()
-        {
-            gameSettings.onSettingsChanged.RemoveListener(OnSettingsChanged);
-        }
-
+            UpdateUI();
+        } 
+        
         // Initialize UI elements from GameSettings
-        private void OnSettingsChanged()
+        private void UpdateUI()
         {
+            GameSettingsData gameSettingsData = gameSettings.GameSettingsData;
             if (qualityOptions != null)
             {
-                qualityOptions.SetCurrentIndex(gameSettings.GameSettingsData.qualityLevel);
+                qualityOptions.SetCurrentIndex(gameSettingsData.qualityLevel);
             }
 
             if (resolutionOptions != null)
             {
                 Resolution[] resolutions = Screen.resolutions;
                 string[] resolutionStrings = resolutions.Select(r => $"{r.width}x{r.height}").ToArray();
-                resolutionOptions.SetOptions(resolutionStrings, gameSettings.GameSettingsData.resolution);
+                resolutionOptions.SetOptions(resolutionStrings, gameSettingsData.resolution);
             }
 
             if (fpsOptions != null)
             {
                 fpsOptions.SetOptions(
                     new string[] { "30 FPS", "60 FPS", "120 FPS" },
-                    $"{gameSettings.GameSettingsData.targetFrameRate} FPS"
+                    $"{gameSettingsData.targetFrameRate} FPS"
                 );
             }
 
             if (brightnessOptions != null)
-            {
-                brightnessOptions.SetOptions(
-                    new string[] { "Tối", "Tối hơn", "Trung bình", "Sáng", "Sáng hơn" },
-                    GetBrightnessText(gameSettings.GameSettingsData.brightness)
-                );
-            }
+                brightnessOptions.value = gameSettingsData.brightness / 5;
 
             if (masterVolumeSlider != null)
-                masterVolumeSlider.value = gameSettings.GameSettingsData.masterVolume;
+                masterVolumeSlider.value = gameSettingsData.masterVolume;
 
             if (musicVolumeSlider != null)
-                musicVolumeSlider.value = gameSettings.GameSettingsData.musicVolume;
+                musicVolumeSlider.value = gameSettingsData.musicVolume;
 
             if (sfxVolumeSlider != null)
-                sfxVolumeSlider.value = gameSettings.GameSettingsData.sfxVolume;
+                sfxVolumeSlider.value = gameSettingsData.sfxVolume;
         }
 
 
         // Setup listeners for UI elements
         private void SetupListeners()
-        { 
-            if (qualityOptions != null)
-                qualityOptions.onClick.AddListener(OnQualityChanged);
-            if (resolutionOptions != null)
-                resolutionOptions.onClick.AddListener(OnResolutionChanged);
-            if (fpsOptions != null)
-                fpsOptions.onClick.AddListener(OnFPSChanged);
-            if (brightnessOptions != null)
-                brightnessOptions.onClick.AddListener(OnBrightnessChanged);
-            if (masterVolumeSlider != null)
-                masterVolumeSlider.onValueChanged.AddListener(OnMasterVolumeChanged);
-            if (musicVolumeSlider != null)
-                musicVolumeSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
-            if (sfxVolumeSlider != null)
-                sfxVolumeSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
+        {
+            qualityOptions.onClick.AddListener(OnQualityChanged);
+            resolutionOptions.onClick.AddListener(OnResolutionChanged);
+            fpsOptions.onClick.AddListener(OnFPSChanged);
+            brightnessOptions.onValueChanged.AddListener(OnBrightnessChanged);
+            masterVolumeSlider.onValueChanged.AddListener(OnMasterVolumeChanged);
+            musicVolumeSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
+            sfxVolumeSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
         }
 
         #region Event Handlers
@@ -113,9 +97,8 @@ namespace KLTNLongKhoi
             gameSettings.SetTargetFrameRate(GetFPSFromDropdownIndex(fpsOptions.GetCurrentIndex()));
         }
 
-        private void OnBrightnessChanged()
+        private void OnBrightnessChanged(float brightness)
         {
-            float brightness = GetBrightnessFromIndex(brightnessOptions.GetCurrentIndex());
             gameSettings.SetBrightness(brightness);
         }
 
