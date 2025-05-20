@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af3caab3a37b7eb42a9f204443d073f6, type: 3}
+  m_Name: "R\u1EC5 c\xE2y c\u1ED5 th\u1EE5"
+  m_EditorClassIdentifier: 
+  itemData:
+    id: "R\u1EC5 c\xE2y c\u1ED5 th\u1EE5"
+    name: "R\u1EC5 c\xE2y c\u1ED5 th\u1EE5"
+    description: "V\u1EADt ph\u1EA9m d\xF9ng n\xE2ng c\u1EA5p ch\u1EBF t\u1EA1o"
+    itemType: 4
+    itemCount: 1
+    maxStack: 1
+    price: 100
+    cellIndex: 0
+    physicalDamage: 0
+    magicDamage: 0
+    defensePoints: 0
+    resistance: 0
+    attackSpeed: 0
+    healthRecovery: 0
+    manaRecovery: 0
+    criticalChance: 0
+    successRate: 0
+  icon: {fileID: 21300000, guid: b1494bb6376af3d4995a9fe4bf6b1c59, type: 3}
+  prefab: {fileID: 0}

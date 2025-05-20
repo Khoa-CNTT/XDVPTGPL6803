@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4872bf3a97c26e44387f165d165f957a, type: 3}
+  m_Name: Intro
+  m_EditorClassIdentifier: 
+  dialogLines:
+  - actorName: "Nh\u1EA5n space"
+    dialogText: "Th\u1EA5y d\xE2n v\xF9ng Long Bi\xEAn \u0111\xE3 \u0111\u01B0\u1EE3c
+      y\xEAn \u1ED5n l\xE0m \u0103n L\u1EA1c Long Qu\xE2n \u0111i ng\u01B0\u1EE3c
+      l\xEAn v\xF9ng r\u1EEBng n\xFAi \u0111\u1EBFn \u0111\u1EA5t Phong Ch\xE2u.
+      \u1EDE v\xF9ng n\xE0y c\xF3 m\u1ED9t c\xE2y c\u1ED5 th\u1EE5 g\u1ECDi l\xE0
+      c\xE2y chi\xEAn \u0111\xE0n, cao h\xE0ng ngh\xECn tr\u01B0\u1EE3ng, tr\u01B0\u1EDBc
+      kia c\xE0nh l\xE1 sum su\xEA t\u01B0\u01A1i t\u1ED1t che k\xEDn c\u1EA3 m\u1ED9t
+      kho\u1EA3ng \u0111\u1EA5t r\u1ED9ng, nh\u01B0ng sau nhi\u1EC1u n\u0103m, c\xE2y
+      kh\xF4 h\xE9o, bi\u1EBFn th\xE0nh y\xEAu tinh, ng\u01B0\u1EDDi ta g\u1ECDi
+      l\xE0 M\u1ED9c Tinh."
+  - actorName: "Nh\u1EA5n space"
+    dialogText: "Con y\xEAu n\xE0y hung \xE1c v\xE0 qu\u1EF7 quy\u1EC7t l\u1EA1 th\u01B0\u1EDDng.
+      Ch\u1ED7 \u1EDF c\u1EE7a n\xF3 kh\xF4ng nh\u1EA5t \u0111\u1ECBnh, khi th\xEC
+      \u1EDF khu r\u1EEBng n\xE0y, khi th\xEC \u1EDF khu r\u1EEBng kh\xE1c. N\xF3
+      c\xF2n lu\xF4n lu\xF4n thay h\xECnh \u0111\u1ED5i h\u1EA1ng \u1EA9n n\u1EA5p
+      kh\u1EAFp n\u01A1i, d\u1ED3n b\u1EAFt ng\u01B0\u1EDDi \u0111\u1EC3 \u0103n
+      th\u1ECBt. \xD0i \u0111\u1EBFn \u0111\xE2u c\u0169ng nghe th\u1EA5y ti\u1EBFng
+      kh\xF3c than th\u1EA3m thi\u1EBFt, L\u1EA1c Long Qu\xE2n quy\u1EBFt ra tay
+      c\u1EE9u d\xE2n di\u1EC7t tr\u1EEB lo\xE0i y\xEAu qu\xE1i. "
+  - actorName: "Nh\u1EA5n space"
+    dialogText: "L\u1EA1c Long qu\xE2n ph\u1EA3i lu\u1ED3n h\u1EBFt r\u1EEBng n\xE0y
+      \u0111\u1EBFn r\u1EEBng kia v\xE0 qua nhi\u1EC1u ng\xE0y gian kh\u1ED5 m\u1EDBi
+      t\xECm th\u1EA5y ch\u1ED7 \u1EDF c\u1EE7a con y\xEAu. L\u1EA1c Long Qu\xE2n
+      giao chi\u1EBFn v\u1EDBi n\xF3 tr\u0103m ng\xE0y \u0111\xEAm, l\xE0m cho c\xE2y
+      long \u0111\xE1 l\u1EDF, tr\u1EDDi \u0111\u1EA5t m\u1ECBt m\xF9 m\xE0 kh\xF4ng
+      th\u1EAFng \u0111\u01B0\u1EE3c n\xF3."
+  - actorName: "Nh\u1EA5n space"
+    dialogText: "Cu\u1ED1i c\xF9ng L\u1EA1c Long Qu\xE2n ph\u1EA3i d\xF9ng \u0111\u1EBFn
+      nh\u1EEFng nh\u1EA1c c\u1EE5 nh\u01B0 chi\xEAng, tr\u1ED1ng l\xE0m n\xF3 khi\u1EBFp
+      s\u1EE3 v\xE0 ch\u1EA1y v\u1EC1 ph\xEDa T\xE2y Nam, s\u1ED1ng quanh qu\u1EA5t
+      \u1EDF v\xF9ng \u0111\xF3, ng\u01B0\u1EDDi ta g\u1ECDi l\xE0 Qu\u1EF7 X\u01B0\u01A1ng
+      Cu\u1ED3ng."

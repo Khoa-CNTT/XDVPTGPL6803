@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acae76ffc32522e4285a51a669afea23, type: 3}
+  m_Name: "Ti\xEAu di\u1EC7t boss s\u01A1n tinh"
+  m_EditorClassIdentifier: 
+  questID: main_quest2
+  questName: "Ti\xEAu di\u1EC7t m\u1ED9c tinh"
+  description: "Ti\xEAu di\u1EC7t m\u1ED9c tinh"
+  questType: 0
+  status: 2
+  objectives:
+  - objectiveDescription: "\u0110\xE1nh b\u1EA1i S\u01A1n Tinh"
+    requiredAmount: 3
+    currentAmount: 3
+  experienceReward: 3
+  moneyReward: 3
+  itemRewards:
+  - {fileID: 11400000, guid: 79b8b844913dd134cbdadcab54c8709a, type: 2}
